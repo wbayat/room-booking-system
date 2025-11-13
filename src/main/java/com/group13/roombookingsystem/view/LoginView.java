@@ -3,6 +3,7 @@ package com.group13.roombookingsystem.view;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.commons.logging.Log;
 
@@ -20,7 +21,8 @@ public class LoginView extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("/fxml/Login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        AnchorPane root = fxmlLoader.load();
+        Scene scene = new Scene(root);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
