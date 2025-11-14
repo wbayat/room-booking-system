@@ -2,8 +2,7 @@
 
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="clientBorderPane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.client.ClientController">
    <left>
        <fx:include source="ClientNavBar.fxml" />
    </left>
