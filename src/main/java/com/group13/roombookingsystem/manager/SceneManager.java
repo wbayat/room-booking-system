@@ -11,6 +11,7 @@ public class SceneManager {
 
     private Scene loginScene;
     private Scene signupScene;
+    private Scene clientScene;
 
     private SceneManager(){}
 
@@ -33,5 +34,12 @@ public class SceneManager {
             signupScene = new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/SignUp.fxml")).load());
         }
         return signupScene;
+    }
+
+    public Scene getClientScene() throws IOException {
+        if (clientScene == null){
+            clientScene = new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/ClientView.fxml")).load());
+        }
+        return clientScene;
     }
 }

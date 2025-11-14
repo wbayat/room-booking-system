@@ -22,10 +22,14 @@ public class LoginController {
     public TextField emailTextField;
     public PasswordField passwordTextField;
 
-    public void hangleLogin(ActionEvent actionEvent) {
+    public void hangleLogin(ActionEvent mouseEvent) throws IOException {
         System.out.println("email: " + emailTextField.getText() + ", password: " + passwordTextField.getText());
         emailTextField.setText("");
         passwordTextField.setText("");
+
+
+        Stage stage = ((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
+        stage.setScene(SceneManager.getInstance().getClientScene());
     }
 
     public void showSignUpView(MouseEvent mouseEvent) throws IOException {
