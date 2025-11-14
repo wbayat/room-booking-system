@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.controller;
 
-import com.group13.roombookingsystem.view.LoginView;
+import com.group13.roombookingsystem.manager.SceneManager;
+import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,10 +28,8 @@ public class LoginController {
         passwordTextField.setText("");
     }
 
-
     public void showSignUpView(MouseEvent mouseEvent) throws IOException {
         Stage stage = ((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow());
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("/fxml/SignUp.fxml"));
-        stage.setScene(new Scene(fxmlLoader.load()));
+        stage.setScene(SceneManager.getInstance().getSignupScene());
     }
 }

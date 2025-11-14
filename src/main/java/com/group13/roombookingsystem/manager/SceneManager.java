@@ -1,0 +1,37 @@
+package com.group13.roombookingsystem.manager;
+
+import com.group13.roombookingsystem.view.MainGUI;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+
+import java.io.IOException;
+
+public class SceneManager {
+    private static SceneManager sceneManager;
+
+    private Scene loginScene;
+    private Scene signupScene;
+
+    private SceneManager(){}
+
+    public static SceneManager getInstance(){
+        if (sceneManager == null){
+            sceneManager = new SceneManager();
+        }
+        return sceneManager;
+    }
+
+    public Scene getLoginScene() throws IOException {
+        if (loginScene == null){
+            loginScene = new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/Login.fxml")).load());
+        }
+        return loginScene;
+    }
+
+    public Scene getSignupScene() throws IOException {
+        if (signupScene == null){
+            signupScene = new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/SignUp.fxml")).load());
+        }
+        return signupScene;
+    }
+}
