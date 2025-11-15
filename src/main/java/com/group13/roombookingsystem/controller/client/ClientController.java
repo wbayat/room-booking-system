@@ -1,12 +1,9 @@
 package com.group13.roombookingsystem.controller.client;
 
 import com.group13.roombookingsystem.manager.SceneManager;
-import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -27,8 +24,7 @@ public class ClientController implements Initializable {
     }
 
     public void handleLogout(ActionEvent actionEvent) throws IOException {
-        Stage stage = ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow());
-        stage.setScene(SceneManager.getInstance().getLoginScene());
+        SceneManager.getInstance().showLoginView();
     }
 
     @Override

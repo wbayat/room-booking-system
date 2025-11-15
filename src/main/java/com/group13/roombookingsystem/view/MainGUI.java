@@ -17,8 +17,9 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        SceneManager.getInstance().initMainScene();
         stage.setTitle("Room Booking System");
-        stage.setScene(SceneManager.getInstance().getLoginScene());
+        stage.setScene(SceneManager.getInstance().getMainScene());
         stage.show();
     }
 }
