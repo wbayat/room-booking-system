@@ -1,9 +1,10 @@
 package com.group13.roombookingsystem;
 
 import com.group13.roombookingsystem.view.MainGUI;
+import javafx.application.Application;
 
-public class Main {
+public class App {
     public static void main(String[] args){
-        new MainGUI(args);
+        Application.launch(MainGUI.class, args);
     }
 }

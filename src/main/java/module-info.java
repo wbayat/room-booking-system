@@ -10,5 +10,7 @@ module com.group13.roombookingsystem {
 
     exports com.group13.roombookingsystem;
     exports com.group13.roombookingsystem.view;
+    opens com.group13.roombookingsystem.controller.client to javafx.fxml;
+    opens com.group13.roombookingsystem.controller.admin to javafx.fxml;
 
 }

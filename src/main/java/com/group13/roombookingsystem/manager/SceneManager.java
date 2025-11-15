@@ -3,14 +3,21 @@ package com.group13.roombookingsystem.manager;
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
 public class SceneManager {
     private static SceneManager sceneManager;
 
-    private Scene loginScene;
-    private Scene signupScene;
+    private Scene scene;
+
+    private AnchorPane loginView;
+    private AnchorPane signupView;
+
+    private BorderPane clientView;
+
 
     private SceneManager(){}
 
@@ -21,17 +28,37 @@ public class SceneManager {
         return sceneManager;
     }
 
-    public Scene getLoginScene() throws IOException {
-        if (loginScene == null){
-            loginScene = new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/Login.fxml")).load());
+    public void initMainScene() throws IOException {
+        if (scene == null) {
+            if (loginView == null){
+                loginView = new FXMLLoader(MainGUI.class.getResource("/fxml/LoginView.fxml")).load();
+            }
+            scene = new Scene(loginView);
         }
-        return loginScene;
     }
 
-    public Scene getSignupScene() throws IOException {
-        if (signupScene == null){
-            signupScene = new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/SignUp.fxml")).load());
+    public Scene getMainScene() {
+        return scene;
+    }
+
+    public void showLoginView() throws IOException {
+        if (loginView == null){
+            loginView = new FXMLLoader(MainGUI.class.getResource("/fxml/LoginView.fxml")).load();
         }
-        return signupScene;
+        scene.setRoot(loginView);
+    }
+
+    public void showSignupView() throws IOException {
+        if (signupView == null){
+            signupView = new FXMLLoader(MainGUI.class.getResource("/fxml/SignupView.fxml")).load();
+        }
+        scene.setRoot(signupView);
+    }
+
+    public void showClientView() throws IOException {
+        if (clientView == null){
+            clientView = new FXMLLoader(MainGUI.class.getResource("/fxml/client/ClientView.fxml")).load();
+        }
+        scene.setRoot(clientView);
     }
 }
