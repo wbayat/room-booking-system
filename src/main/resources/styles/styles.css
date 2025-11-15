@@ -1,13 +1,10 @@
 .room-card {
     -fx-background-color: white;
-    -fx-border: 2 solid black;
     -fx-border-radius: 20;
 }
 
-
 .menu-button {
 -fx-background-color: white;
-    -fx-border: 2 solid black;
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-focus-traversable: false;

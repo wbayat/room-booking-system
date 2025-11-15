@@ -19,7 +19,7 @@ public class CardLayoutController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         for (int i = 0; i < 10; i++){
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/RoomCard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/client/RoomCard.fxml"));
                 VBox card = fxmlLoader.load();
                 RoomCardController roomCardController = fxmlLoader.getController();
                 roomCardController.setData();

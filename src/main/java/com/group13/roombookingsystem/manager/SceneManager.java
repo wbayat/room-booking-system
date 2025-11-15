@@ -41,19 +41,19 @@ public class SceneManager {
 
     public Scene getClientScene() throws IOException {
         if (clientScene == null){
-            clientScene = new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/ClientView.fxml")).load());
+            clientScene = new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/client/ClientView.fxml")).load());
         }
         return clientScene;
     }
     public AnchorPane getClientBookingsRoot() throws IOException {
         if (clientBookings == null){
-            clientBookings = new FXMLLoader(MainGUI.class.getResource("/fxml/ClientBookings.fxml")).load();
+            clientBookings = new FXMLLoader(MainGUI.class.getResource("/fxml/client/ClientBookings.fxml")).load();
         }
         return clientBookings;
     }
     public AnchorPane getRoomsLayoutRoot() throws IOException {
         if (roomsLayout == null){
-            roomsLayout = new FXMLLoader(MainGUI.class.getResource("/fxml/CardLayout.fxml")).load();
+            roomsLayout = new FXMLLoader(MainGUI.class.getResource("/fxml/client/CardLayout.fxml")).load();
         }
         return roomsLayout;
     }
