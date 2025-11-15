@@ -1,4 +1,4 @@
-package com.group13.roombookingsystem.controller.client;
+package com.group13.roombookingsystem.controller.admin;
 
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXMLLoader;
@@ -10,18 +10,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BookingsContainerController implements Initializable {
-    public VBox BookingsContainer;
+public class UsersContainerController implements Initializable {
+    public VBox usersContainer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         for (int i = 0; i < 10; i++){
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/client/BookingCard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/admin/UserCard.fxml"));
                 AnchorPane card = fxmlLoader.load();
-                BookingCardController bookingCardController = fxmlLoader.getController();
-                bookingCardController.setData();
-                BookingsContainer.getChildren().add(card);
+                UserCardController userCardController = fxmlLoader.getController();
+                userCardController.setData();
+                usersContainer.getChildren().add(card);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
