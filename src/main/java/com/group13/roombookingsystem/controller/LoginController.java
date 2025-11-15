@@ -19,12 +19,21 @@ public class LoginController {
 
     public void hangleLogin(ActionEvent mouseEvent) throws IOException {
         System.out.println("email: " + emailTextField.getText() + ", password: " + passwordTextField.getText());
+
+
+        if(emailTextField.getText().equals("client")){
+            SceneManager.getInstance().showClientView();
+        } else if (emailTextField.getText().equals("admin")) {
+            SceneManager.getInstance().showAdminView();
+        } else if (emailTextField.getText().equals("chief")) {
+            SceneManager.getInstance().showChiefView();
+        }else {
+            errorLabel.setText("Enter client, admin, or chief");
+        }
+
         emailTextField.setText("");
         passwordTextField.setText("");
 
-
-        SceneManager.getInstance().showChiefView();
-//        SceneManager.getInstance().showClientView();
     }
 
     public void showSignUpView(MouseEvent mouseEvent) throws IOException {

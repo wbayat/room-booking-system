@@ -44,6 +44,14 @@ public class SceneManager {
         return scene;
     }
 
+    public void reset(){
+        loginView = null;
+        signupView = null;
+        clientView = null;
+        adminView = null;
+    }
+
+
     public void showLoginView() throws IOException {
         if (loginView == null){
             loginView = new FXMLLoader(MainGUI.class.getResource("/fxml/LoginView.fxml")).load();

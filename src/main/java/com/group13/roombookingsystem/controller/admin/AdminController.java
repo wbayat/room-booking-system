@@ -41,6 +41,7 @@ public class AdminController implements Initializable {
 
     public void handleLogout(ActionEvent actionEvent) throws IOException {
         SceneManager.getInstance().showLoginView();
+        SceneManager.getInstance().reset();
     }
 
     public void showManageUsersView(ActionEvent actionEvent) throws IOException {

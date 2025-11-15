@@ -36,6 +36,7 @@ public class ClientController implements Initializable {
 
     public void handleLogout(ActionEvent actionEvent) throws IOException {
         SceneManager.getInstance().showLoginView();
+        SceneManager.getInstance().reset();
     }
 
     @Override
