@@ -25,6 +25,7 @@ public class LoginController {
         passwordTextField.setText("");
 
 
+//        SceneManager.getInstance().showAdminView();
         SceneManager.getInstance().showClientView();
     }
 

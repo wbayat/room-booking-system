@@ -18,6 +18,7 @@ public class SceneManager {
 
     private BorderPane clientView;
 
+    private BorderPane adminView;
 
     private SceneManager(){}
 
@@ -60,5 +61,12 @@ public class SceneManager {
             clientView = new FXMLLoader(MainGUI.class.getResource("/fxml/client/ClientView.fxml")).load();
         }
         scene.setRoot(clientView);
+    }
+
+    public void showAdminView() throws IOException {
+        if (adminView == null){
+            adminView = new FXMLLoader(MainGUI.class.getResource("/fxml/admin/AdminView.fxml")).load();
+        }
+        scene.setRoot(adminView);
     }
 }
