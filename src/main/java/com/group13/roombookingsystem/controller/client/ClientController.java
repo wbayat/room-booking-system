@@ -5,10 +5,8 @@ import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,14 +22,14 @@ public class ClientController implements Initializable {
 
     public void showBookARoomView(ActionEvent actionEvent) throws IOException {
         if (roomsLayout == null){
-            roomsLayout = new FXMLLoader(MainGUI.class.getResource("/fxml/client/CardLayout.fxml")).load();
+            roomsLayout = new FXMLLoader(MainGUI.class.getResource("/fxml/client/RoomContainer.fxml")).load();
         }
         clientBorderPane.setCenter(roomsLayout);
     }
 
     public void showMyBookingsView(ActionEvent actionEvent) throws IOException {
         if (clientBookings == null){
-            clientBookings = new FXMLLoader(MainGUI.class.getResource("/fxml/client/ClientBookings.fxml")).load();
+            clientBookings = new FXMLLoader(MainGUI.class.getResource("/fxml/client/BookingsContainer.fxml")).load();
         }
         clientBorderPane.setCenter(clientBookings);
     }

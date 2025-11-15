@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CardLayoutController implements Initializable {
+public class RoomsContainerController implements Initializable {
 
     public FlowPane cardContainer;
 

@@ -31,7 +31,7 @@ public class SceneManager {
     public void initMainScene() throws IOException {
         if (scene == null) {
             if (loginView == null){
-                loginView = new FXMLLoader(MainGUI.class.getResource("/fxml/Login.fxml")).load();
+                loginView = new FXMLLoader(MainGUI.class.getResource("/fxml/LoginView.fxml")).load();
             }
             scene = new Scene(loginView);
         }
@@ -43,14 +43,14 @@ public class SceneManager {
 
     public void showLoginView() throws IOException {
         if (loginView == null){
-            loginView = new FXMLLoader(MainGUI.class.getResource("/fxml/Login.fxml")).load();
+            loginView = new FXMLLoader(MainGUI.class.getResource("/fxml/LoginView.fxml")).load();
         }
         scene.setRoot(loginView);
     }
 
     public void showSignupView() throws IOException {
         if (signupView == null){
-            signupView = new FXMLLoader(MainGUI.class.getResource("/fxml/SignUp.fxml")).load();
+            signupView = new FXMLLoader(MainGUI.class.getResource("/fxml/SignupView.fxml")).load();
         }
         scene.setRoot(signupView);
     }

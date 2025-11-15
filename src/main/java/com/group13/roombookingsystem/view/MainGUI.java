@@ -8,13 +8,6 @@ import java.io.IOException;
 
 public class MainGUI extends Application {
 
-    public MainGUI(){}
-
-    public MainGUI(String[] args){
-        super();
-        launch(args);
-    }
-
     @Override
     public void start(Stage stage) throws IOException {
         SceneManager.getInstance().initMainScene();
