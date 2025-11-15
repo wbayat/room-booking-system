@@ -2,13 +2,11 @@ package com.group13.roombookingsystem.controller;
 
 import com.group13.roombookingsystem.manager.SceneManager;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -25,7 +23,7 @@ public class LoginController {
         passwordTextField.setText("");
 
 
-        SceneManager.getInstance().showAdminView();
+        SceneManager.getInstance().showChiefView();
 //        SceneManager.getInstance().showClientView();
     }
 

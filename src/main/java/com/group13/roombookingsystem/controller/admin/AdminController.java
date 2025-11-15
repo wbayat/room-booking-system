@@ -5,8 +5,10 @@ import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,9 +16,11 @@ import java.util.ResourceBundle;
 
 public class AdminController implements Initializable {
     public BorderPane adminBorderPane;
+    public Label adminType;
+    public VBox buttonContainer;
 
-    private AnchorPane roomsContainer;
-    private AnchorPane usersContainer;
+    protected AnchorPane roomsContainer;
+    protected AnchorPane usersContainer;
 
 
     @Override
