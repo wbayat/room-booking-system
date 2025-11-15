@@ -30,7 +30,7 @@ public class AdminController implements Initializable {
 
     public void showManageRoomsView(ActionEvent actionEvent) throws IOException {
         if (roomsContainer == null){
-            roomsContainer = new FXMLLoader(MainGUI.class.getResource("/fxml/admin/ManageRooms.fxml")).load();
+            roomsContainer = new FXMLLoader(MainGUI.class.getResource("/fxml/admin/AdminRoomsContainer.fxml")).load();
         }
         adminBorderPane.setCenter(roomsContainer);
     }
@@ -39,6 +39,10 @@ public class AdminController implements Initializable {
         SceneManager.getInstance().showLoginView();
     }
 
-    public void showManageUsersView(ActionEvent actionEvent) {
+    public void showManageUsersView(ActionEvent actionEvent) throws IOException {
+        if (usersContainer == null){
+            usersContainer = new FXMLLoader(MainGUI.class.getResource("/fxml/admin/UsersContainer.fxml")).load();
+        }
+        adminBorderPane.setCenter(usersContainer);
     }
 }

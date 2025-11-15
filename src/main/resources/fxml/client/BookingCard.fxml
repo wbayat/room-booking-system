@@ -32,12 +32,12 @@
                         <children>
                             <Label text="Check-in">
                                 <font>
-                                    <Font size="18.0" />
+                                    <Font name="System Bold" size="16.0" />
                                 </font>
                             </Label>
                             <Label fx:id="checkinTime" layoutX="10.0" layoutY="10.0" text="3:00 PM">
                                 <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                 </font>
                             </Label>
                         </children>
@@ -46,12 +46,12 @@
                         <children>
                             <Label text="Check-out">
                                 <font>
-                                    <Font size="18.0" />
+                                    <Font name="System Bold" size="16.0" />
                                 </font>
                             </Label>
                             <Label fx:id="checkoutTime" layoutX="10.0" layoutY="10.0" text="8:00 PM">
                                 <font>
-                                    <Font size="15.0" />
+                                    <Font size="14.0" />
                                 </font>
                             </Label>
                         </children>
@@ -67,12 +67,12 @@
         <children>
             <Button maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleExtend" style="-fx-background-color: white;" text="Extend">
                 <font>
-                    <Font size="20.0" />
+                    <Font size="18.0" />
                 </font>
             </Button>
             <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: #CC1631;" text="Cancel" textFill="WHITE">
                 <font>
-                    <Font size="20.0" />
+                    <Font size="18.0" />
                 </font>
             </Button>
         </children>

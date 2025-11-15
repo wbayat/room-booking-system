@@ -25,8 +25,8 @@ public class LoginController {
         passwordTextField.setText("");
 
 
-//        SceneManager.getInstance().showAdminView();
-        SceneManager.getInstance().showClientView();
+        SceneManager.getInstance().showAdminView();
+//        SceneManager.getInstance().showClientView();
     }
 
     public void showSignUpView(MouseEvent mouseEvent) throws IOException {
