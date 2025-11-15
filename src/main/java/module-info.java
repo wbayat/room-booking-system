@@ -4,6 +4,7 @@ module com.group13.roombookingsystem {
     requires com.opencsv;
     requires javafx.graphics;
     requires org.apache.commons.logging;
+    requires javafx.base;
 
     opens com.group13.roombookingsystem.controller to javafx.fxml;
     opens com.group13.roombookingsystem.view to javafx.graphics, javafx.fxml;
