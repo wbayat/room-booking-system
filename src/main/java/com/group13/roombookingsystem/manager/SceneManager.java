@@ -17,8 +17,7 @@ public class SceneManager {
     private AnchorPane signupView;
 
     private BorderPane clientView;
-    private AnchorPane clientBookings;
-    private AnchorPane roomsLayout;
+
 
     private SceneManager(){}
 
@@ -61,18 +60,5 @@ public class SceneManager {
             clientView = new FXMLLoader(MainGUI.class.getResource("/fxml/client/ClientView.fxml")).load();
         }
         scene.setRoot(clientView);
-    }
-
-    public AnchorPane getClientBookingsRoot() throws IOException {
-        if (clientBookings == null){
-            clientBookings = new FXMLLoader(MainGUI.class.getResource("/fxml/client/ClientBookings.fxml")).load();
-        }
-        return clientBookings;
-    }
-    public AnchorPane getRoomsLayoutRoot() throws IOException {
-        if (roomsLayout == null){
-            roomsLayout = new FXMLLoader(MainGUI.class.getResource("/fxml/client/CardLayout.fxml")).load();
-        }
-        return roomsLayout;
     }
 }

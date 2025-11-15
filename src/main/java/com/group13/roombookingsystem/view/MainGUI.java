@@ -19,6 +19,8 @@ public class MainGUI extends Application {
     public void start(Stage stage) throws IOException {
         SceneManager.getInstance().initMainScene();
         stage.setTitle("Room Booking System");
+        stage.setMinWidth(900);
+        stage.setMinHeight(600);
         stage.setScene(SceneManager.getInstance().getMainScene());
         stage.show();
     }

@@ -1,11 +1,9 @@
 package com.group13.roombookingsystem.controller.admin;
 
-import com.group13.roombookingsystem.manager.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,10 +18,10 @@ public class AdminController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            adminBorderPane.setCenter(SceneManager.getInstance().getRoomsLayoutRoot());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            adminBorderPane.setCenter();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }
