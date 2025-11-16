@@ -33,9 +33,9 @@
                     <padding>
                         <Insets bottom="20.0" right="20.0" top="20.0" />
                     </padding>
-                    <Button minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#handleLogout">
+                    <Button mnemonicParsing="false" onAction="#handleLogout">
                   <graphic>
-                     <ImageView fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <ImageView fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                            <Image url="@../../images/logout_icon.png" />
                         </image>
@@ -43,7 +43,10 @@
                            <Rectangle2D width="20.0" />
                         </viewport>
                      </ImageView>
-                  </graphic></Button>
+                  </graphic>
+                  <padding>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </padding></Button>
                 </HBox>
             </VBox>
         </AnchorPane>

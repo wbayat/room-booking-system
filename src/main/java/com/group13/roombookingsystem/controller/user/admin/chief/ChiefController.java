@@ -36,7 +36,7 @@ public class ChiefController extends AdminController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
-        Button manageUsersButton = new Button("Manage Admins");
+        Button manageUsersButton = new Button("Manage Users");
         manageUsersButton.getStyleClass().add("menu-button");
         manageUsersButton.setOnAction(event -> {
             try {
