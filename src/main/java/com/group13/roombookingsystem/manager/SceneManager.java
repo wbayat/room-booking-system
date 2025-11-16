@@ -1,7 +1,8 @@
 package com.group13.roombookingsystem.manager;
 
-import com.group13.roombookingsystem.controller.admin.AdminController;
-import com.group13.roombookingsystem.controller.admin.chief.ChiefController;
+import com.group13.roombookingsystem.controller.user.admin.AdminController;
+import com.group13.roombookingsystem.controller.user.admin.chief.ChiefController;
+import com.group13.roombookingsystem.controller.user.client.ClientController;
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -68,14 +69,17 @@ public class SceneManager {
 
     public void showClientView() throws IOException {
         if (clientView == null){
-            clientView = new FXMLLoader(MainGUI.class.getResource("/fxml/client/ClientView.fxml")).load();
+            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/UserView.fxml"));
+            ClientController controller = new ClientController();
+            loader.setController(controller);
+            clientView = loader.load();
         }
         scene.setRoot(clientView);
     }
 
     public void showAdminView() throws IOException {
         if (adminView == null){
-            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/fxml/admin/AdminView.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/UserView.fxml"));
             AdminController controller = new AdminController();
             loader.setController(controller);
             adminView = loader.load();
@@ -84,7 +88,7 @@ public class SceneManager {
     }
     public void showChiefView() throws IOException {
         if (adminView == null){
-            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/fxml/admin/AdminView.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/UserView.fxml"));
             AdminController controller = new ChiefController();
             loader.setController(controller);
             adminView = loader.load();

@@ -12,11 +12,6 @@
     -fx-pref-width: 500;
 }
 
-.menu-button:selected,
-.menu-button:showing {
-    -fx-background-color: #e6f7ff;
-}
-
 .menu-button:hover {
     -fx-background-color: #f0f0f0;
 }
