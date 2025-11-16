@@ -1,3 +1,6 @@
+* {
+    -fx-focus-traversable: false;
+}
 .room-card {
     -fx-background-color: white;
     -fx-border-radius: 20;
