@@ -10,7 +10,7 @@ public class RoomCardController{
     public Label roomLocation;
     public Label roomCapacity;
     public DatePicker checkInDate;
-    public ComboBox<String> checkInTime;
+    public ComboBox<String> checkinTime;
     public ComboBox<String> checkoutTime;
     public Button bookButton;
 
@@ -19,7 +19,7 @@ public class RoomCardController{
     public void setData(){
         roomID.setText("Room D");
         roomLocation.setText("BRG");
-        checkInTime.getItems().addAll(times);
+        checkinTime.getItems().addAll(times);
         checkoutTime.getItems().addAll(times);
     }
 }

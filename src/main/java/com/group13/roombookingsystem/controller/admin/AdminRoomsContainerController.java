@@ -1,11 +1,13 @@
 package com.group13.roombookingsystem.controller.admin;
 
-import com.group13.roombookingsystem.controller.client.RoomCardController;
 import com.group13.roombookingsystem.view.MainGUI;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,5 +29,13 @@ public class AdminRoomsContainerController implements Initializable {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public void handleAddRoom(ActionEvent actionEvent) throws IOException {
+        Stage addRoomStage = new Stage();
+        addRoomStage.setResizable(false);
+        addRoomStage.setScene(new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/admin/AddRoom.fxml")).load()));
+        addRoomStage.setTitle("Add a new room!");
+        addRoomStage.show();
     }
 }
