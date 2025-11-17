@@ -22,7 +22,7 @@ public class LoginController {
 
 
         if(emailTextField.getText().equals("client")){
-            SceneManager.getInstance().showClientView();
+            SceneManager.getInstance().showUserView();
         } else if (emailTextField.getText().equals("admin")) {
             SceneManager.getInstance().showAdminView();
         } else if (emailTextField.getText().equals("chief")) {

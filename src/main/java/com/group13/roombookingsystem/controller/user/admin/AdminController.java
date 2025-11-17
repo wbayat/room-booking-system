@@ -1,7 +1,6 @@
-package com.group13.roombookingsystem.controller.user.client.admin;
+package com.group13.roombookingsystem.controller.user.admin;
 
 import com.group13.roombookingsystem.controller.user.UserController;
-import com.group13.roombookingsystem.controller.user.client.ClientController;
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminController extends ClientController implements Initializable {
+public class AdminController extends UserController implements Initializable {
 
     protected AnchorPane roomsContainer;
     protected AnchorPane usersContainer;
@@ -31,7 +30,7 @@ public class AdminController extends ClientController implements Initializable {
     }
 
     protected void setUpAdminMenu(){
-        setUpClientMenu();
+        setUpUserMenu();
         Button manageRoomsButton = new Button("Manage Rooms");
         manageRoomsButton.getStyleClass().add("menu-button");
         manageRoomsButton.setOnAction(event -> {

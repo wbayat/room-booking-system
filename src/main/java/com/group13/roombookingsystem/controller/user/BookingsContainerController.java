@@ -1,4 +1,4 @@
-package com.group13.roombookingsystem.controller.user.client;
+package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,7 @@ public class BookingsContainerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         for (int i = 0; i < 10; i++){
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/client/BookingCard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/BookingCard.fxml"));
                 AnchorPane card = fxmlLoader.load();
                 BookingCardController bookingCardController = fxmlLoader.getController();
                 bookingCardController.setData();
