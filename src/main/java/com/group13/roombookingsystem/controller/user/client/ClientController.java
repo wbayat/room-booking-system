@@ -21,6 +21,15 @@ public class ClientController extends UserController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         userType.setText("Client Panel!");
+        setUpClientMenu();
+        try {
+            showBookARoomView(null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void setUpClientMenu(){
         Button bookARoomButton = new Button("Book A Room");
         bookARoomButton.getStyleClass().add("menu-button");
         bookARoomButton.setOnAction(event -> {
@@ -41,11 +50,6 @@ public class ClientController extends UserController implements Initializable {
         });
         buttonContainer.getChildren().add(bookARoomButton);
         buttonContainer.getChildren().add(myBookingsButton);
-        try {
-            showBookARoomView(null);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void showBookARoomView(ActionEvent actionEvent) throws IOException {

@@ -1,4 +1,4 @@
-package com.group13.roombookingsystem.controller.user.admin;
+package com.group13.roombookingsystem.controller.user.client.admin;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

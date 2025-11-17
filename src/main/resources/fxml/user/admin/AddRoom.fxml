@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox fx:controller="com.group13.roombookingsystem.controller.user.admin.AddRoomController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
+<VBox fx:controller="com.group13.roombookingsystem.controller.user.client.admin.AddRoomController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
       prefWidth="400.0" spacing="15.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>

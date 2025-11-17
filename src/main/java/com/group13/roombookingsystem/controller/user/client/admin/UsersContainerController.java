@@ -1,4 +1,4 @@
-package com.group13.roombookingsystem.controller.user.admin;
+package com.group13.roombookingsystem.controller.user.client.admin;
 
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXMLLoader;

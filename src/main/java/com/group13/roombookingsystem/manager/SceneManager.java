@@ -1,7 +1,7 @@
 package com.group13.roombookingsystem.manager;
 
-import com.group13.roombookingsystem.controller.user.admin.AdminController;
-import com.group13.roombookingsystem.controller.user.admin.chief.ChiefController;
+import com.group13.roombookingsystem.controller.user.client.admin.AdminController;
+import com.group13.roombookingsystem.controller.user.client.admin.chief.ChiefController;
 import com.group13.roombookingsystem.controller.user.client.ClientController;
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXMLLoader;
