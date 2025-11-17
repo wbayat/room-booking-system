@@ -1,8 +1,8 @@
 package com.group13.roombookingsystem.manager;
 
+import com.group13.roombookingsystem.controller.user.UserController;
 import com.group13.roombookingsystem.controller.user.admin.AdminController;
 import com.group13.roombookingsystem.controller.user.admin.chief.ChiefController;
-import com.group13.roombookingsystem.controller.user.client.ClientController;
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,7 +19,7 @@ public class SceneManager {
     private AnchorPane loginView;
     private AnchorPane signupView;
 
-    private BorderPane clientView;
+    private BorderPane userView;
 
     private BorderPane adminView;
 
@@ -48,7 +48,7 @@ public class SceneManager {
     public void reset(){
         loginView = null;
         signupView = null;
-        clientView = null;
+        userView = null;
         adminView = null;
     }
 
@@ -67,14 +67,14 @@ public class SceneManager {
         scene.setRoot(signupView);
     }
 
-    public void showClientView() throws IOException {
-        if (clientView == null){
+    public void showUserView() throws IOException {
+        if (userView == null){
             FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/UserView.fxml"));
-            ClientController controller = new ClientController();
+            UserController controller = new UserController();
             loader.setController(controller);
-            clientView = loader.load();
+            userView = loader.load();
         }
-        scene.setRoot(clientView);
+        scene.setRoot(userView);
     }
 
     public void showAdminView() throws IOException {

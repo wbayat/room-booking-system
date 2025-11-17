@@ -20,14 +20,18 @@
     <left>
         <AnchorPane prefWidth="250.0" style="-fx-background-color: #CC1631;" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER" layoutY="6.0" prefHeight="95.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <Label fx:id="userType" text="Admin Panel" textFill="WHITE">
+                <Label fx:id="userType" text="Client Panel" textFill="WHITE">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Label>
             </HBox>
             <VBox layoutY="107.0" prefHeight="200.0" prefWidth="100.0" spacing="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="95.0">
-                <VBox fx:id="buttonContainer" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+                <VBox fx:id="buttonContainer" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#showBookARoomView" styleClass="menu-button" text="Book A Room" />
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#showMyBookingsView" styleClass="menu-button" text="My Bookings" />
+               </children></VBox>
             <Separator prefWidth="200.0" />
                 <HBox alignment="CENTER" maxWidth="1.7976931348623157E308">
                     <VBox.margin>

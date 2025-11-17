@@ -1,4 +1,4 @@
-package com.group13.roombookingsystem.controller.user.client;
+package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +19,7 @@ public class RoomsContainerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         for (int i = 0; i < 10; i++){
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/client/RoomCard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/RoomCard.fxml"));
                 VBox card = fxmlLoader.load();
                 RoomCardController roomCardController = fxmlLoader.getController();
                 roomCardController.setData();

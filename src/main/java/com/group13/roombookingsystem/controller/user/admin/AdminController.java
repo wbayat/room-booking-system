@@ -21,6 +21,15 @@ public class AdminController extends UserController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         userType.setText("Admin Panel!");
+        setUpAdminMenu();
+        try {
+            showBookARoomView(null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void setUpAdminMenu(){
         Button manageRoomsButton = new Button("Manage Rooms");
         manageRoomsButton.getStyleClass().add("menu-button");
         manageRoomsButton.setOnAction(event -> {
@@ -41,11 +50,6 @@ public class AdminController extends UserController implements Initializable {
         });
         buttonContainer.getChildren().add(manageRoomsButton);
         buttonContainer.getChildren().add(manageUsersButton);
-        try {
-            showManageRoomsView(null);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void showManageRoomsView(ActionEvent actionEvent) throws IOException {

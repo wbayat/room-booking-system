@@ -18,6 +18,16 @@ public class ChiefController extends AdminController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         userType.setText("Chief Event Coordinator!");
+        setUpChiefMenu();
+        try {
+            showManageRoomsView(null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setUpChiefMenu(){
+        setUpAdminMenu();
         Button manageAdminsButton = new Button("Manage Admins");
         manageAdminsButton.getStyleClass().add("menu-button");
         manageAdminsButton.setOnAction(event -> {
@@ -27,33 +37,9 @@ public class ChiefController extends AdminController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
-        Button manageRoomsButton = new Button("Manage Rooms");
-        manageRoomsButton.getStyleClass().add("menu-button");
-        manageRoomsButton.setOnAction(event -> {
-            try {
-                showManageRoomsView(event);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        Button manageUsersButton = new Button("Manage Users");
-        manageUsersButton.getStyleClass().add("menu-button");
-        manageUsersButton.setOnAction(event -> {
-            try {
-                showManageUsersView(event);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        buttonContainer.getChildren().add(manageRoomsButton);
-        buttonContainer.getChildren().add(manageUsersButton);
         buttonContainer.getChildren().add(manageAdminsButton);
-        try {
-            showManageRoomsView(null);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
+
 
     public void showManageAdminsView(ActionEvent actionEvent) throws IOException {
         if (adminsContainer == null){

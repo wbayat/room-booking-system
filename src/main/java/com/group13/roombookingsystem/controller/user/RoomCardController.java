@@ -1,4 +1,4 @@
-package com.group13.roombookingsystem.controller.user.client;
+package com.group13.roombookingsystem.controller.user;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
