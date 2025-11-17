@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="170.0" maxWidth="1.7976931348623157E308" prefWidth="630.0" style="-fx-background-color: #D2D2D2; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.admin.chief.AdminCardController">
+<AnchorPane maxHeight="170.0" maxWidth="1.7976931348623157E308" prefWidth="630.0" style="-fx-background-color: #D2D2D2; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.admin.chief.AdminCardController">
     <VBox alignment="CENTER_LEFT" prefWidth="380.0" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
         <children>
             <Label text="Admin Details">
@@ -37,7 +37,7 @@
     </VBox>
     <VBox alignment="CENTER" layoutX="406.0" prefWidth="210.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
         <children>
-            <Button fx:id="deleteButton" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleDeleteAdmin" style="-fx-background-color: white;" text="Delete">
+            <Button fx:id="deleteButton" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleDeleteAdmin" styleClass="secondary-button" text="Delete">
                 <font>
                     <Font size="18.0" />
                 </font>
