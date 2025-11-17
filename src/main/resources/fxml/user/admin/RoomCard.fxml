@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" spacing="10.0" style="-fx-background-radius: 20; -fx-background-color: #D2D2D2;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.admin.AdminRoomCardController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <Label fx:id="roomID" text="Room A">
+        <font>
+            <Font size="20.0" />
+        </font>
+    </Label>
+    <Label fx:id="roomLocation" layoutX="10.0" layoutY="10.0" text="Location: BRG">
+        <font>
+            <Font size="20.0" />
+        </font>
+    </Label>
+    <Label fx:id="roomCapacity" layoutX="10.0" layoutY="26.0" text="Capacity: 8">
+        <font>
+            <Font size="20.0" />
+        </font>
+    </Label>
+    <Pane VBox.vgrow="ALWAYS" />
+    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="260.0" spacing="3.0" />
+    <Button fx:id="toggleEnabled" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: #CC1631;" text="Disable Room" textFill="WHITE">
+        <font>
+            <Font size="15.0" />
+        </font>
+   </Button>
+</VBox>
