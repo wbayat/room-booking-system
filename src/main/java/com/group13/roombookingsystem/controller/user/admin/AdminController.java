@@ -30,7 +30,6 @@ public class AdminController extends UserController implements Initializable {
     }
 
     protected void setUpAdminMenu(){
-        setUpUserMenu();
         Button manageRoomsButton = new Button("Manage Rooms");
         manageRoomsButton.getStyleClass().add("menu-button");
         manageRoomsButton.setOnAction(event -> {

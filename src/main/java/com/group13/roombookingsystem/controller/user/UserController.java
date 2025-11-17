@@ -27,35 +27,11 @@ public class UserController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         userType.setText("Client Panel!");
-        setUpUserMenu();
         try {
             showBookARoomView(null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    protected void setUpUserMenu(){
-        Button bookARoomButton = new Button("Book A Room");
-        bookARoomButton.getStyleClass().add("menu-button");
-        bookARoomButton.setOnAction(event -> {
-            try {
-                showBookARoomView(event);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        Button myBookingsButton = new Button("My Bookings");
-        myBookingsButton.getStyleClass().add("menu-button");
-        myBookingsButton.setOnAction(event -> {
-            try {
-                showMyBookingsView(event);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        buttonContainer.getChildren().add(bookARoomButton);
-        buttonContainer.getChildren().add(myBookingsButton);
     }
 
     public void showBookARoomView(ActionEvent actionEvent) throws IOException {

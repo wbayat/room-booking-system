@@ -11,8 +11,10 @@
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-focus-traversable: false;
-    -fx-min-height: 70;
+    -fx-min-height: 60;
     -fx-pref-width: 500;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: black;
 }
 
 .menu-button:hover {
