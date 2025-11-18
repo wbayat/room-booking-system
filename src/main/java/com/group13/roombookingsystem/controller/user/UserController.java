@@ -1,11 +1,10 @@
 package com.group13.roombookingsystem.controller.user;
 
-import com.group13.roombookingsystem.manager.SceneManager;
+import com.group13.roombookingsystem.manager.SessionManager;
 import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -20,7 +19,7 @@ public class UserController implements Initializable {
     public BorderPane mainContainer;
     public Label userType;
     public VBox buttonContainer;
-
+    private SessionManager sessionManager;
     private AnchorPane clientBookings;
     private AnchorPane roomsLayout;
 
@@ -50,7 +49,11 @@ public class UserController implements Initializable {
 
 
     public void handleLogout(ActionEvent actionEvent) throws IOException {
-        SceneManager.getInstance().showLoginView();
-        SceneManager.getInstance().reset();
+        sessionManager.showLoginView();
+        sessionManager.reset();
+    }
+
+    public void setSceneManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 }
