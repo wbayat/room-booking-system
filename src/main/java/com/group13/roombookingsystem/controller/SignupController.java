@@ -1,6 +1,6 @@
 package com.group13.roombookingsystem.controller;
 
-import com.group13.roombookingsystem.manager.SceneManager;
+import com.group13.roombookingsystem.manager.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SignupController implements Initializable{
+    private SessionManager sessionManager;
     public TextField nameTextField;
     public Button SignUpButton;
     public Label signUpLabel;
@@ -26,11 +27,15 @@ public class SignupController implements Initializable{
     }
 
     public void showLoginView(MouseEvent mouseEvent) throws IOException {
-        SceneManager.getInstance().showLoginView();
+        sessionManager.showLoginView();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         accountTypeComboBox.getItems().addAll(accountTypes);
+    }
+
+    public void setSceneManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 }

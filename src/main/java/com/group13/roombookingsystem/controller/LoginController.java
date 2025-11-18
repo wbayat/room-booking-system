@@ -1,6 +1,6 @@
 package com.group13.roombookingsystem.controller;
 
-import com.group13.roombookingsystem.manager.SceneManager;
+import com.group13.roombookingsystem.manager.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,17 +16,18 @@ public class LoginController {
     public Label errorLabel;
     public TextField emailTextField;
     public PasswordField passwordTextField;
+    private SessionManager sessionManager;
 
     public void hangleLogin(ActionEvent mouseEvent) throws IOException {
         System.out.println("email: " + emailTextField.getText() + ", password: " + passwordTextField.getText());
 
 
         if(emailTextField.getText().equals("client")){
-            SceneManager.getInstance().showUserView();
+            sessionManager.showUserView();
         } else if (emailTextField.getText().equals("admin")) {
-            SceneManager.getInstance().showAdminView();
+            sessionManager.showAdminView();
         } else if (emailTextField.getText().equals("chief")) {
-            SceneManager.getInstance().showChiefView();
+            sessionManager.showChiefView();
         }else {
             errorLabel.setText("Enter client, admin, or chief");
         }
@@ -37,6 +38,10 @@ public class LoginController {
     }
 
     public void showSignUpView(MouseEvent mouseEvent) throws IOException {
-        SceneManager.getInstance().showSignupView();
+        sessionManager.showSignupView();
+    }
+
+    public void setSceneManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 }
