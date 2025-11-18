@@ -21,8 +21,6 @@ public class SceneManager {
 
     private BorderPane userView;
 
-    private BorderPane adminView;
-
     private SceneManager(){}
 
     public static SceneManager getInstance(){
@@ -49,7 +47,6 @@ public class SceneManager {
         loginView = null;
         signupView = null;
         userView = null;
-        adminView = null;
     }
 
 
@@ -78,21 +75,21 @@ public class SceneManager {
     }
 
     public void showAdminView() throws IOException {
-        if (adminView == null){
+        if (userView == null){
             FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/UserView.fxml"));
             AdminController controller = new AdminController();
             loader.setController(controller);
-            adminView = loader.load();
+            userView = loader.load();
         }
-        scene.setRoot(adminView);
+        scene.setRoot(userView);
     }
     public void showChiefView() throws IOException {
-        if (adminView == null){
+        if (userView == null){
             FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/UserView.fxml"));
             AdminController controller = new ChiefController();
             loader.setController(controller);
-            adminView = loader.load();
+            userView = loader.load();
         }
-        scene.setRoot(adminView);
+        scene.setRoot(userView);
     }
 }

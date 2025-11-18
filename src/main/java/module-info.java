@@ -4,7 +4,6 @@ module com.group13.roombookingsystem {
     requires javafx.graphics;
     requires javafx.base;
     requires java.sql;
-    requires com.group13.roombookingsystem;
 
     opens com.group13.roombookingsystem.controller to javafx.fxml;
     opens com.group13.roombookingsystem.view to javafx.graphics, javafx.fxml;
