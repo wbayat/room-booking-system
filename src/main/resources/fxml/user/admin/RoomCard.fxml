@@ -28,10 +28,17 @@
         </font>
     </Label>
     <Pane VBox.vgrow="ALWAYS" />
-    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="260.0" spacing="3.0" />
-    <Button fx:id="toggleEnabled" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: #CC1631;" text="Disable Room" textFill="WHITE">
-        <font>
-            <Font size="15.0" />
-        </font>
-   </Button>
+    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="260.0" spacing="3.0">
+      <children>
+          <Button fx:id="toggleEnabled" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" styleClass="primary-button" text="Disable" textFill="WHITE">
+              <font>
+                  <Font size="15.0" />
+              </font>
+         </Button>
+         <Button layoutX="78.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" styleClass="secondary-button" text="Modify" textFill="WHITE">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Button>
+      </children></HBox>
 </VBox>

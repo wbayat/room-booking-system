@@ -37,7 +37,7 @@
                     <VBox.margin>
                         <Insets />
                     </VBox.margin>
-                    <Button maxWidth="1.7976931348623157E308" minWidth="180.0" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: white; -fx-border-radius: 5; -fx-background-radius: 7;" text="Logout">
+                    <Button maxWidth="1.7976931348623157E308" minWidth="180.0" mnemonicParsing="false" onAction="#handleLogout" styleClass="secondary-button" text="Logout">
                   <graphic>
                      <ImageView fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                         <image>
