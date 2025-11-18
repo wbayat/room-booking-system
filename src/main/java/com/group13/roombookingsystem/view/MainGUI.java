@@ -12,7 +12,5 @@ public class MainGUI extends Application {
     public void start(Stage stage) throws IOException {
         SessionManager sessionManager = new SessionManager(stage);
         sessionManager.initStage();
-        SessionManager sessionManager1 = new SessionManager(new Stage());
-        sessionManager1.initStage();
     }
 }
