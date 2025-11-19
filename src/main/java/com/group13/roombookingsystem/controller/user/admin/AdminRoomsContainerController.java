@@ -1,6 +1,5 @@
 package com.group13.roombookingsystem.controller.user.admin;
 
-import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,7 +19,7 @@ public class AdminRoomsContainerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         for (int i = 0; i < 10; i++){
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/admin/RoomCard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/admin/RoomCard.fxml"));
                 VBox card = fxmlLoader.load();
                 AdminRoomCardController adminRoomCardController = fxmlLoader.getController();
                 adminRoomCardController.setData();
@@ -34,7 +33,7 @@ public class AdminRoomsContainerController implements Initializable {
     public void handleAddRoom(ActionEvent actionEvent) throws IOException {
         Stage addRoomStage = new Stage();
         addRoomStage.setResizable(false);
-        addRoomStage.setScene(new Scene(new FXMLLoader(MainGUI.class.getResource("/fxml/user/admin/AddRoom.fxml")).load()));
+        addRoomStage.setScene(new Scene(new FXMLLoader(getClass().getResource("/fxml/user/admin/AddRoom.fxml")).load()));
         addRoomStage.setTitle("Add a new room!");
         addRoomStage.show();
     }
