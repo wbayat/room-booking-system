@@ -1,6 +1,9 @@
 package com.group13.roombookingsystem.controller;
 
 import com.group13.roombookingsystem.manager.SessionManager;
+import com.group13.roombookingsystem.model.user.User;
+import com.group13.roombookingsystem.model.user.university.admin.Admin;
+import com.group13.roombookingsystem.model.user.university.admin.chief.ChiefEventCoordinator;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,11 +26,17 @@ public class LoginController {
 
 
         if(emailTextField.getText().equals("client")){
+            User user = new User();
+            sessionManager.setCurrentUser(user);
             sessionManager.showUserView();
         } else if (emailTextField.getText().equals("admin")) {
-            sessionManager.showAdminView();
+            User user = new Admin();
+            sessionManager.setCurrentUser(user);
+            sessionManager.showUserView();
         } else if (emailTextField.getText().equals("chief")) {
-            sessionManager.showChiefView();
+            User user = new ChiefEventCoordinator();
+            sessionManager.setCurrentUser(user);
+            sessionManager.showUserView();
         }else {
             errorLabel.setText("Enter client, admin, or chief");
         }

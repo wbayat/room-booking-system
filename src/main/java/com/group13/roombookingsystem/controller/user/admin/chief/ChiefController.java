@@ -1,7 +1,6 @@
 package com.group13.roombookingsystem.controller.user.admin.chief;
 
 import com.group13.roombookingsystem.controller.user.admin.AdminController;
-import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,7 +42,7 @@ public class ChiefController extends AdminController implements Initializable {
 
     public void showManageAdminsView(ActionEvent actionEvent) throws IOException {
         if (adminsContainer == null){
-            adminsContainer = new FXMLLoader(MainGUI.class.getResource("/fxml/user/admin/chief/AdminsContainer.fxml")).load();
+            adminsContainer = new FXMLLoader(getClass().getResource("/fxml/user/admin/chief/AdminsContainer.fxml")).load();
         }
         mainContainer.setCenter(adminsContainer);
     }

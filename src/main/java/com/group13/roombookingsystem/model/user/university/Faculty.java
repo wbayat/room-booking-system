@@ -1,4 +1,6 @@
 package com.group13.roombookingsystem.model.user.university;
 
-public class Faculty {
+import com.group13.roombookingsystem.model.user.User;
+
+public class Faculty extends User {
 }

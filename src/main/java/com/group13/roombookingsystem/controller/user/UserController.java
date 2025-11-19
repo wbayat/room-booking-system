@@ -1,7 +1,6 @@
 package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.manager.SessionManager;
-import com.group13.roombookingsystem.view.MainGUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,14 +34,14 @@ public class UserController implements Initializable {
 
     public void showBookARoomView(ActionEvent actionEvent) throws IOException {
         if (roomsLayout == null){
-            roomsLayout = new FXMLLoader(MainGUI.class.getResource("/fxml/user/RoomsContainer.fxml")).load();
+            roomsLayout = new FXMLLoader(getClass().getResource("/fxml/user/RoomsContainer.fxml")).load();
         }
         mainContainer.setCenter(roomsLayout);
     }
 
     public void showMyBookingsView(ActionEvent actionEvent) throws IOException {
         if (clientBookings == null){
-            clientBookings = new FXMLLoader(MainGUI.class.getResource("/fxml/user/BookingsContainer.fxml")).load();
+            clientBookings = new FXMLLoader(getClass().getResource("/fxml/user/BookingsContainer.fxml")).load();
         }
         mainContainer.setCenter(clientBookings);
     }
