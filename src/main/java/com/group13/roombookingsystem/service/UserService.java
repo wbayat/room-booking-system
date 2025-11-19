@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserService {
     private final UserRepository userRepository = new UserRepository();
-    private ArrayList<Room> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
 
     public User login(String email, String password) throws UserNotFoundException {
         User user = userRepository.findByUsername(email).orElseThrow(UserNotFoundException::new);
@@ -43,11 +43,11 @@ public class UserService {
         return registerUser(admin);
     }
 
-    public ArrayList<Room> getUsers() {
+    public ArrayList<User> getUsers() {
         return users;
     }
 
-    public void setUsers(ArrayList<Room> users) {
+    public void setUsers(ArrayList<User> users) {
         this.users = users;
     }
 

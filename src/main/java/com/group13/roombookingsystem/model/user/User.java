@@ -9,6 +9,8 @@ public class User {
     private String role;
     private boolean verified;
 
+    public User(){}
+
     public User(Integer id, String username, String password, String role, boolean verified) {
         this.id = id;
         this.username = username;

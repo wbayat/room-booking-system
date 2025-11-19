@@ -2,7 +2,6 @@ package com.group13.roombookingsystem.controller.user.admin;
 
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.service.UserService;
-import com.group13.roombookingsystem.view.MainGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -51,7 +50,7 @@ public class UsersContainerController implements Initializable {
 
     private void addCard(User user) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/fxml/user/admin/UserCard.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/admin/UserCard.fxml"));
             AnchorPane card = fxmlLoader.load();
             UserCardController userCardController = fxmlLoader.getController();
             userCardController.setData(user, this::handleVerifyRequest);
