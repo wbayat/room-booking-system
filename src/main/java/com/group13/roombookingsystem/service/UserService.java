@@ -11,6 +11,17 @@ public class UserService {
     private final UserRepository userRepository = new UserRepository();
     private ArrayList<User> users = new ArrayList<>();
 
+    private static UserService userService;
+
+    private UserService(){}
+
+    public static UserService getInstance(){
+        if (userService == null){
+            userService = new UserService();
+        }
+        return userService;
+    }
+
     public User login(String email, String password) throws UserNotFoundException {
         User user = userRepository.findByUsername(email).orElseThrow(UserNotFoundException::new);
         if (!user.getPassword().equals(password)) {

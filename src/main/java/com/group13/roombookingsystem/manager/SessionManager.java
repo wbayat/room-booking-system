@@ -74,6 +74,7 @@ public class SessionManager {
         if (userView == null){
             userView = ViewFactory.createUserView(currentUser);
             userView.getController().setSceneManager(this);
+            userView.getController().postInit();
         }
         scene.setRoot(userView.getView());
     }
