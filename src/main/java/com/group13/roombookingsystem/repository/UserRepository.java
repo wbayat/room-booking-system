@@ -33,6 +33,7 @@ public class UserRepository {
             statement.setString(3, user.getRole());
             statement.setInt(4, isAdmin ? 1 : 0);
             user.setVerified(isAdmin);
+            statement.executeUpdate();
             
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
