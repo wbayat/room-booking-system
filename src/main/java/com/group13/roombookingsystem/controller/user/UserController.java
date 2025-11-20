@@ -13,18 +13,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class UserController implements Initializable {
+public class UserController{
 
     public BorderPane mainContainer;
     public Label userType;
     public VBox buttonContainer;
-    private SessionManager sessionManager;
+    protected SessionManager sessionManager;
     private AnchorPane clientBookings;
     private AnchorPane roomsLayout;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        userType.setText("Client Panel!");
+    public void postInit() {
+        userType.setText(sessionManager.getCurrentUser().getUsername());
         try {
             showBookARoomView(null);
         } catch (IOException e) {

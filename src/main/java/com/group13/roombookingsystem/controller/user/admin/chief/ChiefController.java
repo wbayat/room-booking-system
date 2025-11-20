@@ -11,19 +11,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ChiefController extends AdminController implements Initializable {
+public class ChiefController extends AdminController{
     private AnchorPane adminsContainer;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        userType.setText("Chief Event Coordinator!");
-        setUpChiefMenu();
-        try {
-            showManageRoomsView(null);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private void setUpChiefMenu(){
         setUpAdminMenu();

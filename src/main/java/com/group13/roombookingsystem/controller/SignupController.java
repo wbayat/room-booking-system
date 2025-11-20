@@ -13,7 +13,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SignupController implements Initializable{
-    private final UserService userService = new UserService();
     private SessionManager sessionManager;
     public TextField nameTextField;
     public Button SignUpButton;
@@ -55,7 +54,7 @@ public class SignupController implements Initializable{
         }
 
         try {
-            userService.registerUser(new User(email, password, accountType, false));
+            UserService.getInstance().registerUser(new User(email, password, accountType, false));
             errorLabel.setStyle("-fx-text-fill: green;");
             errorLabel.setText("Account created successfully. Redirecting to login...");
             nameTextField.clear();
