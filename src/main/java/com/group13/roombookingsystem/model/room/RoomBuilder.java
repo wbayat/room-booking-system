@@ -1,0 +1,57 @@
+package com.group13.roombookingsystem.model.room;
+
+interface RoomBuilderContract {
+    void reset();
+    void setRoomID(int roomId);
+    void setRoomName(String roomName);
+    void setCapacity(int capacity);
+    void setLocation(String location);
+    void setHasProjector(boolean hasProjector);
+    void setHasSpeakers(boolean hasSpeakers);
+}
+
+public class RoomBuilder implements RoomBuilderContract {
+    private Room result;
+
+
+    @Override
+    public void reset() {
+        result = new Room();
+    }
+
+    @Override
+    public void setRoomID(int roomId) {
+        result.setRoomID(roomId);
+    }
+
+    @Override
+    public void setRoomName(String roomName) {
+        result.setRoomName(roomName);
+    }
+
+    @Override
+    public void setCapacity(int capacity) {
+        result.setCapacity(capacity);
+    }
+
+    @Override
+    public void setLocation(String location) {
+        result.setLocation(location);
+    }
+
+    @Override
+    public void setHasProjector(boolean hasProjector) {
+        result.setHasProjector(hasProjector);
+    }
+
+    @Override
+    public void setHasSpeakers(boolean hasSpeakers) {
+        result.setHasSpeakers(hasSpeakers);
+    }
+
+    public Room getProduct() {
+        Room built = result;
+        reset();
+        return built;
+    }
+}
