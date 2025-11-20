@@ -11,10 +11,10 @@ import java.util.Optional;
 
 import com.group13.roombookingsystem.model.user.Partner;
 import com.group13.roombookingsystem.model.user.User;
-import com.group13.roombookingsystem.model.user.university.Faculty;
-import com.group13.roombookingsystem.model.user.university.Staff;
-import com.group13.roombookingsystem.model.user.university.Student;
-import com.group13.roombookingsystem.model.user.university.admin.Admin;
+import com.group13.roombookingsystem.model.user.Faculty;
+import com.group13.roombookingsystem.model.user.Staff;
+import com.group13.roombookingsystem.model.user.Student;
+import com.group13.roombookingsystem.model.user.Admin;
 
 public class UserRepository {
     private static final String INSERT_USER = "INSERT INTO users(username, password, role, is_verified) VALUES (?, ?, ?, ?);";
