@@ -1,7 +1,5 @@
 package com.group13.roombookingsystem.repository;
 
-import com.group13.roombookingsystem.model.user.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,26 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.group13.roombookingsystem.model.user.Partner;
+import com.group13.roombookingsystem.model.user.User;
+import com.group13.roombookingsystem.model.user.university.Faculty;
+import com.group13.roombookingsystem.model.user.university.Staff;
+import com.group13.roombookingsystem.model.user.university.Student;
+import com.group13.roombookingsystem.model.user.university.admin.Admin;
+
 public class UserRepository {
     private static final String INSERT_USER = "INSERT INTO users(username, password, role, is_verified) VALUES (?, ?, ?, ?);";
     private static final String FIND_BY_USERNAME = "SELECT id, username, password, role, is_verified FROM users WHERE username = ?;";
     private static final String FIND_BY_ID = "SELECT id, username, password, role, is_verified FROM users WHERE id = ?;";
-    private static final String FIND_ALL = "SELECT id, username, password, role, is_verified FROM users ORDER BY username;";
-    private static final String FIND_BY_VERIFICATION = "SELECT id, username, password, role, is_verified FROM users WHERE is_verified = ? ORDER BY username;";
+    private static final String FIND_ALL = "SELECT id, username, password, role, is_verified FROM users WHERE LOWER(role) <> 'admin' ORDER BY username;";
+    private static final String FIND_BY_VERIFICATION = "SELECT id, username, password, role, is_verified FROM users WHERE is_verified = ? AND LOWER(role) <> 'admin' ORDER BY username;";
     private static final String UPDATE_VERIFICATION = "UPDATE users SET is_verified = ? WHERE id = ?;";
 
     public User create(User user) {
         try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
+            boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
 
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRole());
-            statement.setInt(4, user.isVerified() ? 1 : 0);
-            int affectedRows = statement.executeUpdate();
-            
-            if (affectedRows == 0) {
-                throw new SQLException("Creating user failed, no rows affected.");
-            }
+            statement.setInt(4, isAdmin ? 1 : 0);
+            user.setVerified(isAdmin);
             
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -130,12 +132,40 @@ public class UserRepository {
     }
 
     private User mapRow(ResultSet resultSet) throws SQLException {
-        return new User(
-                resultSet.getInt("id"),
-                resultSet.getString("username"),
-                resultSet.getString("password"),
-                resultSet.getString("role"),
-                resultSet.getInt("is_verified") == 1
-        );
+        String role = resultSet.getString("role");
+        User user;
+
+        switch (role) {
+            case "Student":
+                user = new Student();
+                break;
+
+            case "Faculty":
+                user = new Faculty();
+                break;
+
+            case "Staff":
+                user = new Staff();
+                break;
+
+            case "Partner":
+                user = new Partner();
+                break;
+
+            case "Admin":
+                user = new Admin();
+                break;
+
+            default:
+                user = new Student();
+        }
+
+        user.setId(resultSet.getInt("id"));
+        user.setUsername(resultSet.getString("username"));
+        user.setPassword(resultSet.getString("password"));
+        user.setRole(role);
+        user.setVerified(resultSet.getInt("is_verified") == 1);
+
+        return user;
     }
 }
