@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.group13.roombookingsystem.model.user.Admin;
+import com.group13.roombookingsystem.model.user.ChiefEventCoordinator;
 import com.group13.roombookingsystem.model.user.Faculty;
 import com.group13.roombookingsystem.model.user.Partner;
 import com.group13.roombookingsystem.model.user.Staff;
@@ -146,6 +147,10 @@ public class UserRepository {
 
             case "Admin":
                 user = new Admin(resultSet.getString("username"), resultSet.getString("password"), "Admin", verified);
+                break;
+
+            case "ChiefEventCoordinator":
+                user = new ChiefEventCoordinator(resultSet.getString("username"), resultSet.getString("password"), "ChiefEventCoordinator", verified);
                 break;
 
             default:
