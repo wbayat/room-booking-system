@@ -8,8 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
+    // Singleton instance
+    private static UserService instance;
     private final UserRepository userRepository = new UserRepository();
     private ArrayList<User> users = new ArrayList<>();
+
+    public static UserService getInstance() {
+        if (instance == null) {
+            instance = new UserService();
+        }
+        return instance;
+    }
 
     public User login(String email, String password) throws UserNotFoundException {
         User user = userRepository.findByUsername(email).orElseThrow(UserNotFoundException::new);
@@ -62,4 +71,6 @@ public class UserService {
     public void setUserVerified(int userId, boolean verified) {
         userRepository.updateVerification(userId, verified);
     }
+
+    
 }
