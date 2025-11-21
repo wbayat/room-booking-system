@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.PaymentInfoController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <Label text="Add A Payment Method">
+        <font>
+            <Font size="20.0" />
+        </font>
+    </Label>
+   <ComboBox minHeight="40.0" prefHeight="40.0" prefWidth="219.0" promptText="Payment Type">
+      <VBox.margin>
+         <Insets left="5.0" />
+      </VBox.margin>
+   </ComboBox>
+    <VBox spacing="5.0">
+        <VBox.margin>
+            <Insets />
+        </VBox.margin>
+        <padding>
+            <Insets left="5.0" right="5.0" />
+        </padding>
+        <Label text="Credit Card Number">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="adminEmail" minHeight="40.0" />
+    </VBox>
+    <VBox layoutX="30.0" layoutY="75.0" spacing="5.0">
+        <padding>
+            <Insets left="5.0" right="5.0" />
+        </padding>
+        <Label text="Expiration Date">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="adminIdentification" minHeight="40.0" />
+    </VBox>
+    <VBox layoutX="30.0" layoutY="143.0" spacing="5.0">
+        <padding>
+            <Insets left="5.0" right="5.0" />
+        </padding>
+        <children>
+            <Label text="CVV">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <TextField fx:id="tempPassword" minHeight="40.0" />
+        </children>
+    </VBox>
+    <Pane prefHeight="200.0" prefWidth="200.0" />
+    <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" spacing="10.0">
+        <Button maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="170.0" text="Cancel" />
+        <Button layoutX="115.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#handleAddAdmin" prefWidth="170.0" text="Add" />
+    </HBox>
+</VBox>
