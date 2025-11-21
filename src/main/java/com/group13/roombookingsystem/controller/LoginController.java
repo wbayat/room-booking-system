@@ -1,9 +1,9 @@
 package com.group13.roombookingsystem.controller;
 
+import com.group13.roombookingsystem.exception.UserNotFoundException;
 import com.group13.roombookingsystem.manager.SessionManager;
 import com.group13.roombookingsystem.model.user.User;
-import com.group13.roombookingsystem.model.user.university.admin.Admin;
-import com.group13.roombookingsystem.model.user.university.admin.chief.ChiefEventCoordinator;
+import com.group13.roombookingsystem.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,28 +22,17 @@ public class LoginController {
     private SessionManager sessionManager;
 
     public void hangleLogin(ActionEvent mouseEvent) throws IOException {
-        System.out.println("email: " + emailTextField.getText() + ", password: " + passwordTextField.getText());
 
-
-        if(emailTextField.getText().equals("client")){
-            User user = new User();
+        try{
+            User user = UserService.getInstance().login(emailTextField.getText(), passwordTextField.getText());
             sessionManager.setCurrentUser(user);
             sessionManager.showUserView();
-        } else if (emailTextField.getText().equals("admin")) {
-            User user = new Admin();
-            sessionManager.setCurrentUser(user);
-            sessionManager.showUserView();
-        } else if (emailTextField.getText().equals("chief")) {
-            User user = new ChiefEventCoordinator();
-            sessionManager.setCurrentUser(user);
-            sessionManager.showUserView();
-        }else {
-            errorLabel.setText("Enter client, admin, or chief");
+        } catch (UserNotFoundException e){
+            errorLabel.setText(e.getMessage());
+        } finally {
+            emailTextField.setText("");
+            passwordTextField.setText("");
         }
-
-        emailTextField.setText("");
-        passwordTextField.setText("");
-
     }
 
     public void showSignUpView(MouseEvent mouseEvent) throws IOException {

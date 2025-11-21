@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -20,7 +19,6 @@ public class UsersContainerController implements Initializable {
     @FXML public Button verifiedTab;
     @FXML public Button unverifiedTab;
 
-    private final UserService userService = new UserService();
     private Mode currentMode = Mode.UNVERIFIED;
 
     private enum Mode {
@@ -44,7 +42,7 @@ public class UsersContainerController implements Initializable {
 
     private void refreshUsers() {
         usersContainer.getChildren().clear();
-        List<User> registeredUsers = userService.getUsersByVerification(currentMode == Mode.VERIFIED);
+        List<User> registeredUsers = UserService.getInstance().getUsersByVerification(currentMode == Mode.VERIFIED);
         registeredUsers.forEach(this::addCard);
     }
 
@@ -55,15 +53,15 @@ public class UsersContainerController implements Initializable {
             UserCardController userCardController = fxmlLoader.getController();
             userCardController.setData(user, this::handleVerifyRequest);
             usersContainer.getChildren().add(card);
-        } 
-        
+        }
+
         catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void handleVerifyRequest(User user) {
-        userService.setUserVerified(user.getId(), true);
+        UserService.getInstance().setUserVerified(user.getId(), true);
         refreshUsers();
     }
 }
