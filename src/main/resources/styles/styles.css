@@ -15,6 +15,7 @@
     -fx-pref-width: 500;
     -fx-border-width: 0 0 1 0;
     -fx-border-color: black;
+    -fx-cursor: hand;
 }
 
 .menu-button:hover {

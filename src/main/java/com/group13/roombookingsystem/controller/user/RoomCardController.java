@@ -1,5 +1,6 @@
 package com.group13.roombookingsystem.controller.user;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
@@ -18,13 +19,6 @@ public class RoomCardController implements Initializable {
 
     private final String[] times = {"8 AM","10 AM","12 PM","2 PM","4 PM","6 PM","8 PM"};
 
-    public void setData(){
-        roomID.setText("Room D");
-        roomLocation.setText("BRG");
-        checkinTime.getItems().addAll(times);
-        checkoutTime.getItems().addAll(times);
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         checkInDate.setDayCellFactory(param -> new DateCell() {
@@ -34,5 +28,16 @@ public class RoomCardController implements Initializable {
                 setDisable(empty || date.isBefore(LocalDate.now()));
             }
         });
+    }
+
+    public void setData(){
+        roomID.setText("Room D");
+        roomLocation.setText("BRG");
+        checkinTime.getItems().addAll(times);
+        checkoutTime.getItems().addAll(times);
+    }
+
+    public void handleBookRoom(ActionEvent actionEvent) {
+
     }
 }
