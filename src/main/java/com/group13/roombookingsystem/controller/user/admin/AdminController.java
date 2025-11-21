@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminController extends UserController {
+public class AdminController extends UserController implements Initializable{
 
     protected AnchorPane roomsContainer;
     protected AnchorPane usersContainer;
@@ -51,5 +51,10 @@ public class AdminController extends UserController {
             usersContainer = new FXMLLoader(getClass().getResource("/fxml/user/admin/UsersContainer.fxml")).load();
         }
         mainContainer.setCenter(usersContainer);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setUpAdminMenu();
     }
 }

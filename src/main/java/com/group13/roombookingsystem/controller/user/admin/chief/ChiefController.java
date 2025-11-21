@@ -11,8 +11,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ChiefController extends AdminController{
+public class ChiefController extends AdminController implements Initializable{
     private AnchorPane adminsContainer;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setUpChiefMenu();
+    }
 
     private void setUpChiefMenu(){
         setUpAdminMenu();
