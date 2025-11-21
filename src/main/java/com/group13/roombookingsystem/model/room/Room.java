@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Room {
-    private int roomId;
     private String roomName;
     private int capacity;
     private String location;
@@ -13,11 +12,15 @@ public class Room {
     private boolean isEnabled;
     private ArrayList<LocalDateTime> schedule;
 
-    Room() {
-    }
+     // link database ID to room
+    private int DatabaseId;
 
     public int getRoomID() {
-        return roomId;
+        return DatabaseId;
+    }
+
+    public void setRoomId(int id) {
+        this.DatabaseId = id;
     }
 
     public String getRoomName() {
@@ -32,16 +35,12 @@ public class Room {
         return location;
     }
 
-    public boolean hasProjector() {
+    public boolean getHasProjector() {
         return hasProjector;
     }
 
-    public boolean hasSpeakers() {
+    public boolean getHasSpeakers() {
         return hasSpeakers;
-    }
-
-    void setRoomID(int roomId) {
-        this.roomId = roomId;
     }
 
     void setRoomName(String roomName) {
