@@ -21,21 +21,18 @@ public class SignupController implements Initializable{
     public PasswordField confirmPasswordTextField;
     public TextField emailTextField;
     public PasswordField passwordTextField;
+    public TextField identificationField;
     public ComboBox<String> accountTypeComboBox;
     private final String[] accountTypes = {"Student", "Faculty", "Staff", "Partner"};
 
     public void hangleSignUp(ActionEvent actionEvent) {
         errorLabel.setStyle("-fx-text-fill: red;");
         String accountType = accountTypeComboBox.getValue();
-        String name = nameTextField.getText().trim();
         String email = emailTextField.getText().trim();
+        int identification = Integer.parseInt(identificationField.getText().trim());
         String password = passwordTextField.getText();
         String confirmPassword = confirmPasswordTextField.getText();
 
-        if (name.isEmpty()) {
-            errorLabel.setText("Please enter your name.");
-            return;
-        }
         if (email.isEmpty()) {
             errorLabel.setText("Please enter a valid email.");
             return;
@@ -53,8 +50,13 @@ public class SignupController implements Initializable{
             return;
         }
 
+        if (identificationField.getText().trim().isEmpty()) {
+            errorLabel.setText("Please enter a valid identification.");
+            return;
+        }
+
         try {
-            UserService.getInstance().registerUser(new User(email, password, accountType, false));
+            UserService.getInstance().registerUser(new User(email, password, identification, accountType, false));
             errorLabel.setStyle("-fx-text-fill: green;");
             errorLabel.setText("Account created successfully. Redirecting to login...");
             nameTextField.clear();
