@@ -1,7 +1,5 @@
 package com.group13.roombookingsystem.repository;
 
-import com.group13.roombookingsystem.model.room.Room;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.model.room.RoomBuilder;
 
 public class RoomRepository {
     private static final String INSERT_ROOM = """
@@ -30,22 +31,14 @@ public class RoomRepository {
     public Room create(Room room) {
         try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_ROOM, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, room.getName());
+            statement.setString(1, room.getRoomName());
             statement.setInt(2, room.getCapacity());
             statement.setString(3, room.getLocation());
 
-            int affected = statement.executeUpdate();
-            if (affected == 0) {
-                throw new SQLException("Creating room failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    room.setId(generatedKeys.getInt(1));
-                }
-            }
             return room;
-        } catch (SQLException e) {
+        } 
+        
+        catch (SQLException e) {
             throw new IllegalStateException("Unable to create room", e);
         }
     }
@@ -80,9 +73,20 @@ public class RoomRepository {
     }
 
     private Room mapRow(ResultSet resultSet) throws SQLException {
-        return Room.builder(resultSet.getString("name"), resultSet.getInt("capacity"))
-                .id(resultSet.getInt("id"))
-                .locatedAt(resultSet.getString("location"))
-                .build();
+        RoomBuilder builder = new RoomBuilder();
+        builder.reset();
+        builder.setRoomID(resultSet.getInt("id"));
+        builder.setRoomName(resultSet.getString("name"));
+        builder.setCapacity(resultSet.getInt("capacity"));
+        builder.setLocation(resultSet.getString("location"));
+        builder.setHasProjector(resultSet.getBoolean("has_projector"));
+        builder.setHasSpeakers(resultSet.getBoolean("has_speakers"));
+        setUserIdFromDatabase(builder.getProduct(), resultSet);
+
+        return builder.getProduct();
+    }
+
+    private void setUserIdFromDatabase(Room r, ResultSet resultSet) throws SQLException {
+        r.setRoomId(resultSet.getInt("id"));
     }
 }

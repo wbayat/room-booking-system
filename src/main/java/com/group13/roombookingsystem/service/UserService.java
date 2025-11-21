@@ -29,7 +29,8 @@ public class UserService {
         return user;
     }
 
-    public User registerUser(User user) {
+    public User registerUser(String email, String password, int identification, String role, boolean verified) {
+        User user = new User(email, password, identification, role, verified);
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalStateException("User with that username already exists.");
         }
@@ -49,7 +50,8 @@ public class UserService {
     public User createAdmin(User admin) {
         admin.setRole("admin");
         admin.setVerified(true);
-        return registerUser(admin);
+//        return registerUser(admin);
+        return null;
     }
 
     public ArrayList<User> getUsers() {

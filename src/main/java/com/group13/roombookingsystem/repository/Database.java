@@ -2,7 +2,6 @@ package com.group13.roombookingsystem.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -13,11 +12,11 @@ public final class Database {
     private static final String CREATE_USERS =
             "CREATE TABLE IF NOT EXISTS users (" +
             " id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " email TEXT NOT NULL UNIQUE," +
+            " username TEXT NOT NULL UNIQUE," +
             " password TEXT NOT NULL," +
-            " identification ID NOT NULL" +
+            " identification INTEGER NOT NULL," +
             " role TEXT NOT NULL," +
-            " is_verified INTEGER NOT NULL" +
+            " is_verified INTEGER NOT NULL DEFAULT 0" +
             ");";
 
     private static final String CREATE_ROOMS =
@@ -25,7 +24,10 @@ public final class Database {
             " id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " name TEXT NOT NULL," +
             " capacity INTEGER NOT NULL," +
-            " location TEXT" +
+            " location TEXT NOT NULL," +
+            " has_projector INTEGER NOT NULL DEFAULT 0," +
+            " has_speakers INTEGER NOT NULL DEFAULT 0," +
+            " is_enabled INTEGER NOT NULL DEFAULT 1" +
             ");";
 
     private static final String CREATE_BOOKINGS =
@@ -48,11 +50,7 @@ public final class Database {
             " date TEXT NOT NULL," +
             " FOREIGN KEY(user_id) REFERENCES users(id)" +
             ");";
-
-    private Database() {
-
-    }
-
+            
     // the getter for the singleton class
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL);
@@ -71,18 +69,5 @@ public final class Database {
         catch (SQLException e) {
             throw new IllegalStateException("Cannot initialize SQLite schema", e);
         }
-    }
-
-    private static boolean columnExists(Connection connection, String table, String column) throws SQLException {
-        String pragma = "PRAGMA table_info('" + table + "');";
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(pragma)) {
-            while (resultSet.next()) {
-                if (column.equalsIgnoreCase(resultSet.getString("name"))) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }
