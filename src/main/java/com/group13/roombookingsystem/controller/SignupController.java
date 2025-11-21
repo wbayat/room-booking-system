@@ -1,7 +1,6 @@
 package com.group13.roombookingsystem.controller;
 
 import com.group13.roombookingsystem.manager.SessionManager;
-import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -14,7 +13,6 @@ import java.util.ResourceBundle;
 
 public class SignupController implements Initializable{
     private SessionManager sessionManager;
-    public TextField nameTextField;
     public Button SignUpButton;
     public Label signUpLabel;
     public Label errorLabel;
@@ -56,10 +54,9 @@ public class SignupController implements Initializable{
         }
 
         try {
-            UserService.getInstance().registerUser(email, password, identification, accountType, false);
+            UserService.getInstance().registerUser(email, password, identification, accountType, accountType.equals("Partner"));
             errorLabel.setStyle("-fx-text-fill: green;");
             errorLabel.setText("Account created successfully. Redirecting to login...");
-            nameTextField.clear();
             emailTextField.clear();
             passwordTextField.clear();
             confirmPasswordTextField.clear();
