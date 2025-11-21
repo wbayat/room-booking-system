@@ -2,8 +2,8 @@ package com.group13.roombookingsystem.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 // singleton database class
@@ -16,7 +16,7 @@ public final class Database {
             " username TEXT NOT NULL UNIQUE," +
             " password TEXT NOT NULL," +
             " role TEXT NOT NULL," +
-            " is_verified INTEGER NOT NULL DEFAULT 0" +
+            " is_verified INTEGER NOT NULL" +
             ");";
 
     private static final String CREATE_ROOMS =
@@ -39,6 +39,15 @@ public final class Database {
             " FOREIGN KEY(room_id) REFERENCES rooms(id)" +
             ");";
 
+    private static final String CREATE_PAYMENTS =
+            "CREATE TABLE IF NOT EXISTS payments (" +
+            " id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " user_id INTEGER NOT NULL," +
+            " amount REAL NOT NULL," +
+            " date TEXT NOT NULL," +
+            " FOREIGN KEY(user_id) REFERENCES users(id)" +
+            ");";
+
     private Database() {
 
     }
@@ -55,19 +64,11 @@ public final class Database {
             statement.execute(CREATE_USERS);
             statement.execute(CREATE_ROOMS);
             statement.execute(CREATE_BOOKINGS);
-            ensureColumn(connection, "users", "is_verified", "INTEGER NOT NULL DEFAULT 0");
+            statement.execute(CREATE_PAYMENTS);
         } 
        
         catch (SQLException e) {
             throw new IllegalStateException("Cannot initialize SQLite schema", e);
-        }
-    }
-
-    private static void ensureColumn(Connection connection, String table, String column, String definition) throws SQLException {
-        if (!columnExists(connection, table, column)) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition + ";");
-            }
         }
     }
 
