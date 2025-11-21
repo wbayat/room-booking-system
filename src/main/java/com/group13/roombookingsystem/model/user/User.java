@@ -1,42 +1,36 @@
 package com.group13.roombookingsystem.model.user;
 
-import java.util.Objects;
-
 public class User {
-    private Integer id;
-    private String username;
+    private String email;
     private String password;
     private String role;
     private boolean verified;
+    private int hourlyRate;
 
-    public User(){}
-
-    public User(Integer id, String username, String password, String role, boolean verified) {
-        this.id = id;
-        this.username = username;
+    public User(String email, String password, String role, boolean verified) {
+        this.email = email;
         this.password = password;
         this.role = role;
         this.verified = verified;
     }
 
-    public User(String username, String password, String role, boolean verified) {
-        this(null, username, password, role, verified);
-    }
+    // only for linking database and cardControllers
+    private int id;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
-
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
+    // i wanna change this to getEmail but userService uses username soooo 
     public String getUsername() {
-        return username;
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -59,24 +53,19 @@ public class User {
         return verified;
     }
 
+    public int getVerifiedValue() {
+        return verified ? 1 : 0;
+    }
+
     public void setVerified(boolean verified) {
         this.verified = verified;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return verified == user.verified
-                && Objects.equals(id, user.id)
-                && Objects.equals(username, user.username)
-                && Objects.equals(password, user.password)
-                && Objects.equals(role, user.role);
+    public int getHourlyRate() {
+        return hourlyRate;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, password, role, verified);
+    public void setHourlyRate(int hourlyRate) {
+        this.hourlyRate = hourlyRate;
     }
 }

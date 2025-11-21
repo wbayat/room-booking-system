@@ -11,22 +11,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminController extends UserController implements Initializable {
+public class AdminController extends UserController implements Initializable{
 
     protected AnchorPane roomsContainer;
     protected AnchorPane usersContainer;
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        userType.setText("Admin Panel!");
-        setUpAdminMenu();
-        try {
-            showBookARoomView(null);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     protected void setUpAdminMenu(){
         Button manageRoomsButton = new Button("Manage Rooms");
@@ -63,5 +51,10 @@ public class AdminController extends UserController implements Initializable {
             usersContainer = new FXMLLoader(getClass().getResource("/fxml/user/admin/UsersContainer.fxml")).load();
         }
         mainContainer.setCenter(usersContainer);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setUpAdminMenu();
     }
 }
