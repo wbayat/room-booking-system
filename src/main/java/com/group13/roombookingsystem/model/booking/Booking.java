@@ -55,5 +55,35 @@ public class Booking {
     public void checkIn() {
         this.hasCheckedIn = true;
     }
-    
+    public int getBookingID() {
+        return bookingID;
+    }
+
+    public User getBooker() {
+        return booker;
+    }
+
+    public Room getRoomBooked() {
+        return roomBooked;
+    }
+
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public int getDepositAmount() {
+        return depositAmount;
+    }
+
+    public boolean hasCheckedIn() {
+        return hasCheckedIn;
+    }
 }
