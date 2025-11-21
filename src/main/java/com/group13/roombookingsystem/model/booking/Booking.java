@@ -14,15 +14,25 @@ public class Booking {
     private LocalTime endTime;
     private int depositAmount;
     private boolean hasCheckedIn;
+    private int bookerID;
+    private int roomID;
 
-    public Booking(User booker, Room roomBooked, LocalDate bookingDate, LocalTime startTime, LocalTime endTime) {
-        this.booker = booker;
-        this.roomBooked = roomBooked;
+    public Booking(int bookerID, int roomID, LocalDate bookingDate, LocalTime startTime, LocalTime endTime) {
+        this.bookerID = booker.getId();
+        this.roomID = roomBooked.getRoomID();
         this.bookingDate = bookingDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.depositAmount = booker.getHourlyRate();
         this.hasCheckedIn = false;
+    }
+
+    public int getUserId() {
+        return booker.getId();
+    }
+
+    public int getRoomId() {
+        return roomBooked.getRoomID();
     }
 
     public void setDepositAmount(int depositAmount) {

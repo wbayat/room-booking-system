@@ -1,7 +1,5 @@
 package com.group13.roombookingsystem.repository;
 
-import com.group13.roombookingsystem.model.booking.Booking;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.group13.roombookingsystem.model.booking.Booking;
+
 public class BookingRepository {
     private static final String INSERT_BOOKING = """
             INSERT INTO bookings(user_id, room_id, start_time, end_time, date)
@@ -20,6 +20,7 @@ public class BookingRepository {
             """;
 
     private static final String DELETE_BOOKING = "DELETE FROM bookings WHERE id = ?;";
+    
     private static final String FIND_BY_ID = """
             SELECT id, user_id, room_id, start_time, end_time, date
             FROM bookings
@@ -31,6 +32,7 @@ public class BookingRepository {
             WHERE room_id = ? AND date = ?
             ORDER BY start_time;
             """;
+
     private static final String FIND_BY_USER = """
             SELECT id, user_id, room_id, start_time, end_time, date
             FROM bookings
@@ -50,21 +52,12 @@ public class BookingRepository {
             statement.setInt(2, booking.getRoomId());
             statement.setString(3, booking.getStartTime().toString());
             statement.setString(4, booking.getEndTime().toString());
-            statement.setString(5, booking.getDate().toString());
-
-            int affected = statement.executeUpdate();
-            if (affected == 0) {
-                throw new SQLException("Creating booking failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    booking.setId(generatedKeys.getInt(1));
-                }
-            }
+            statement.setString(5, booking.getBookingDate().toString());
 
             return booking;
-        } catch (SQLException e) {
+        } 
+        
+        catch (SQLException e) {
             throw new IllegalStateException("Unable to create booking", e);
         }
     }
@@ -149,13 +142,22 @@ public class BookingRepository {
     }
 
     private Booking mapRow(ResultSet resultSet) throws SQLException {
-        return new Booking(
-                resultSet.getInt("id"),
-                resultSet.getInt("user_id"),
-                resultSet.getInt("room_id"),
-                LocalDate.parse(resultSet.getString("date")),
-                LocalTime.parse(resultSet.getString("start_time")),
-                LocalTime.parse(resultSet.getString("end_time"))
+        Booking b;
+
+        b = new Booking(
+            resultSet.getInt("user_id"),
+            resultSet.getInt("room_id"),
+            LocalDate.parse(resultSet.getString("date")),
+            LocalTime.parse(resultSet.getString("start_time")),
+            LocalTime.parse(resultSet.getString("end_time"))
         );
+
+        setUserIdFromDatabase(b, resultSet);
+        return b;
     }
+
+    private void setUserIdFromDatabase(Booking b, ResultSet resultSet) throws SQLException {
+        b.setBookingId(resultSet.getInt("id"));
+    }
+
 }

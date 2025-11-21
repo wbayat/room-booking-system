@@ -13,15 +13,9 @@ interface RoomBuilderContract {
 public class RoomBuilder implements RoomBuilderContract {
     private Room result;
 
-
     @Override
     public void reset() {
         result = new Room();
-    }
-
-    @Override
-    public void setRoomID(int roomId) {
-        result.setRoomID(roomId);
     }
 
     @Override
@@ -49,9 +43,16 @@ public class RoomBuilder implements RoomBuilderContract {
         result.setHasSpeakers(hasSpeakers);
     }
 
+    @Override
+    public void setRoomID(int roomId) {
+        result.setRoomId(roomId);
+    }
+
     public Room getProduct() {
         Room built = result;
         reset();
         return built;
     }
+
+
 }
