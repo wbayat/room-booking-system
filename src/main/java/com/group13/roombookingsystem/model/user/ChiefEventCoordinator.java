@@ -4,6 +4,7 @@ public class ChiefEventCoordinator extends Admin {
     public static final int HOURLY_RATE = Admin.HOURLY_RATE;
 
     public ChiefEventCoordinator() {
-        super(999, "chief@gmail.com", "chiefPassword", "ChiefEventCoordinator", true, HOURLY_RATE);
+        super("chief@gmail.com", "chiefPassword", "ChiefEventCoordinator", true);
+        setHourlyRate(HOURLY_RATE);
     }
 }

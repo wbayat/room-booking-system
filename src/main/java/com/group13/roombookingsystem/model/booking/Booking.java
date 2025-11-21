@@ -24,7 +24,7 @@ public class Booking {
         this.bookingDate = bookingDate;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.depositAmount = 0;
+        this.depositAmount = booker.getHourlyRate();
         this.hasCheckedIn = false;
     }
 

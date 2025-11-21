@@ -3,15 +3,8 @@ package com.group13.roombookingsystem.model.user;
 public class Staff extends User {
     public static final int HOURLY_RATE = 40;
 
-    public Staff(Integer id, String username, String password, boolean verified) {
-        this(id, username, password, "Staff", verified, HOURLY_RATE);
-    }
-
-    protected Staff(Integer id, String username, String password, String role, boolean verified, int hourlyRate) {
-        super(id, username, password, role, verified, hourlyRate);
-    }
-
-    public int getHourlyRate() {
-        return HOURLY_RATE;
+    public Staff(String email, String password, String role, boolean verified) {
+        super(email, password, "Staff", verified);
+        setHourlyRate(HOURLY_RATE);
     }
 }

@@ -16,7 +16,7 @@ public final class Database {
             " username TEXT NOT NULL UNIQUE," +
             " password TEXT NOT NULL," +
             " role TEXT NOT NULL," +
-            " is_verified INTEGER NOT NULL DEFAULT 0" +
+            " is_verified INTEGER NOT NULL" +
             ");";
 
     private static final String CREATE_ROOMS =
@@ -65,19 +65,10 @@ public final class Database {
             statement.execute(CREATE_ROOMS);
             statement.execute(CREATE_BOOKINGS);
             statement.execute(CREATE_PAYMENTS);
-            ensureColumn(connection, "users", "is_verified", "INTEGER NOT NULL DEFAULT 0");
         } 
        
         catch (SQLException e) {
             throw new IllegalStateException("Cannot initialize SQLite schema", e);
-        }
-    }
-
-    private static void ensureColumn(Connection connection, String table, String column, String definition) throws SQLException {
-        if (!columnExists(connection, table, column)) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute("ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition + ";");
-            }
         }
     }
 

@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.group13.roombookingsystem.model.user.Partner;
-import com.group13.roombookingsystem.model.user.User;
+import com.group13.roombookingsystem.model.user.Admin;
 import com.group13.roombookingsystem.model.user.Faculty;
+import com.group13.roombookingsystem.model.user.Partner;
 import com.group13.roombookingsystem.model.user.Staff;
 import com.group13.roombookingsystem.model.user.Student;
-import com.group13.roombookingsystem.model.user.Admin;
+import com.group13.roombookingsystem.model.user.User;
 
 public class UserRepository {
     private static final String INSERT_USER = "INSERT INTO users(username, password, role, is_verified) VALUES (?, ?, ?, ?);";
@@ -22,21 +22,18 @@ public class UserRepository {
     private static final String FIND_BY_ID = "SELECT id, username, password, role, is_verified FROM users WHERE id = ?;";
     private static final String FIND_ALL = "SELECT id, username, password, role, is_verified FROM users WHERE LOWER(role) <> 'admin' ORDER BY username;";
     private static final String FIND_BY_VERIFICATION = "SELECT id, username, password, role, is_verified FROM users WHERE is_verified = ? AND LOWER(role) <> 'admin' ORDER BY username;";
-    private static final String UPDATE_VERIFICATION = "UPDATE users SET is_verified = ? WHERE id = ?;";
+    private static final String UPDATE_VERIFICATION = "UPDATE users SET is_verified = CASE WHEN LOWER(role) IN ('partner','admin','chiefeventcoordinator') THEN 1 ELSE ? END WHERE id = ?;";
 
     public User create(User user) {
         try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
+            boolean verified = user.isVerified() || isAutoVerifiedRole(user.getRole());
+            user.setVerified(verified);
+
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRole());
             statement.setInt(4, user.getVerifiedValue());
             statement.executeUpdate();
-            
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    user.setId(generatedKeys.getInt(1));
-                }
-            }
 
             return user;
         } 
@@ -50,10 +47,7 @@ public class UserRepository {
         try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_VERIFICATION)) {
             statement.setInt(1, verified ? 1 : 0);
             statement.setInt(2, userId);
-            int affected = statement.executeUpdate();
-            if (affected == 0) {
-                throw new SQLException("No user updated for verification.");
-            }
+            statement.executeUpdate();
         } 
         
         catch (SQLException e) {
@@ -62,8 +56,7 @@ public class UserRepository {
     }
 
     public Optional<User> findByUsername(String username) {
-        try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME)) {
+        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -131,33 +124,47 @@ public class UserRepository {
 
     private User mapRow(ResultSet resultSet) throws SQLException {
         String role = resultSet.getString("role");
+        boolean verified = resultSet.getInt("is_verified") == 1 || isAutoVerifiedRole(role);
         User user;
 
         switch (role) {
             case "Student":
-                user = new Student(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
+                user = new Student(resultSet.getString("username"), resultSet.getString("password"), "Student", verified);
                 break;
 
             case "Faculty":
-                user = new Faculty(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
+                user = new Faculty(resultSet.getString("username"), resultSet.getString("password"), "Faculty", verified);
                 break;
 
             case "Staff":
-                user = new Staff(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
+                user = new Staff(resultSet.getString("username"), resultSet.getString("password"), "Staff", verified);
                 break;
 
             case "Partner":
-                user = new Partner(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
+                user = new Partner(resultSet.getString("username"), resultSet.getString("password"), "Partner", verified);
                 break;
 
             case "Admin":
-                user = new Admin(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
+                user = new Admin(resultSet.getString("username"), resultSet.getString("password"), "Admin", verified);
                 break;
 
             default:
-                user = new Student(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
+                user = new Student(resultSet.getString("username"), resultSet.getString("password"), "Student", verified);
         }
 
+        setUserIdFromDatabase(user, resultSet);
         return user;
+    }
+    
+    private void setUserIdFromDatabase(User user, ResultSet resultSet) throws SQLException {
+        user.setId(resultSet.getInt("id"));
+    }
+
+    private boolean isAutoVerifiedRole(String role) {
+        if (role == null) {
+            return false;
+        }
+        String normalized = role.trim().toLowerCase();
+        return normalized.equals("partner") || normalized.equals("admin") || normalized.equals("chiefeventcoordinator");
     }
 }
