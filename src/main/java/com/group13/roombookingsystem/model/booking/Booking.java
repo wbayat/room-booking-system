@@ -7,8 +7,6 @@ import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.user.User;
 
 public class Booking {
-
-    private int bookingID;
     private User booker;
     private Room roomBooked;
     private LocalDate bookingDate;
@@ -17,8 +15,7 @@ public class Booking {
     private int depositAmount;
     private boolean hasCheckedIn;
 
-    public Booking(int bookingID, User booker, Room roomBooked, LocalDate bookingDate, LocalTime startTime, LocalTime endTime) {
-        this.bookingID = bookingID;
+    public Booking(User booker, Room roomBooked, LocalDate bookingDate, LocalTime startTime, LocalTime endTime) {
         this.booker = booker;
         this.roomBooked = roomBooked;
         this.bookingDate = bookingDate;
@@ -55,9 +52,6 @@ public class Booking {
     public void checkIn() {
         this.hasCheckedIn = true;
     }
-    public int getBookingID() {
-        return bookingID;
-    }
 
     public User getBooker() {
         return booker;
@@ -85,5 +79,16 @@ public class Booking {
 
     public boolean hasCheckedIn() {
         return hasCheckedIn;
+    }
+
+
+    // link database ID to booking
+    private int DatabaseId;
+
+    public int getBookingID() {
+        return DatabaseId;
+    }
+    public void setBookingId(int id) {
+        this.DatabaseId = id;
     }
 }
