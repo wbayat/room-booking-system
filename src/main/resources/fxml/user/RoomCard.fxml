@@ -71,7 +71,7 @@
             </cursor></ComboBox>
       </children>
    </VBox>
-    <Button fx:id="bookButton" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" styleClass="primary-button" text="Book" textFill="WHITE">
+    <Button maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleBookRoom" styleClass="primary-button" text="Book" textFill="WHITE">
       <font>
          <Font size="15.0" />
       </font>
