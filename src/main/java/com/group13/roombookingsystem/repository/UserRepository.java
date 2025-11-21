@@ -11,10 +11,10 @@ import java.util.Optional;
 
 import com.group13.roombookingsystem.model.user.Partner;
 import com.group13.roombookingsystem.model.user.User;
-import com.group13.roombookingsystem.model.user.university.Faculty;
-import com.group13.roombookingsystem.model.user.university.Staff;
-import com.group13.roombookingsystem.model.user.university.Student;
-import com.group13.roombookingsystem.model.user.university.admin.Admin;
+import com.group13.roombookingsystem.model.user.Faculty;
+import com.group13.roombookingsystem.model.user.Staff;
+import com.group13.roombookingsystem.model.user.Student;
+import com.group13.roombookingsystem.model.user.Admin;
 
 public class UserRepository {
     private static final String INSERT_USER = "INSERT INTO users(username, password, role, is_verified) VALUES (?, ?, ?, ?);";
@@ -26,13 +26,10 @@ public class UserRepository {
 
     public User create(User user) {
         try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
-            boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
-
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRole());
-            statement.setInt(4, isAdmin ? 1 : 0);
-            user.setVerified(isAdmin);
+            statement.setInt(4, user.getVerifiedValue());
             statement.executeUpdate();
             
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {

@@ -1,6 +1,4 @@
-package com.group13.roombookingsystem.model.user.university.admin.chief;
-
-import com.group13.roombookingsystem.model.user.university.admin.Admin;
+package com.group13.roombookingsystem.model.user;
 
 public class ChiefEventCoordinator extends Admin {
     public static final int HOURLY_RATE = Admin.HOURLY_RATE;

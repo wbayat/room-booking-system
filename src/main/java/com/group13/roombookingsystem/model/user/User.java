@@ -60,4 +60,8 @@ public class User {
     public void setVerified(boolean verified) {
         this.verified = verified;
     }
+
+    public int getVerifiedValue() {
+        return verified ? 1 : 0;
+    }
 }

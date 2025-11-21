@@ -1,6 +1,4 @@
-package com.group13.roombookingsystem.model.user.university;
-
-import com.group13.roombookingsystem.model.user.User;
+package com.group13.roombookingsystem.model.user;
 
 public class Staff extends User {
     public static final int HOURLY_RATE = 40;
