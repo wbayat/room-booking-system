@@ -2,6 +2,7 @@ package com.group13.roombookingsystem.controller;
 
 import com.group13.roombookingsystem.manager.SessionManager;
 import com.group13.roombookingsystem.service.UserService;
+import com.group13.roombookingsystem.utilities.ValidationUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -26,17 +27,18 @@ public class SignupController implements Initializable{
     public void hangleSignUp(ActionEvent actionEvent) {
         errorLabel.setStyle("-fx-text-fill: red;");
         String accountType = accountTypeComboBox.getValue();
-        String email = emailTextField.getText().trim();
-        int identification = Integer.parseInt(identificationField.getText().trim());
+        String email = emailTextField.getText();
         String password = passwordTextField.getText();
         String confirmPassword = confirmPasswordTextField.getText();
+        String identificationText = identificationField.getText().trim();
+        int identification;
 
-        if (email.isEmpty()) {
-            errorLabel.setText("Please enter a valid email.");
+        if (!ValidationUtils.isValidEmail(email)) {
+            errorLabel.setText("Please enter a valid email address.");
             return;
         }
-        if (password.isEmpty()) {
-            errorLabel.setText("Password cannot be empty.");
+        if (!ValidationUtils.isValidPassword(password)) {
+            errorLabel.setText("Password must be at least 8 characters long and include uppercase, lowercase, digit, and special character.");
             return;
         }
         if (!password.equals(confirmPassword)) {
@@ -48,13 +50,20 @@ public class SignupController implements Initializable{
             return;
         }
 
-        if (identificationField.getText().trim().isEmpty()) {
+        if (identificationText.isEmpty()) {
             errorLabel.setText("Please enter a valid identification.");
             return;
         }
 
         try {
-            UserService.getInstance().registerUser(email, password, identification, accountType, accountType.equals("Partner"));
+            identification = Integer.parseInt(identificationText);
+        } catch (NumberFormatException exception) {
+            errorLabel.setText("Identification must be a number.");
+            return;
+        }
+
+        try {
+            UserService.getInstance().registerUser(email.trim(), password, identification, accountType, accountType.equals("Partner"));
             errorLabel.setStyle("-fx-text-fill: green;");
             errorLabel.setText("Account created successfully. Redirecting to login...");
             emailTextField.clear();
