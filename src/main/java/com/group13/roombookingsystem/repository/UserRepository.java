@@ -138,34 +138,28 @@ public class UserRepository {
 
         switch (role) {
             case "Student":
-                user = new Student();
+                user = new Student(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
                 break;
 
             case "Faculty":
-                user = new Faculty();
+                user = new Faculty(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
                 break;
 
             case "Staff":
-                user = new Staff();
+                user = new Staff(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
                 break;
 
             case "Partner":
-                user = new Partner();
+                user = new Partner(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
                 break;
 
             case "Admin":
-                user = new Admin();
+                user = new Admin(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
                 break;
 
             default:
-                user = new Student();
+                user = new Student(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("is_verified") == 1);
         }
-
-        user.setId(resultSet.getInt("id"));
-        user.setUsername(resultSet.getString("username"));
-        user.setPassword(resultSet.getString("password"));
-        user.setRole(role);
-        user.setVerified(resultSet.getInt("is_verified") == 1);
 
         return user;
     }

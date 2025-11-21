@@ -6,19 +6,19 @@ public class User {
     private String password;
     private String role;
     private boolean verified;
+    private int hourlyRate;
 
-    public User(){}
+    public User(String username, String password, String role, boolean verified) {
+        this(null, username, password, role, verified, 0);
+    }
 
-    public User(Integer id, String username, String password, String role, boolean verified) {
+    public User(Integer id, String username, String password, String role, boolean verified, int hourlyRate) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;
         this.verified = verified;
-    }
-
-    public User(String username, String password, String role, boolean verified) {
-        this(null, username, password, role, verified);
+        this.hourlyRate = hourlyRate;
     }
 
     public Integer getId() {
