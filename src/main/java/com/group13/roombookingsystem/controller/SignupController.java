@@ -56,7 +56,7 @@ public class SignupController implements Initializable{
         }
 
         try {
-            UserService.getInstance().registerUser(new User(email, password, identification, accountType, false));
+            UserService.getInstance().registerUser(email, password, identification, accountType, false);
             errorLabel.setStyle("-fx-text-fill: green;");
             errorLabel.setText("Account created successfully. Redirecting to login...");
             nameTextField.clear();
