@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 
 public class AdminRoomsContainerController implements Initializable {
     public FlowPane cardContainer;
+    private Stage addRoomStage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -31,7 +32,7 @@ public class AdminRoomsContainerController implements Initializable {
     }
 
     public void handleAddRoom(ActionEvent actionEvent) throws IOException {
-        Stage addRoomStage = new Stage();
+        addRoomStage = new Stage();
         addRoomStage.setResizable(false);
         addRoomStage.setScene(new Scene(new FXMLLoader(getClass().getResource("/fxml/user/admin/AddRoom.fxml")).load()));
         addRoomStage.setTitle("Add a new room!");

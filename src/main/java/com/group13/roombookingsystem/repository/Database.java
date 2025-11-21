@@ -13,8 +13,9 @@ public final class Database {
     private static final String CREATE_USERS =
             "CREATE TABLE IF NOT EXISTS users (" +
             " id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " username TEXT NOT NULL UNIQUE," +
+            " email TEXT NOT NULL UNIQUE," +
             " password TEXT NOT NULL," +
+            " identification ID NOT NULL" +
             " role TEXT NOT NULL," +
             " is_verified INTEGER NOT NULL" +
             ");";
