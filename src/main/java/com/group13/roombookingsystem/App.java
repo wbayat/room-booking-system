@@ -12,4 +12,5 @@ public class App extends Application{
         Database.initialize();
         new SessionManager(new Stage()).initStage();
     }
+
 }
