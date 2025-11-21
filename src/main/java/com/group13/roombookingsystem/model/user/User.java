@@ -64,4 +64,8 @@ public class User {
     public int getVerifiedValue() {
         return verified ? 1 : 0;
     }
+
+    public int getHourlyRate() {
+        return hourlyRate;
+    }
 }
