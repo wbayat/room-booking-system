@@ -72,6 +72,7 @@ public class SessionManager {
 
     public void showUserView() throws IOException {
         if (userView == null){
+            System.out.println(currentUser.getRole());
             userView = ViewFactory.createUserView(currentUser);
             userView.getController().setSceneManager(this);
             userView.getController().postInit();

@@ -18,6 +18,6 @@ public class ViewFactory {
             return new AdminView();
         }
 
-        return new UserView();
+            return new UserView();
     }
 }
