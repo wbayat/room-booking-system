@@ -3,6 +3,7 @@ package com.group13.roombookingsystem.service;
 import com.group13.roombookingsystem.exception.UserNotFoundException;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.UserRepository;
+import com.group13.roombookingsystem.utilities.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ public class UserService {
     }
 
     public User login(String email, String password) throws UserNotFoundException {
-        User user = userRepository.findByUsername(email).orElseThrow(UserNotFoundException::new);
+        String normalizedEmail = email == null ? "" : email.trim();
+        User user = userRepository.findByUsername(normalizedEmail).orElseThrow(UserNotFoundException::new);
         if (!user.getPassword().equals(password)) {
             throw new UserNotFoundException();
         }
@@ -30,7 +32,17 @@ public class UserService {
     }
 
     public User registerUser(String email, String password, int identification, String role, boolean verified) {
-        User user = new User(email, password, identification, role, verified);
+        String normalizedEmail = email == null ? null : email.trim();
+
+        if (!ValidationUtils.isValidEmail(normalizedEmail)) {
+            throw new IllegalArgumentException("Email address is invalid.");
+        }
+
+        if (!ValidationUtils.isValidPassword(password)) {
+            throw new IllegalArgumentException("Password does not meet security requirements.");
+        }
+
+        User user = new User(normalizedEmail, password, identification, role, verified);
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalStateException("User with that username already exists.");
         }
