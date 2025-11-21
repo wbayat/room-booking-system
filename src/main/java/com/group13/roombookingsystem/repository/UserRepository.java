@@ -130,31 +130,31 @@ public class UserRepository {
 
         switch (role) {
             case "Student":
-                user = new Student(resultSet.getString("username"), resultSet.getString("password"), "Student", verified);
+                user = new Student(resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("identification"),"Student", verified);
                 break;
 
             case "Faculty":
-                user = new Faculty(resultSet.getString("username"), resultSet.getString("password"), "Faculty", verified);
+                user = new Faculty(resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("identification"),"Student", verified);
                 break;
 
             case "Staff":
-                user = new Staff(resultSet.getString("username"), resultSet.getString("password"), "Staff", verified);
+                user = new Staff(resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("identification"),"Student", verified);
                 break;
 
             case "Partner":
-                user = new Partner(resultSet.getString("username"), resultSet.getString("password"), "Partner", verified);
+                user = new Partner(resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("identification"),"Student", verified);
                 break;
 
             case "Admin":
-                user = new Admin(resultSet.getString("username"), resultSet.getString("password"), "Admin", verified);
+                user = new Admin(resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("identification"),"Student", verified);
                 break;
 
             case "ChiefEventCoordinator":
-                user = new ChiefEventCoordinator(resultSet.getString("username"), resultSet.getString("password"), "ChiefEventCoordinator", verified);
+                user = new ChiefEventCoordinator(resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("identification"),"Student", verified);
                 break;
 
             default:
-                user = new Student(resultSet.getString("username"), resultSet.getString("password"), "Student", verified);
+                user = new Student(resultSet.getString("email"), resultSet.getString("password"), resultSet.getInt("identification"),"Student", verified);
         }
 
         setUserIdFromDatabase(user, resultSet);
