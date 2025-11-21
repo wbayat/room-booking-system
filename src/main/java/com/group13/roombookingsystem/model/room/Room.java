@@ -1,5 +1,8 @@
 package com.group13.roombookingsystem.model.room;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 public class Room {
     private int roomId;
     private String roomName;
@@ -7,6 +10,8 @@ public class Room {
     private String location;
     private boolean hasProjector;
     private boolean hasSpeakers;
+    private boolean isEnabled;
+    private ArrayList<LocalDateTime> schedule;
 
     Room() {
     }
