@@ -1,8 +1,8 @@
 package com.group13.roombookingsystem.view;
 
 import com.group13.roombookingsystem.model.user.User;
-import com.group13.roombookingsystem.model.user.university.admin.Admin;
-import com.group13.roombookingsystem.model.user.university.admin.chief.ChiefEventCoordinator;
+import com.group13.roombookingsystem.model.user.Admin;
+import com.group13.roombookingsystem.model.user.ChiefEventCoordinator;
 
 import java.io.IOException;
 
