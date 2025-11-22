@@ -67,4 +67,12 @@ public class Room {
     public void setDisabled(boolean disabled) {
         this.isEnabled = !disabled;
     }
+    // add for schedule parameter recently introduced
+    public ArrayList<LocalDateTime> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<LocalDateTime> schedule) {
+        this.schedule = schedule;
+    }
 }
