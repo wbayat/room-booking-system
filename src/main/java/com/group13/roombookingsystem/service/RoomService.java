@@ -50,6 +50,7 @@ public class RoomService extends RoomPublisher {
     public void disableRoom(Room room) {
         room.setDisabled(true); // Assuming Room has a setDisabled method
         roomRepository.update(room); // Assuming RoomRepository has an update method
+        this.notifyUpdate();
     }
 
     public List<Room> getRooms() {

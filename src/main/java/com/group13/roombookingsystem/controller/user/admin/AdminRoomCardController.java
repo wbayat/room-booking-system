@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.controller.user.admin;
 
 import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.service.RoomService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,9 +21,11 @@ public class AdminRoomCardController {
 
     private Stage modifyRoomStage;
 
-    public void setData(){
-        roomName.setText("Room D");
-        roomLocation.setText("BRG");
+    public void setData(Room room){
+        this.room = room;
+        roomName.setText(room.getRoomName());
+        roomCapacity.setText(String.valueOf(room.getCapacity()));
+        roomLocation.setText(room.getLocation());
     }
 
     public void handleModifyRoom(ActionEvent actionEvent) throws IOException {
@@ -33,12 +36,13 @@ public class AdminRoomCardController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/admin/ModifyRoom.fxml"));
             modifyRoomStage.setScene(new Scene(loader.load()));
             ModifyRoomController controller = loader.getController();
-            controller.setRoom(room);
+            controller.setData(room);
             modifyRoomStage.show();
         }
     }
 
     public void handleDisableRoom(ActionEvent actionEvent) {
+        RoomService.getInstance().disableRoom(room);
     }
 
     public Room getRoom() {
