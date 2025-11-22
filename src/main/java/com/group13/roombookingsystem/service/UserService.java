@@ -1,18 +1,26 @@
 package com.group13.roombookingsystem.service;
 
 import com.group13.roombookingsystem.exception.UserNotFoundException;
+import com.group13.roombookingsystem.model.user.Admin;
+import com.group13.roombookingsystem.model.user.ChiefEventCoordinator;
+import com.group13.roombookingsystem.model.user.Faculty;
+import com.group13.roombookingsystem.model.user.Partner;
+import com.group13.roombookingsystem.model.user.Staff;
+import com.group13.roombookingsystem.model.user.Student;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.UserRepository;
 import com.group13.roombookingsystem.utilities.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserService {
     // Singleton instance
     private static UserService instance;
     private final UserRepository userRepository = new UserRepository();
     private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<Admin> admins = new ArrayList<>();
 
     public static UserService getInstance() {
         if (instance == null) {
@@ -52,6 +60,7 @@ public class UserService {
         }
         
         user.setVerified("admin".equalsIgnoreCase(user.getRole()));
+        this.users.add(user);
         return userRepository.create(user);
     }
 
@@ -62,10 +71,41 @@ public class UserService {
     public User createAdmin(User admin) {
         admin.setRole("admin");
         admin.setVerified(true);
-//        return registerUser(admin);
+        //return registerUser(admin);
+        this.admins.add((Admin) admin);
         return null;
     }
 
+    public List<User> getUnverifiedUsers() {
+        return userRepository.findByVerification(false);
+    }
+
+    //Methods migrated: delegate to UserRepository
+    public User create(User user) {
+        return userRepository.create(user);
+    }
+
+    public void updateVerification(int userId, boolean verified) {
+        userRepository.updateVerification(userId, verified);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public Optional<User> findById(int id) {
+        return userRepository.findById(id);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public List<User> findByVerification(boolean verified) {
+        return userRepository.findByVerification(verified);
+    }
+
+    //Auto-generated getters and setters
     public ArrayList<User> getUsers() {
         return users;
     }
