@@ -89,4 +89,31 @@ public class RoomRepository {
     private void setUserIdFromDatabase(Room r, ResultSet resultSet) throws SQLException {
         r.setRoomId(resultSet.getInt("id"));
     }
+
+    public Room update(Room room) {
+        final String UPDATE_ROOM = """
+                UPDATE rooms
+                SET name = ?, capacity = ?, location = ?, has_projector = ?, has_speakers = ?
+                WHERE id = ?;
+                """;
+        try (Connection connection = Database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_ROOM)) {
+
+            statement.setString(1, room.getRoomName());
+            statement.setInt(2, room.getCapacity());
+            statement.setString(3, room.getLocation());
+            statement.setBoolean(4, room.getHasProjector());
+            statement.setBoolean(5, room.getHasSpeakers());
+            statement.setInt(6, room.getRoomID());
+
+            int affected = statement.executeUpdate();
+            if (affected == 0) {
+                throw new IllegalStateException("No room found with id: " + room.getRoomID());
+            }
+
+            return room;
+        } catch (SQLException e) {
+            throw new IllegalStateException("Unable to update room", e);
+        }
+    }
 }
