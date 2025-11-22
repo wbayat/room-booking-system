@@ -1,5 +1,7 @@
 package com.group13.roombookingsystem.controller.user.admin;
 
+import com.group13.roombookingsystem.repository.RoomRepository;
+import com.group13.roombookingsystem.service.RoomService;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -19,6 +21,7 @@ public class AddRoomController {
     }
 
     public void handleAddRoom(ActionEvent actionEvent) {
-
+        RoomService.getInstance().addRoom(roomName.getText(), Integer.parseInt(roomCapacity.getText()), roomLocation.getText(), hasProjectors.isSelected(), hasSpeakers.isSelected(), null);
+        handleCancel(actionEvent);
     }
 }

@@ -19,14 +19,28 @@ public class UserService {
     // Singleton instance
     private static UserService instance;
     private final UserRepository userRepository = new UserRepository();
-    private ArrayList<User> users = new ArrayList<>();
-    private ArrayList<Admin> admins = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+    private List<Admin> admins = new ArrayList<>();
 
     public static UserService getInstance() {
         if (instance == null) {
             instance = new UserService();
+            instance.init();
         }
         return instance;
+    }
+
+    private void init(){
+        users = userRepository.findAll();
+        for (User user : users){
+            if (user.getRole().equals("Admin")){
+                admins.add((Admin) user);
+            }
+        }
+    }
+
+    public List<Admin> getAdmins(){
+        return admins;
     }
 
     public User login(String email, String password) throws UserNotFoundException {
@@ -35,7 +49,6 @@ public class UserService {
         if (!user.getPassword().equals(password)) {
             throw new UserNotFoundException();
         }
-
         return user;
     }
 
@@ -105,7 +118,7 @@ public class UserService {
     }
 
     //Auto-generated getters and setters
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
