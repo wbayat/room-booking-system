@@ -6,6 +6,10 @@ import javafx.scene.control.*;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class RoomCardController implements Initializable {
@@ -13,11 +17,13 @@ public class RoomCardController implements Initializable {
     public Label roomLocation;
     public Label roomCapacity;
     public DatePicker checkInDate;
-    public ComboBox<String> checkinTime;
-    public ComboBox<String> checkoutTime;
+    public ComboBox<LocalTime> checkinTime;
+    public ComboBox<LocalTime> checkoutTime;
     public Button bookButton;
 
-    private final String[] times = {"8 AM","10 AM","12 PM","2 PM","4 PM","6 PM","8 PM"};
+    public List<LocalTime> list = new ArrayList<>();
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -31,10 +37,16 @@ public class RoomCardController implements Initializable {
     }
 
     public void setData(){
+        LocalTime time = LocalTime.of(9, 0);
+        for(int i = 0; i < 13; i++) {
+            list.add(time);
+            time = time.plusHours(1);
+        }
+
         roomID.setText("Room D");
         roomLocation.setText("BRG");
-        checkinTime.getItems().addAll(times);
-        checkoutTime.getItems().addAll(times);
+        checkinTime.getItems().addAll(list);
+        checkoutTime.getItems().addAll(list);
     }
 
     public void handleBookRoom(ActionEvent actionEvent) {
