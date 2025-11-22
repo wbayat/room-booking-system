@@ -22,43 +22,46 @@ public class AdminsContainerController implements Initializable {
     public VBox adminsContainer;
     private Stage addAdminStage;
 
-    private List<Admin> admins;
+    private List<User> admins;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        refreshAdminsList();
+    }
 
-//        admins = UserService.getInstance().getAllAdmins();
-//
-//        for (Admin admin : admins){
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/admin/chief/AdminCard.fxml"));
-//                AnchorPane card = fxmlLoader.load();
-//                AdminCardController adminCardController = fxmlLoader.getController();
-//                adminCardController.setData(admin);
-//                adminsContainer.getChildren().add(card);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-
-        for (int i = 0; i < 10; i++){
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/admin/chief/AdminCard.fxml"));
-                AnchorPane card = fxmlLoader.load();
-                AdminCardController adminCardController = fxmlLoader.getController();
-                adminCardController.setData();
-                adminsContainer.getChildren().add(card);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+    private void refreshAdminsList() {
+        adminsContainer.getChildren().clear();
+        admins = UserService.getInstance().getAllUsers();
+        for (User admin : admins) {
+            System.out.println(admin.getRole());
+            if (admin.getRole().equals("Admin")) {
+                addCard(admin);
             }
         }
     }
 
+    private void addCard(User admin) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/admin/chief/AdminCard.fxml"));
+            AnchorPane card = fxmlLoader.load();
+            AdminCardController adminCardController = fxmlLoader.getController();
+            adminCardController.setData(admin);
+            adminsContainer.getChildren().add(card);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void handleAddAdmin(ActionEvent actionEvent) throws IOException {
-        if (addAdminStage == null || !addAdminStage.isShowing()){
+        if (addAdminStage == null || !addAdminStage.isShowing()) {
             addAdminStage = new Stage();
             addAdminStage.setResizable(false);
-            addAdminStage.setScene(new Scene(new FXMLLoader(getClass().getResource("/fxml/user/admin/chief/AddAdmin.fxml")).load()));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/admin/chief/AddAdmin.fxml"));
+            Scene scene = new Scene(loader.load());
+            addAdminStage.setScene(scene);
+            AddAdminController controller = loader.getController();
+            controller.setOnAdminAddedCallback(this::addCard);
+            addAdminStage.setOnCloseRequest(e -> addAdminStage = null);
             addAdminStage.setTitle("Add A New Admin!");
             addAdminStage.show();
         }
