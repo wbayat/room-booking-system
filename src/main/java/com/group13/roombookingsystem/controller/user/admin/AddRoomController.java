@@ -21,7 +21,7 @@ public class AddRoomController {
     }
 
     public void handleAddRoom(ActionEvent actionEvent) {
-        RoomService.getInstance().addRoom(roomName.getText(), Integer.parseInt(roomCapacity.getText()), roomLocation.getText(), hasProjectors.isSelected(), hasSpeakers.isSelected(), null);
+        RoomService.getInstance().addRoom(roomName.getText(), Integer.parseInt(roomCapacity.getText()), roomLocation.getText(), hasProjectors.isSelected(), hasSpeakers.isSelected(), null, 123);
         handleCancel(actionEvent);
     }
 }

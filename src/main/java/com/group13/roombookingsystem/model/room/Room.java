@@ -84,4 +84,8 @@ public class Room {
     public void setSchedule(ArrayList<LocalDateTime> schedule) {
         this.schedule = schedule;
     }
+
+    public int getSensorID() {
+        return this.sensorId;
+    }
 }
