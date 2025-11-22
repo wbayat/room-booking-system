@@ -1,5 +1,7 @@
 package com.group13.roombookingsystem.controller.user.admin.chief;
 
+import com.group13.roombookingsystem.model.user.Admin;
+import com.group13.roombookingsystem.service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -16,7 +18,7 @@ public class AddAdminController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tempPassword.setText("PasswordFromPasswordGeneratorHere");
+        tempPassword.setText("A1b2@3$45678");
         tempPassword.setEditable(false);
     }
 
@@ -26,5 +28,7 @@ public class AddAdminController implements Initializable {
     }
 
     public void handleAddAdmin(ActionEvent actionEvent) {
+        Admin admin = (Admin) UserService.getInstance().createAdmin(adminEmail.getText(), tempPassword.getText(), Integer.parseInt(adminIdentification.getText()));
+        handleCancel(actionEvent);
     }
 }
