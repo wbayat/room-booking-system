@@ -22,7 +22,7 @@ public class AdminsContainerController implements Initializable {
     public VBox adminsContainer;
     private Stage addAdminStage;
 
-    private List<User> admins;
+    private List<Admin> admins;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -31,16 +31,14 @@ public class AdminsContainerController implements Initializable {
 
     private void refreshAdminsList() {
         adminsContainer.getChildren().clear();
-        admins = UserService.getInstance().getAllUsers();
-        for (User admin : admins) {
+        admins = UserService.getInstance().getAdmins();
+        for (Admin admin : admins) {
             System.out.println(admin.getRole());
-            if (admin.getRole().equals("Admin")) {
-                addCard(admin);
-            }
+            addCard(admin);
         }
     }
 
-    private void addCard(User admin) {
+    private void addCard(Admin admin) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/admin/chief/AdminCard.fxml"));
             AnchorPane card = fxmlLoader.load();
