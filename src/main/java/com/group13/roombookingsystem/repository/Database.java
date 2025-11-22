@@ -42,13 +42,21 @@ public final class Database {
             " FOREIGN KEY(room_id) REFERENCES rooms(id)" +
             ");";
 
+            // lowkey this table is kinda dumb and but im tired and if it works it works
     private static final String CREATE_PAYMENTS =
             "CREATE TABLE IF NOT EXISTS payments (" +
             " id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " user_id INTEGER NOT NULL," +
+            " booking_id INTEGER NOT NULL," +
             " amount REAL NOT NULL," +
             " date TEXT NOT NULL," +
-            " FOREIGN KEY(user_id) REFERENCES users(id)" +
+            " type TEXT NOT NULL," +
+            " cardNumber INT," + // cardNumber null on institutional
+            " passCode INT," + // cvv for credit, pin for debit, null on institutional
+            " cardHolder TEXT NOT NULL," + // name for credit/debit, department for institituional
+            " expiryDate TEXT," + // only for credit
+            " FOREIGN KEY(user_id) REFERENCES users(id)," +
+            " FOREIGN KEY(booking_id) REFERENCES bookings(id)" +
             ");";
             
     // the getter for the singleton class

@@ -18,4 +18,32 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
     public boolean pay(double amount) {
         return true;
     }
+
+    private int id;
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public String getCardHolderName() {
+        return cardHolderName;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
 }
