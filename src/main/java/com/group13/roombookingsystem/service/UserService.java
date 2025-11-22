@@ -68,12 +68,11 @@ public class UserService {
         return userRepository.findByUsername(email).orElseThrow(UserNotFoundException::new);
     }
 
-    public User createAdmin(User admin) {
-        admin.setRole("admin");
-        admin.setVerified(true);
-        //return registerUser(admin);
+    public User createAdmin(String email, String password, int identification) throws UserNotFoundException {
+        registerUser(email, password, identification, "Admin", true);
+        User admin = login(email, password);
         this.admins.add((Admin) admin);
-        return null;
+        return admin;
     }
 
     public List<User> getUnverifiedUsers() {
