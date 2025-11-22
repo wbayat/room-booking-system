@@ -1,5 +1,6 @@
 package com.group13.roombookingsystem.controller.user.admin.chief;
 
+import com.group13.roombookingsystem.exception.UserNotFoundException;
 import com.group13.roombookingsystem.model.user.Admin;
 import com.group13.roombookingsystem.service.UserService;
 import javafx.event.ActionEvent;
@@ -27,7 +28,7 @@ public class AddAdminController implements Initializable {
         stage.close();
     }
 
-    public void handleAddAdmin(ActionEvent actionEvent) {
+    public void handleAddAdmin(ActionEvent actionEvent) throws UserNotFoundException {
         Admin admin = (Admin) UserService.getInstance().createAdmin(adminEmail.getText(), tempPassword.getText(), Integer.parseInt(adminIdentification.getText()));
         handleCancel(actionEvent);
     }

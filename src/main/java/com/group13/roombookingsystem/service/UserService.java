@@ -68,8 +68,9 @@ public class UserService {
         return userRepository.findByUsername(email).orElseThrow(UserNotFoundException::new);
     }
 
-    public User createAdmin(String email, String password, int identification) {
-        User admin = registerUser(email, password, identification, "Admin", true);
+    public User createAdmin(String email, String password, int identification) throws UserNotFoundException {
+        registerUser(email, password, identification, "Admin", true);
+        User admin = login(email, password);
         this.admins.add((Admin) admin);
         return admin;
     }
