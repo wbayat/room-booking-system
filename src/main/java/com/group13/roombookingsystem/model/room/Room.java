@@ -43,23 +43,28 @@ public class Room {
         return hasSpeakers;
     }
 
-    void setRoomName(String roomName) {
+    public void setRoomName(String roomName) {
         this.roomName = roomName;
     }
 
-    void setCapacity(int capacity) {
+    public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
-    void setLocation(String location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
-    void setHasProjector(boolean hasProjector) {
+    public void setHasProjector(boolean hasProjector) {
         this.hasProjector = hasProjector;
     }
 
-    void setHasSpeakers(boolean hasSpeakers) {
+    public void setHasSpeakers(boolean hasSpeakers) {
         this.hasSpeakers = hasSpeakers;
+    }
+
+    // add to support RoomService.disableRoom(Room)
+    public void setDisabled(boolean disabled) {
+        this.isEnabled = !disabled;
     }
 }
