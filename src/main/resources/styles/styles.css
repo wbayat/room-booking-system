@@ -2,8 +2,9 @@
     -fx-focus-traversable: false;
 }
 .room-card {
-    -fx-background-color: white;
-    -fx-border-radius: 20;
+    -fx-background-radius: 10;
+    -fx-background-color: #D2D2D2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0.2, 5, 5);
 }
 
 .menu-button {
