@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ModifyRoomController implements Initializable {
+public class ModifyRoomController {
     public TextField roomName;
     public TextField roomLocation;
     public TextField roomCapacity;
@@ -20,19 +20,6 @@ public class ModifyRoomController implements Initializable {
 
     private Room room;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-//        roomName.setText(room.getRoomName());
-//        roomLocation.setText(room.getLocation());
-//        roomCapacity.setText(String.valueOf(room.getCapacity()));
-//        hasProjectors.setSelected(room.getHasProjector());
-//        hasSpeakers.setSelected(room.getHasSpeakers());
-
-        roomName.setText("name");
-        roomLocation.setText("location");
-        hasProjectors.setSelected(true);
-
-    }
 
     public void handleCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -43,7 +30,12 @@ public class ModifyRoomController implements Initializable {
 
     }
 
-    public void setRoom(Room room) {
+    public void setData(Room room) {
         this.room = room;
+        roomName.setText(room.getRoomName());
+        roomLocation.setText(room.getLocation());
+        roomCapacity.setText(String.valueOf(room.getCapacity()));
+        hasProjectors.setSelected(room.getHasProjector());
+        hasSpeakers.setSelected(room.getHasSpeakers());
     }
 }
