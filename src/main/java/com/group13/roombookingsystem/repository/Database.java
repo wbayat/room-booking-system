@@ -8,6 +8,7 @@ import java.sql.Statement;
 // singleton database class
 public final class Database {
     private static final String DB_URL = "jdbc:sqlite:main.db";
+    private static Database instance;
 
     private static final String CREATE_USERS =
             "CREATE TABLE IF NOT EXISTS users (" +
@@ -59,13 +60,13 @@ public final class Database {
             " FOREIGN KEY(booking_id) REFERENCES bookings(id)" +
             ");";
             
-    // the getter for the singleton class
+    // the getter for the link to the db (i still need this)
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL);
     }
 
-    // how to start it up
-    public static void initialize() {
+    // singleton constructor for the database
+    private Database() {
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
             statement.execute("PRAGMA foreign_keys = ON;");
             statement.execute(CREATE_USERS);
@@ -73,9 +74,27 @@ public final class Database {
             statement.execute(CREATE_BOOKINGS);
             statement.execute(CREATE_PAYMENTS);
         } 
-       
+        
         catch (SQLException e) {
             throw new IllegalStateException("Cannot initialize SQLite schema", e);
+        }
+    }
+
+    public static Database getInstance() {
+        if (instance == null) {
+            instance = new Database(); 
+        }
+        return instance;
+    }
+
+    // can talk directly to the db now using this not thru connection
+    public void query(String sqlCommand) {
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
+            stmt.execute(sqlCommand);
+        } 
+        
+        catch (SQLException e) {
+            throw new RuntimeException("Error executing query: " + sqlCommand, e);
         }
     }
 }

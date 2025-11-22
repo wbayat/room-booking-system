@@ -21,7 +21,7 @@ public class UserRepository {
     private static final String INSERT_USER = "INSERT INTO users(username, password, identification, role, is_verified) VALUES (?, ?, ?, ?, ?);";
     private static final String FIND_BY_USERNAME = "SELECT id, username, password, identification, role, is_verified FROM users WHERE username = ?;";
     private static final String FIND_BY_ID = "SELECT id, username, password, identification, role, is_verified FROM users WHERE id = ?;";
-    private static final String FIND_ALL = "SELECT id, username, password, identification, role, is_verified FROM users WHERE LOWER(role) <> 'admin' ORDER BY username;";
+    private static final String FIND_ALL = "SELECT id, username, password, identification, role, is_verified FROM users ORDER BY username;";
     private static final String FIND_BY_VERIFICATION = "SELECT id, username, password, identification, role, is_verified FROM users WHERE is_verified = ? AND LOWER(role) <> 'admin' ORDER BY username;";
     private static final String UPDATE_VERIFICATION = "UPDATE users SET is_verified = CASE WHEN LOWER(role) IN ('partner','admin','chiefeventcoordinator') THEN 1 ELSE ? END WHERE id = ?;";
 

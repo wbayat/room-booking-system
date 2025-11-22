@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.observer.Observer;
 import com.group13.roombookingsystem.service.RoomService;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,26 +13,39 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class RoomsContainerController implements Initializable {
-
+public class RoomsContainerController implements Initializable, Observer {
     public FlowPane cardContainer;
-
-    List<Room> rooms = RoomService.getInstance().getRooms();
-
+    private List<Room> rooms;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+//        RoomService.getInstance().addObserver(this);
+        refreshRooms();
+    }
 
-        for (Room room : rooms){
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/RoomCard.fxml"));
-                VBox card = fxmlLoader.load();
-                RoomCardController roomCardController = fxmlLoader.getController();
-                roomCardController.setData(room);
-                cardContainer.getChildren().add(card);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+    private void refreshRooms() {
+        rooms = RoomService.getInstance().getRooms();
+        cardContainer.getChildren().clear();
+
+        for (Room room : rooms) {
+            addCard(room);
         }
+    }
+
+    private void addCard(Room room) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/RoomCard.fxml"));
+            VBox card = fxmlLoader.load();
+            RoomCardController roomCardController = fxmlLoader.getController();
+            roomCardController.setData(room);
+            cardContainer.getChildren().add(card);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load RoomCard.fxml", e);
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+        refreshRooms();
     }
 }

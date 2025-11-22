@@ -11,6 +11,7 @@ public class Room {
     private boolean hasSpeakers;
     private boolean isEnabled;
     private ArrayList<LocalDateTime> schedule;
+    private int sensorId; // sensor ID for IoT integration for sensor class
 
      // link database ID to room
     private int DatabaseId;
@@ -21,6 +22,14 @@ public class Room {
 
     public void setRoomId(int id) {
         this.DatabaseId = id;
+    }
+
+    public int getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(int sensorId) {
+        this.sensorId = sensorId;
     }
 
     public String getRoomName() {
@@ -74,5 +83,9 @@ public class Room {
 
     public void setSchedule(ArrayList<LocalDateTime> schedule) {
         this.schedule = schedule;
+    }
+
+    public int getSensorID() {
+        return this.sensorId;
     }
 }
