@@ -1,5 +1,8 @@
 package com.group13.roombookingsystem.controller.user;
 
+import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.service.BookingService;
+import com.group13.roombookingsystem.service.RoomService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -23,6 +26,8 @@ public class RoomCardController implements Initializable {
 
     public List<LocalTime> list = new ArrayList<>();
 
+    private Room room;
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
 
     @Override
@@ -36,20 +41,22 @@ public class RoomCardController implements Initializable {
         });
     }
 
-    public void setData(){
+    public void setData(Room room){
+        this.room = room;
         LocalTime time = LocalTime.of(9, 0);
         for(int i = 0; i < 13; i++) {
             list.add(time);
             time = time.plusHours(1);
         }
 
-        roomID.setText("Room D");
-        roomLocation.setText("BRG");
+        roomID.setText(room.getRoomName());
+        roomLocation.setText(room.getLocation());
+        roomCapacity.setText(String.valueOf(room.getCapacity()));
         checkinTime.getItems().addAll(list);
         checkoutTime.getItems().addAll(list);
     }
 
     public void handleBookRoom(ActionEvent actionEvent) {
-
+//        BookingService.getInstance().
     }
 }

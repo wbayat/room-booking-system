@@ -28,7 +28,7 @@ public class RoomService {
     }
 
     public void addRoom(String roomName, int capacity, String location, boolean hasProjector, boolean hasSpeakers, ArrayList<LocalDateTime> schedule) {
-        
+        this.roomBuilder.reset();
         this.roomBuilder.setRoomName(roomName);
         this.roomBuilder.setCapacity(capacity);
         this.roomBuilder.setLocation(location);
