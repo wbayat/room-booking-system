@@ -12,14 +12,19 @@ public class RoomService {
 
     private static RoomService instance;
     private final RoomRepository roomRepository = new RoomRepository();
-    private ArrayList<Room> rooms = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
     private RoomBuilder roomBuilder = new RoomBuilder();
 
     public static RoomService getInstance() {
         if (instance == null) {
             instance = new RoomService();
+            instance.init();
         }
         return instance;
+    }
+
+    private void init(){
+        rooms = roomRepository.findAll();
     }
 
     public void addRoom(String roomName, int capacity, String location, boolean hasProjector, boolean hasSpeakers, ArrayList<LocalDateTime> schedule) {
@@ -42,8 +47,8 @@ public class RoomService {
         roomRepository.update(room); // Assuming RoomRepository has an update method
     }
 
-    public List<Room> getAllRooms() {
-        return roomRepository.findAll();
+    public List<Room> getRooms() {
+        return rooms;
     }
 
     public void modifyRoom(Room room, String newRoomName, int newCapacity, String newLocation, boolean newHasProjector, boolean newHasSpeakers) {
