@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.group13.roombookingsystem.model.room.*;
-import com.group13.roombookingsystem.model.user.User;
-import com.group13.roombookingsystem.repository.UserRepository;
 import com.group13.roombookingsystem.repository.RoomRepository;
+import com.group13.roombookingsystem.service.observer.RoomPublisher;
 
-public class RoomService {
+public class RoomService extends RoomPublisher {
 
     private static RoomService instance;
     private final RoomRepository roomRepository = new RoomRepository();
     private List<Room> rooms = new ArrayList<>();
     private RoomBuilder roomBuilder = new RoomBuilder();
+
+    private RoomService(){
+        super();
+    }
 
     public static RoomService getInstance() {
         if (instance == null) {
@@ -41,6 +44,7 @@ public class RoomService {
         Room room = this.roomBuilder.getProduct();
         rooms.add(room);
         roomRepository.create(room);
+        this.notifyUpdate();
     }
 
     public void disableRoom(Room room) {

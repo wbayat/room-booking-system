@@ -1,8 +1,8 @@
 package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.model.room.Room;
-import com.group13.roombookingsystem.observer.Observer;
 import com.group13.roombookingsystem.service.RoomService;
+import com.group13.roombookingsystem.service.observer.RoomObserver;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.FlowPane;
@@ -13,13 +13,13 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class RoomsContainerController implements Initializable, Observer {
+public class RoomsContainerController implements Initializable, RoomObserver {
     public FlowPane cardContainer;
     private List<Room> rooms;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        RoomService.getInstance().addObserver(this);
+        RoomService.getInstance().subscribe(this);
         refreshRooms();
     }
 
