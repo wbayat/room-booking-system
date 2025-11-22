@@ -9,6 +9,7 @@ interface RoomBuilderContract {
     void setHasProjector(boolean hasProjector);
     void setHasSpeakers(boolean hasSpeakers);
     void setSchedule(java.util.ArrayList<java.time.LocalDateTime> schedule);
+    void setSensorId(int sensorId); // added for sensor ID
 }
 
 public class RoomBuilder implements RoomBuilderContract {
@@ -58,5 +59,10 @@ public class RoomBuilder implements RoomBuilderContract {
     @Override
     public void setSchedule(java.util.ArrayList<java.time.LocalDateTime> schedule) {
         result.setSchedule(schedule);
+    }
+
+    @Override
+    public void setSensorId(int sensorId) {
+        result.setSensorId(sensorId);
     }
 }
