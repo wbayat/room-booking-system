@@ -27,14 +27,15 @@ public class RoomService {
         rooms = roomRepository.findAll();
     }
 
-    public void addRoom(String roomName, int capacity, String location, boolean hasProjector, boolean hasSpeakers, ArrayList<LocalDateTime> schedule) {
+    public void addRoom(String roomName, int capacity, String location, boolean hasProjector, boolean hasSpeakers, ArrayList<LocalDateTime> schedule, int sensorId) {
         this.roomBuilder.reset();
         this.roomBuilder.setRoomName(roomName);
         this.roomBuilder.setCapacity(capacity);
         this.roomBuilder.setLocation(location);
         this.roomBuilder.setHasProjector(hasProjector);
         this.roomBuilder.setHasSpeakers(hasSpeakers);
-        this.roomBuilder.setSchedule(schedule); //Schedule does not currently compile as it is missing in Roombuilder
+        this.roomBuilder.setSchedule(schedule);
+        this.roomBuilder.setSensorId(sensorId);
 
         
         Room room = this.roomBuilder.getProduct();
