@@ -23,7 +23,7 @@ public class UserController{
     private AnchorPane roomsLayout;
 
     public void postInit() {
-        userType.setText(sessionManager.getCurrentUser().getUsername());
+        userType.setText("Welcome " + sessionManager.getCurrentUser().getUsername().split("@")[0]);
         try {
             showBookARoomView(null);
         } catch (IOException e) {

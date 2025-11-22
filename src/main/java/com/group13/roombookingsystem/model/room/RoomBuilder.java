@@ -8,6 +8,7 @@ interface RoomBuilderContract {
     void setLocation(String location);
     void setHasProjector(boolean hasProjector);
     void setHasSpeakers(boolean hasSpeakers);
+    void setSchedule(java.util.ArrayList<java.time.LocalDateTime> schedule);
 }
 
 public class RoomBuilder implements RoomBuilderContract {
@@ -54,5 +55,8 @@ public class RoomBuilder implements RoomBuilderContract {
         return built;
     }
 
-
+    @Override
+    public void setSchedule(java.util.ArrayList<java.time.LocalDateTime> schedule) {
+        result.setSchedule(schedule);
+    }
 }

@@ -16,4 +16,27 @@ public class DebitCardPaymentStrategy implements PaymentStrategy {
         return true;
     }
 
+    private int id;
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public String getCardHolderName() {
+        return cardHolderName;
+    }
+
+    public String getPin() {
+        return pin;
+    }
 }

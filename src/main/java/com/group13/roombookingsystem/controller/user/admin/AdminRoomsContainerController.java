@@ -32,10 +32,12 @@ public class AdminRoomsContainerController implements Initializable {
     }
 
     public void handleAddRoom(ActionEvent actionEvent) throws IOException {
-        addRoomStage = new Stage();
-        addRoomStage.setResizable(false);
-        addRoomStage.setScene(new Scene(new FXMLLoader(getClass().getResource("/fxml/user/admin/AddRoom.fxml")).load()));
-        addRoomStage.setTitle("Add a new room!");
-        addRoomStage.show();
+        if (addRoomStage == null || !addRoomStage.isShowing()){
+            addRoomStage = new Stage();
+            addRoomStage.setResizable(false);
+            addRoomStage.setScene(new Scene(new FXMLLoader(getClass().getResource("/fxml/user/admin/AddRoom.fxml")).load()));
+            addRoomStage.setTitle("Add a new room!");
+            addRoomStage.show();
+        }
     }
 }
