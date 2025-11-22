@@ -28,6 +28,7 @@ public class AddAdminController implements Initializable {
     }
 
     public void handleAddAdmin(ActionEvent actionEvent) {
-//        Admin admin = UserService.getInstance().createAdmin(adminEmail, tempPassword, adminIdentification);
+        Admin admin = (Admin) UserService.getInstance().createAdmin(adminEmail.getText(), tempPassword.getText(), Integer.parseInt(adminIdentification.getText()));
+        handleCancel(actionEvent);
     }
 }
