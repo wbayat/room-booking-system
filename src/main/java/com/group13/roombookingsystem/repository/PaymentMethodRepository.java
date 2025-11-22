@@ -49,7 +49,7 @@ public class PaymentMethodRepository {
     }
 
     private PaymentStrategy createStrategy(String paymentType, ResultSet resultSet) throws SQLException {
-        String normalizedType = paymentType == null ? "" : paymentType.toLowerCase();
+        String normalizedType = paymentType.toLowerCase();
 
         switch (normalizedType) {
             case "creditcard":
