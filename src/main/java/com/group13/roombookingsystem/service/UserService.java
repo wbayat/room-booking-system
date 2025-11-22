@@ -2,11 +2,6 @@ package com.group13.roombookingsystem.service;
 
 import com.group13.roombookingsystem.exception.UserNotFoundException;
 import com.group13.roombookingsystem.model.user.Admin;
-import com.group13.roombookingsystem.model.user.ChiefEventCoordinator;
-import com.group13.roombookingsystem.model.user.Faculty;
-import com.group13.roombookingsystem.model.user.Partner;
-import com.group13.roombookingsystem.model.user.Staff;
-import com.group13.roombookingsystem.model.user.Student;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.UserRepository;
 import com.group13.roombookingsystem.utilities.ValidationUtils;
