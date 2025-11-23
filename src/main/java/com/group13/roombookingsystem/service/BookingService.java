@@ -3,11 +3,8 @@ package com.group13.roombookingsystem.service;
 import com.group13.roombookingsystem.model.booking.Booking;
 import com.group13.roombookingsystem.model.payment.PaymentStrategy;
 import com.group13.roombookingsystem.model.room.Room;
-import com.group13.roombookingsystem.model.user.Admin;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.BookingRepository;
-import com.group13.roombookingsystem.repository.RoomRepository;
-import com.group13.roombookingsystem.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -35,12 +32,14 @@ public class BookingService {
 
     public Booking createBooking(User user, Room room, LocalDate date, LocalTime checkinTime, LocalTime checkoutTime, PaymentStrategy paymentStrategy){
         Booking booking = new Booking(user.getId(), room.getRoomID(), date, checkinTime, checkoutTime);
+        booking.setBooker(user);
+        booking.setRoomBooked(room);
         booking.setPaymentStrategy(paymentStrategy);
-        booking.getBooker().addBooking(booking);
+        user.addBooking(booking);
         bookings.add(booking);
 
         //also add to database
-
+        bookingRepository.create(booking);
 
         return booking;
     }
@@ -51,6 +50,9 @@ public class BookingService {
         booking.setEndTime(endTime);
 
         //also update database
+        if (booking.getId() != null) {
+            bookingRepository.updateTimes(booking.getBookingID(), date, startTime, endTime);
+        }
 
         return booking;
     }
@@ -59,6 +61,14 @@ public class BookingService {
         booking.setEndTime(endTime);
 
         //also update database
+        if (booking.getId() != null) {
+            bookingRepository.updateTimes(
+                    booking.getBookingID(),
+                    booking.getBookingDate(),
+                    booking.getStartTime(),
+                    endTime
+            );
+        }
 
         return booking;
     }
