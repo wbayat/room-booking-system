@@ -73,6 +73,26 @@ public class BookingService {
         return booking;
     }
 
+    public List<Booking> getBookingsFor(User user){
+        List<Booking> userBookings = new ArrayList<>();
+        for (Booking b : bookings){
+            if (b.getBooker().getUsername().equals(user.getUsername())){
+                userBookings.add(b);
+            }
+        }
+        return userBookings;
+    }
+
+    public void cancelBooking(Booking b){
+        if (b.getBooker() != null){
+            b.getBooker().removeBooking(b);
+        }
+        bookings.remove(b);
+
+        //Also update database
+
+    }
+
 
 //    private final BookingRepository bookingRepository;
 //    private final RoomRepository roomRepository;
