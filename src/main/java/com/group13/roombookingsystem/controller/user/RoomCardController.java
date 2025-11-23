@@ -39,7 +39,7 @@ public class RoomCardController implements Initializable {
 
     public List<LocalTime> list = new ArrayList<>();
 
-    private Room room;
+    public Room room;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
 
@@ -84,6 +84,7 @@ public class RoomCardController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/PaymentInfo.fxml"));
             addPaymentMethodStage.setScene(new Scene(loader.load()));
             PaymentInfoController controller = loader.getController();
+            controller.setParentController(this);
             addPaymentMethodStage.show();
         }
     }

@@ -2,16 +2,68 @@ package com.group13.roombookingsystem.service;
 
 import com.group13.roombookingsystem.model.booking.Booking;
 import com.group13.roombookingsystem.model.payment.PaymentStrategy;
+import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.model.user.Admin;
+import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.BookingRepository;
 import com.group13.roombookingsystem.repository.RoomRepository;
 import com.group13.roombookingsystem.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BookingService {
+
+    private static BookingService instance;
+    private BookingRepository bookingRepository;
+    private List<Booking> bookings;
+
+    private BookingService(){
+        bookings = new ArrayList<>();
+        bookingRepository = new BookingRepository();
+//        bookings = bookingRepository.findAll();
+    }
+
+    public static BookingService getInstance() {
+        if (instance == null) {
+            instance = new BookingService();
+        }
+        return instance;
+    }
+
+    public Booking createBooking(User user, Room room, LocalDate date, LocalTime checkinTime, LocalTime checkoutTime, PaymentStrategy paymentStrategy){
+        Booking booking = new Booking(user.getId(), room.getRoomID(), date, checkinTime, checkoutTime);
+        booking.setPaymentStrategy(paymentStrategy);
+        booking.getBooker().addBooking(booking);
+        bookings.add(booking);
+
+        //also add to database
+
+
+        return booking;
+    }
+
+    public Booking modifyBooking(Booking booking, LocalDate date, LocalTime startTime, LocalTime endTime){
+        booking.setBookingDate(date);
+        booking.setStartTime(startTime);
+        booking.setEndTime(endTime);
+
+        //also update database
+
+        return booking;
+    }
+
+    public Booking extendBooking(Booking booking, LocalTime endTime){
+        booking.setEndTime(endTime);
+
+        //also update database
+
+        return booking;
+    }
+
+
 //    private final BookingRepository bookingRepository;
 //    private final RoomRepository roomRepository;
 //    private final UserRepository userRepository;

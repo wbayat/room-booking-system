@@ -17,6 +17,8 @@ public class UserService {
     private List<User> users = new ArrayList<>();
     private List<Admin> admins = new ArrayList<>();
 
+    private UserService(){}
+
     public static UserService getInstance() {
         if (instance == null) {
             instance = new UserService();
