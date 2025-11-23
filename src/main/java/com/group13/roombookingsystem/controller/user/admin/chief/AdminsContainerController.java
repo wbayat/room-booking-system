@@ -33,7 +33,6 @@ public class AdminsContainerController implements Initializable {
         adminsContainer.getChildren().clear();
         admins = UserService.getInstance().getAdmins();
         for (Admin admin : admins) {
-            System.out.println(admin.getRole());
             addCard(admin);
         }
     }
