@@ -81,13 +81,8 @@ public class BookingService extends Publisher {
     }
 
     public List<Booking> getBookingsFor(User user){
-        List<Booking> userBookings = new ArrayList<>();
-        for (Booking b : bookings){
-            if (b.getBooker().getUsername().equals(user.getUsername())){
-                userBookings.add(b);
-            }
-        }
-        return userBookings;
+        List<Booking> b = bookingRepository.findByUser(user.getId());
+        return b;
     }
 
     public void cancelBooking(Booking b){
