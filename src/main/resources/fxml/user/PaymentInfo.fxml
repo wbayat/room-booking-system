@@ -19,52 +19,69 @@
             <Font size="20.0" />
         </font>
     </Label>
-   <ComboBox minHeight="40.0" prefHeight="40.0" prefWidth="219.0" promptText="Payment Type">
+   <ComboBox fx:id="paymentMethodType" minHeight="40.0" prefHeight="40.0" prefWidth="219.0" promptText="Payment Type">
       <VBox.margin>
          <Insets left="5.0" />
       </VBox.margin>
    </ComboBox>
-    <VBox spacing="5.0">
-        <VBox.margin>
-            <Insets />
-        </VBox.margin>
-        <padding>
-            <Insets left="5.0" right="5.0" />
-        </padding>
-        <Label text="Credit Card Number">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Label>
-        <TextField fx:id="adminEmail" minHeight="40.0" />
-    </VBox>
-    <VBox layoutX="30.0" layoutY="75.0" spacing="5.0">
-        <padding>
-            <Insets left="5.0" right="5.0" />
-        </padding>
-        <Label text="Expiration Date">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Label>
-        <TextField fx:id="adminIdentification" minHeight="40.0" />
-    </VBox>
-    <VBox layoutX="30.0" layoutY="143.0" spacing="5.0">
-        <padding>
-            <Insets left="5.0" right="5.0" />
-        </padding>
-        <children>
-            <Label text="CVV">
-                <font>
-                    <Font name="System Bold" size="14.0" />
-                </font>
-            </Label>
-            <TextField fx:id="tempPassword" minHeight="40.0" />
-        </children>
-    </VBox>
+   <VBox spacing="15.0">
+      <children>
+         <VBox spacing="5.0">
+            <padding>
+               <Insets left="5.0" right="5.0" />
+            </padding>
+            <children>
+               <Label text="Card Holder Name">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <TextField fx:id="cardHolderName" minHeight="40.0" />
+            </children>
+         </VBox>
+          <VBox spacing="5.0">
+              <VBox.margin>
+                  <Insets />
+              </VBox.margin>
+              <padding>
+                  <Insets left="5.0" right="5.0" />
+              </padding>
+              <Label text="Credit Card Number">
+                  <font>
+                      <Font name="System Bold" size="14.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="cardNumber" minHeight="40.0" />
+          </VBox>
+          <VBox spacing="5.0">
+              <padding>
+                  <Insets left="5.0" right="5.0" />
+              </padding>
+              <Label text="Expiration Date">
+                  <font>
+                      <Font name="System Bold" size="14.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="expirationDate" minHeight="40.0" />
+          </VBox>
+          <VBox spacing="5.0">
+              <padding>
+                  <Insets left="5.0" right="5.0" />
+              </padding>
+              <children>
+                  <Label text="CVV">
+                      <font>
+                          <Font name="System Bold" size="14.0" />
+                      </font>
+                  </Label>
+                  <TextField fx:id="ccv" minHeight="40.0" />
+              </children>
+          </VBox>
+      </children>
+   </VBox>
     <Pane prefHeight="200.0" prefWidth="200.0" />
     <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" spacing="10.0">
-        <Button maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="170.0" text="Cancel" />
-        <Button layoutX="115.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#handleAddAdmin" prefWidth="170.0" text="Add" />
+        <Button maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="170.0" text="Cancel" />
+        <Button layoutX="115.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleAddPaymentMethod" prefWidth="170.0" text="Add" />
     </HBox>
 </VBox>
