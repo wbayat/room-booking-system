@@ -46,9 +46,15 @@ public class BookingService extends Publisher {
     }
 
     public Booking modifyBooking(Booking booking, LocalDate date, LocalTime startTime, LocalTime endTime){
-        booking.setBookingDate(date);
-        booking.setStartTime(startTime);
-        booking.setEndTime(endTime);
+        if (date != null){
+            booking.setBookingDate(date);
+        }
+        if (startTime != null){
+            booking.setStartTime(startTime);
+        }
+        if (endTime != null){
+            booking.setEndTime(endTime);
+        }
 
         //also update database
         if (booking.getId() != null) {
