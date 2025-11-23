@@ -20,19 +20,19 @@ public class BookingsContainerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        myBookings = SessionManager.currentUser.getBookings();
-
-        for (Booking booking : myBookings){
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/BookingCard.fxml"));
-                AnchorPane card = fxmlLoader.load();
-                BookingCardController bookingCardController = fxmlLoader.getController();
-                bookingCardController.setData();
-                BookingsContainer.getChildren().add(card);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        myBookings = SessionManager.currentUser.getBookings();
+//
+//        for (Booking booking : myBookings){
+//            try {
+//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/user/BookingCard.fxml"));
+//                AnchorPane card = fxmlLoader.load();
+//                BookingCardController bookingCardController = fxmlLoader.getController();
+//                bookingCardController.setData();
+//                BookingsContainer.getChildren().add(card);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
 
     }
 }

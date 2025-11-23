@@ -2,6 +2,7 @@ package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.controller.user.admin.ModifyRoomController;
 import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.service.BookingService;
 import com.group13.roombookingsystem.service.RoomService;
 import javafx.event.ActionEvent;
@@ -40,6 +41,7 @@ public class RoomCardController implements Initializable {
     public List<LocalTime> list = new ArrayList<>();
 
     public Room room;
+    public User user;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
 
@@ -85,6 +87,7 @@ public class RoomCardController implements Initializable {
             addPaymentMethodStage.setScene(new Scene(loader.load()));
             PaymentInfoController controller = loader.getController();
             controller.setParentController(this);
+            controller.postInit();
             addPaymentMethodStage.show();
         }
     }

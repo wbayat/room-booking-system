@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" spacing="15.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.PaymentInfoController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="400.0" spacing="15.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.PaymentInfoController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -79,6 +79,13 @@
           </VBox>
       </children>
    </VBox>
+   <HBox>
+      <children>
+         <Label text="One hour’s fee ($" />
+         <Label fx:id="price" layoutX="10.0" layoutY="10.0" text="30" />
+         <Label layoutX="111.0" layoutY="10.0" text=") is charged upfront!" />
+      </children>
+   </HBox>
     <Pane prefHeight="200.0" prefWidth="200.0" />
     <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" spacing="10.0">
         <Button maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="170.0" text="Cancel" />
