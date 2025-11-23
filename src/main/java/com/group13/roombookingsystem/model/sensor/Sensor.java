@@ -12,6 +12,10 @@ import com.group13.roombookingsystem.model.room.Room;
 public class Sensor {
     private int sensorID;
 
+    public Sensor(int sensorId) {
+        this.sensorID = sensorId;
+    }
+
     /**
      * Check whether the given userId has a valid booking for the given roomId
      * at the current time. Returns true if a booking exists for that user and
@@ -26,7 +30,7 @@ public class Sensor {
         LocalTime nowTime = now.toLocalTime();
 
         //Check if the room is calling its associated sensor
-        if (this.sensorID != room.getSensorID()) {
+        if (this.sensorID != room.getSensorId()) {
             return false;
         }
 
@@ -59,5 +63,13 @@ public class Sensor {
         // Implementation for detecting occupancy, generates a random
         // integer between 0 and 15 for simulation purposes.
         return (int) (Math.random() * 16);
+    }
+
+    public void setSensorID(int sensorID) {
+        this.sensorID = sensorID;
+    }
+
+    public int getSensorID(){
+        return sensorID;
     }
 }
