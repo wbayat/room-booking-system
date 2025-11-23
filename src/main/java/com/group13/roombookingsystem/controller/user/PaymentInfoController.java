@@ -1,5 +1,12 @@
 package com.group13.roombookingsystem.controller.user;
 
+import com.group13.roombookingsystem.manager.SessionManager;
+import com.group13.roombookingsystem.model.payment.CreditCardPaymentStrategy;
+import com.group13.roombookingsystem.model.payment.DebitCardPaymentStrategy;
+import com.group13.roombookingsystem.model.payment.InstitutionalBillingPaymentStrategy;
+import com.group13.roombookingsystem.model.payment.PaymentStrategy;
+import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.service.BookingService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -21,6 +28,8 @@ public class PaymentInfoController implements Initializable {
     public TextField third;
     public Label forthLabel;
     public TextField forth;
+
+    private RoomCardController parentController;
 
     private final String[] types = {"Credit Card", "Debit Card", "Institutional Billing"};
 
@@ -63,11 +72,24 @@ public class PaymentInfoController implements Initializable {
             secondLabel.setText("Institution Account ID");
         }
     }
+    public PaymentStrategy getPaymentStrategy() {
+        String type = paymentMethodType.getValue();
 
+        return switch (type) {
+            case "Credit Card" ->
+                    new CreditCardPaymentStrategy(first.getText(), second.getText(), third.getText(), forth.getText());
+            case "Debit Card" -> new DebitCardPaymentStrategy(first.getText(), second.getText(), third.getText());
+            default -> new InstitutionalBillingPaymentStrategy(first.getText());
+        };
+    }
     public void handleAddPaymentMethod(ActionEvent actionEvent) {
-
-
+        PaymentStrategy paymentStrategy = getPaymentStrategy();
+        BookingService.getInstance().createBooking(SessionManager.currentUser, parentController.room, parentController.checkInDate.getValue(), parentController.checkinTime.getValue(), parentController.checkoutTime.getValue(), paymentStrategy);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    public void setParentController(RoomCardController parentController) {
+        this.parentController = parentController;
     }
 }
