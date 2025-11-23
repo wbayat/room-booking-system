@@ -29,6 +29,11 @@ public class RoomService extends RoomPublisher {
 
     private void init(){
         rooms = roomRepository.findAll();
+        for (Room r: rooms){
+            if (r.getSensor() == null){
+                r.setSensor(new Sensor(10000 + (int)(Math.random() * 90000)));
+            }
+        }
     }
 
     public void addRoom(String roomName, int capacity, String location, boolean hasProjector, boolean hasSpeakers, ArrayList<LocalDateTime> schedule, int sensorId) {

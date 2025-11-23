@@ -15,7 +15,7 @@
 
 <AnchorPane minHeight="600.0" minWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.SignupController">
     <VBox alignment="CENTER" prefHeight="400.0" prefWidth="250.0" style="-fx-background-color: #CC1631;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <Text id="hello" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Test Signup Page">
+        <Text id="hello" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Signup Page">
             <font>
                 <Font size="19.0" />
             </font>

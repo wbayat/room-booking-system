@@ -10,6 +10,7 @@ public final class ValidationUtils {
     private static final Pattern DIGIT_PATTERN = Pattern.compile(".*\\d.*");
     private static final Pattern SPECIAL_CHARACTER_PATTERN = Pattern.compile(".*[^A-Za-z0-9].*");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    private static final Pattern IDENTIFICATION_PATTERN = Pattern.compile("^\\d{9}$");
 
     private ValidationUtils() {
         // Utility class
@@ -41,6 +42,19 @@ public final class ValidationUtils {
         }
 
         return EMAIL_PATTERN.matcher(normalizedEmail).matches();
+    }
+
+    public static boolean isValidIdentification(String identification) {
+        if (identification == null) {
+            return false;
+        }
+
+        String normalizedIdentification = identification.trim();
+        if (normalizedIdentification.isEmpty()) {
+            return false;
+        }
+
+        return IDENTIFICATION_PATTERN.matcher(normalizedIdentification).matches();
     }
 }
 
