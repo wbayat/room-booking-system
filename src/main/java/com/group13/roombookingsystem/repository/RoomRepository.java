@@ -17,7 +17,7 @@ public class RoomRepository {
             INSERT INTO rooms(name, capacity, location)
             VALUES (?, ?, ?);
             """;
-    private static final String FIND_BY_Name = """
+    private static final String FIND_BY_NAME = """
             SELECT name, capacity, location
             FROM rooms
             WHERE name = ?;
@@ -43,7 +43,7 @@ public class RoomRepository {
 
     public Optional<Room> findById(int id) {
         try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_Name)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
