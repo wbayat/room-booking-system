@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainContainer" stylesheets="@../../styles/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mainContainer" stylesheets="@../../styles/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
     <center>
     </center>
     <left>
