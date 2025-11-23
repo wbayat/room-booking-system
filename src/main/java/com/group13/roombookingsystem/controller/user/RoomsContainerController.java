@@ -28,7 +28,9 @@ public class RoomsContainerController implements Initializable, RoomObserver {
         cardContainer.getChildren().clear();
 
         for (Room room : rooms) {
-            addCard(room);
+            if (room.isEnabled()){
+                addCard(room);
+            }
         }
     }
 
