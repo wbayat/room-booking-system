@@ -3,6 +3,7 @@ package com.group13.roombookingsystem.model.booking;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.group13.roombookingsystem.model.payment.PaymentStrategy;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.user.User;
 
@@ -16,6 +17,7 @@ public class Booking {
     private boolean hasCheckedIn;
     private int bookerID;
     private int roomID;
+    private PaymentStrategy paymentStrategy;
 
     public Booking(int bookerID, int roomID, LocalDate bookingDate, LocalTime startTime, LocalTime endTime) {
         this.bookerID = booker.getId();
@@ -25,6 +27,22 @@ public class Booking {
         this.endTime = endTime;
         this.depositAmount = booker.getHourlyRate();
         this.hasCheckedIn = false;
+    }
+
+    public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+
+    public boolean pay(double amount) {
+        if (paymentStrategy == null) {
+            System.out.println("No payment method selected.");
+            return false;
+        }
+        return paymentStrategy.pay(amount);
+    }
+
+    public PaymentStrategy getPaymentStrategy() {
+        return paymentStrategy;
     }
 
     public int getUserId() {
