@@ -1,5 +1,6 @@
 package com.group13.roombookingsystem.controller.user;
 
+import com.group13.roombookingsystem.controller.user.admin.ModifyRoomController;
 import com.group13.roombookingsystem.model.booking.Booking;
 import com.group13.roombookingsystem.service.BookingService;
 import javafx.event.ActionEvent;
@@ -46,10 +47,13 @@ public class BookingCardController {
     public void handleModifyBooking(ActionEvent actionEvent) throws IOException {
         if (modifyBookingStage == null || !modifyBookingStage.isShowing()){
             modifyBookingStage = new Stage();
-            modifyBookingStage.setResizable(false);
-            modifyBookingStage.setScene(new Scene(new FXMLLoader(getClass().getResource("/fxml/user/ModifyBookingCard.fxml")).load()));
             modifyBookingStage.setTitle("Modify Booking!");
-            modifyBookingStage.show();
+            modifyBookingStage.setResizable(false);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/ModifyBookingCard.fxml"));
+            modifyBookingStage.setScene(new Scene(loader.load()));
+            ModifyBookingController controller = loader.getController();
+            controller.booking = booking;
+            modifyBookingStage.showAndWait();
         }
     }
 
