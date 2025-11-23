@@ -14,7 +14,7 @@ import com.group13.roombookingsystem.model.room.RoomBuilder;
 
 public class RoomRepository {
     private static final String INSERT_ROOM = """
-            INSERT INTO rooms(name, capacity, location, enabled, hasProjector, hasSpeakers, sensor_id)
+            INSERT INTO rooms(name, capacity, location, sensor_id, hasProjector, hasSpeakers, enabled)
             VALUES (?, ?, ?, ?, ?, ?, ?);
             """;
     private static final String FIND_BY_NAME = """
