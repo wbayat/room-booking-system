@@ -88,4 +88,8 @@ public class Room {
     public int getSensorID() {
         return this.sensorId;
     }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 }

@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.controller.user.admin;
 
 import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.service.RoomService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -20,14 +21,14 @@ public class ModifyRoomController {
 
     private Room room;
 
-
     public void handleCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
 
     public void handleConfirm(ActionEvent actionEvent) {
-
+        RoomService.getInstance().modifyRoom(room, roomName.getText(), Integer.parseInt(roomCapacity.getText()), roomLocation.getText(), hasProjectors.isSelected(), hasSpeakers.isSelected());
+        handleCancel(actionEvent);
     }
 
     public void setData(Room room) {
