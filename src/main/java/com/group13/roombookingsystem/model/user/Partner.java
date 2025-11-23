@@ -3,8 +3,8 @@ package com.group13.roombookingsystem.model.user;
 public class Partner extends User {
     public static final int HOURLY_RATE = 50;
 
-    public Partner(String email, String password, String role, boolean verified) {
-        super(email, password, "Partner", true);
+    public Partner(String email, String password, int identification, String role, boolean verified) {
+        super(email, password, identification, "Partner", verified);
         setHourlyRate(HOURLY_RATE);
     }
 

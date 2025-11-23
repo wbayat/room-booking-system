@@ -3,42 +3,88 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" spacing="10.0" style="-fx-background-radius: 20; -fx-background-color: #D2D2D2;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.admin.AdminRoomCardController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" spacing="5.0" styleClass="room-card" stylesheets="@../../../styles/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.admin.AdminRoomCardController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Label fx:id="roomID" text="Room A">
-        <font>
-            <Font size="20.0" />
-        </font>
-    </Label>
-    <Label fx:id="roomLocation" layoutX="10.0" layoutY="10.0" text="Location: BRG">
-        <font>
-            <Font size="20.0" />
-        </font>
-    </Label>
-    <Label fx:id="roomCapacity" layoutX="10.0" layoutY="26.0" text="Capacity: 8">
-        <font>
-            <Font size="20.0" />
-        </font>
-    </Label>
+   <HBox>
+      <children>
+          <Label fx:id="roomName" text="Room A">
+              <font>
+                  <Font name="System Bold" size="20.0" />
+              </font>
+          </Label>
+         <Pane HBox.hgrow="ALWAYS" />
+         <HBox spacing="5.0">
+            <children>
+               <ImageView fx:id="projectorIcon" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../images/projector.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="speakerIcon" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../images/speaker.png" />
+                  </image>
+               </ImageView>
+            </children>
+         </HBox>
+      </children>
+   </HBox>
+    <HBox>
+        <Label layoutX="10.0" layoutY="10.0" text="Location: ">
+           <font>
+               <Font size="17.0" />
+           </font>
+        </Label>
+        <Label fx:id="roomLocation" text="BRG">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
+    </HBox>
+    <HBox layoutX="30.0" layoutY="60.0">
+        <Label layoutX="10.0" layoutY="10.0" text="Capacity: ">
+           <font>
+               <Font size="17.0" />
+           </font>
+        </Label>
+        <Label fx:id="roomCapacity" text="8">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
+    </HBox>
+    <HBox layoutX="30.0" layoutY="86.0">
+        <Label layoutX="10.0" layoutY="10.0" text="SensorID: ">
+           <font>
+               <Font size="17.0" />
+           </font>
+        </Label>
+        <Label fx:id="sensorID" text="123">
+           <font>
+               <Font size="17.0" />
+           </font>
+        </Label>
+    </HBox>
     <Pane VBox.vgrow="ALWAYS" />
     <HBox alignment="CENTER" prefHeight="40.0" prefWidth="260.0" spacing="3.0">
-      <children>
-          <Button fx:id="toggleEnabled" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" styleClass="primary-button" text="Disable" textFill="WHITE">
-              <font>
-                  <Font size="15.0" />
-              </font>
-         </Button>
-         <Button layoutX="78.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" styleClass="secondary-button" text="Modify" textFill="WHITE">
+        <Button fx:id="toggleEnabled" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleDisableRoom" prefHeight="40.0" prefWidth="120.0" styleClass="primary-button" text="Disable" textFill="WHITE">
             <font>
-               <Font size="15.0" />
+                <Font size="15.0" />
             </font>
-         </Button>
-      </children></HBox>
+        </Button>
+        <Button layoutX="78.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleModifyRoom" prefHeight="40.0" prefWidth="120.0" styleClass="secondary-button" text="Modify" textFill="WHITE">
+           <font>
+               <Font size="15.0" />
+           </font>
+        </Button>
+    </HBox>
 </VBox>

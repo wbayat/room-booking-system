@@ -17,7 +17,7 @@ public class SessionManager {
     private AnchorPane loginView;
     private AnchorPane signupView;
     private UserView userView;
-    private User currentUser;
+    public User currentUser;
 
     public SessionManager(Stage stage) {
         this.stage = stage;
@@ -72,7 +72,6 @@ public class SessionManager {
 
     public void showUserView() throws IOException {
         if (userView == null){
-            System.out.println(currentUser.getRole());
             userView = ViewFactory.createUserView(currentUser);
             userView.getController().setSceneManager(this);
             userView.getController().postInit();

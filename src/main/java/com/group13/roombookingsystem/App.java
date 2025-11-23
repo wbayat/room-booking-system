@@ -1,7 +1,7 @@
 package com.group13.roombookingsystem;
 
-import com.group13.roombookingsystem.repository.Database;
 import com.group13.roombookingsystem.manager.SessionManager;
+import com.group13.roombookingsystem.repository.Database;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -9,8 +9,7 @@ import javafx.stage.Stage;
 public class App extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Database.initialize();
+        Database.getInstance();
         new SessionManager(new Stage()).initStage();
     }
-
 }

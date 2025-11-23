@@ -7,31 +7,29 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.admin.chief.AdminsContainerController">
     <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="650.0">
         <padding>
-            <Insets left="20.0" />
+            <Insets left="20.0" right="10.0" />
         </padding>
         <Label text="Admins">
             <font>
                 <Font size="30.0" />
             </font>
         </Label>
+      <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+      <Button mnemonicParsing="false" onAction="#handleAddAdmin" prefHeight="35.0" text="Add New Admin">
+         <padding>
+            <Insets left="15.0" right="15.0" />
+         </padding>
+      </Button>
     </HBox>
    <Separator prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-   <HBox alignment="CENTER" layoutY="50.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-      <children>
-         <Button mnemonicParsing="false" onAction="#handleAddAdmin" prefHeight="40.0" text="Add New Admin">
-            <padding>
-               <Insets left="20.0" right="20.0" />
-            </padding>
-         </Button>
-      </children>
-   </HBox>
-    <ScrollPane fitToWidth="true" layoutX="6.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+    <ScrollPane fitToWidth="true" layoutX="6.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
         <content>
             <VBox fx:id="adminsContainer" spacing="10.0">
                 <padding>

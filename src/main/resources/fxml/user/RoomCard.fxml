@@ -6,72 +6,115 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" spacing="10.0" style="-fx-background-radius: 10; -fx-background-color: #D2D2D2; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0.2, 5, 5);;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.RoomCardController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" spacing="10.0" styleClass="room-card" stylesheets="@../../styles/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.RoomCardController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" VBox.vgrow="ALWAYS">
-      <children>
-          <Label fx:id="roomID" style="-fx-line-spacing: 20;" text="Room A">
-              <font>
-                <Font name="System Bold" size="20.0" />
-              </font>
-          </Label>
-          <Label fx:id="roomLocation" text="Location: BRG" textFill="#404040">
-              <font>
-                <Font size="18.0" />
-              </font>
-          </Label>
-          <Label fx:id="roomCapacity" text="Capacity: 8" textFill="#404040">
-              <font>
-                <Font size="18.0" />
-              </font>
-          </Label>
-      </children>
-   </VBox>
-   <VBox alignment="CENTER_LEFT" spacing="5.0">
-      <children>
-         <Label text="Date" textFill="#404040">
-            <font>
-               <Font size="14.0" />
-            </font>
-         </Label>
-          <DatePicker fx:id="checkInDate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="35.0">
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor></DatePicker>
-      </children>
-   </VBox>
-   <VBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="177.0" spacing="5.0">
-      <children>
-         <Label text="Check-in Time" textFill="#404040">
-            <font>
-               <Font size="14.0" />
-            </font>
-         </Label>
-           <ComboBox fx:id="checkinTime" maxWidth="1.7976931348623157E308" minHeight="35.0" promptText="Select time">
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor></ComboBox>
-      </children>
-   </VBox>
-   <VBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="227.0" spacing="5.0">
-      <children>
-         <Label text="Check-out Time" textFill="#404040">
-            <font>
-               <Font size="14.0" />
-            </font>
-         </Label>
-           <ComboBox fx:id="checkoutTime" maxWidth="1.7976931348623157E308" minHeight="35.0" promptText="Select time">
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor></ComboBox>
-      </children>
-   </VBox>
-    <Button fx:id="bookButton" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" styleClass="primary-button" text="Book" textFill="WHITE">
+    <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" VBox.vgrow="ALWAYS">
+      <HBox spacing="15.0">
+         <children>
+              <Label fx:id="roomID" style="-fx-line-spacing: 20;" text="Room A">
+                  <font>
+                    <Font name="System Bold" size="20.0" />
+                  </font>
+              </Label>
+            <Pane HBox.hgrow="ALWAYS" />
+            <HBox fx:id="iconBox" alignment="CENTER" spacing="5.0">
+               <children>
+                  <ImageView fx:id="projectorIcon" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/projector.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="speakerIcon" fitWidth="25.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/speaker.png" />
+                     </image>
+                  </ImageView>
+               </children></HBox>
+         </children>
+      </HBox>
+        <HBox>
+            <Label layoutX="10.0" layoutY="10.0" text="Location: " textFill="#404040">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+            <Label fx:id="roomLocation" text="BRG" textFill="#404040">
+                <font>
+                  <Font size="16.0" />
+                </font>
+            </Label>
+        </HBox>
+        <HBox layoutX="10.0" layoutY="39.0">
+            <Label layoutX="10.0" layoutY="10.0" text="Capacity: " textFill="#404040">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+            <Label fx:id="roomCapacity" text="8" textFill="#404040">
+                <font>
+                  <Font size="16.0" />
+                </font>
+            </Label>
+        </HBox>
+        <HBox layoutX="10.0" layoutY="64.0">
+            <Label layoutX="10.0" layoutY="10.0" text="SensorID: " textFill="#404040">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+            <Label fx:id="sensorID" text="123" textFill="#404040">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+        </HBox>
+    </VBox>
+    <VBox alignment="CENTER_LEFT" spacing="5.0">
+        <Label text="Date" textFill="#404040">
+           <font>
+               <Font name="System Bold" size="14.0" />
+           </font>
+        </Label>
+        <DatePicker fx:id="checkInDate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="35.0">
+          <cursor>
+              <Cursor fx:constant="HAND" />
+          </cursor>
+        </DatePicker>
+    </VBox>
+    <VBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="177.0" spacing="5.0">
+        <Label text="Check-in Time" textFill="#404040">
+           <font>
+               <Font name="System Bold" size="14.0" />
+           </font>
+        </Label>
+        <ComboBox fx:id="checkinTime" maxWidth="1.7976931348623157E308" minHeight="35.0" promptText="Select time">
+         <cursor>
+             <Cursor fx:constant="HAND" />
+         </cursor>
+        </ComboBox>
+    </VBox>
+    <VBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="227.0" spacing="5.0">
+        <Label text="Check-out Time" textFill="#404040">
+           <font>
+               <Font name="System Bold" size="14.0" />
+           </font>
+        </Label>
+        <ComboBox fx:id="checkoutTime" maxWidth="1.7976931348623157E308" minHeight="35.0" promptText="Select time">
+         <cursor>
+             <Cursor fx:constant="HAND" />
+         </cursor>
+        </ComboBox>
+    </VBox>
+    <Button maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleBookRoom" styleClass="primary-button" text="Book" textFill="WHITE">
       <font>
          <Font size="15.0" />
       </font>

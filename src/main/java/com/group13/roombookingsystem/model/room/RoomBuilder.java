@@ -1,27 +1,26 @@
 package com.group13.roombookingsystem.model.room;
 
+import com.group13.roombookingsystem.model.sensor.Sensor;
+
 interface RoomBuilderContract {
     void reset();
     void setRoomID(int roomId);
     void setRoomName(String roomName);
     void setCapacity(int capacity);
     void setLocation(String location);
+    void setEnabled(boolean enabled);
     void setHasProjector(boolean hasProjector);
     void setHasSpeakers(boolean hasSpeakers);
+    void setSchedule(java.util.ArrayList<java.time.LocalDateTime> schedule);
+    void setSensor(Sensor sensor);
 }
 
 public class RoomBuilder implements RoomBuilderContract {
     private Room result;
 
-
     @Override
     public void reset() {
         result = new Room();
-    }
-
-    @Override
-    public void setRoomID(int roomId) {
-        result.setRoomID(roomId);
     }
 
     @Override
@@ -40,6 +39,11 @@ public class RoomBuilder implements RoomBuilderContract {
     }
 
     @Override
+    public void setEnabled(boolean enabled) {
+        result.setEnabled(enabled);
+    }
+
+    @Override
     public void setHasProjector(boolean hasProjector) {
         result.setHasProjector(hasProjector);
     }
@@ -49,9 +53,24 @@ public class RoomBuilder implements RoomBuilderContract {
         result.setHasSpeakers(hasSpeakers);
     }
 
+    @Override
+    public void setRoomID(int roomId) {
+        result.setRoomId(roomId);
+    }
+
     public Room getProduct() {
         Room built = result;
         reset();
         return built;
+    }
+
+    @Override
+    public void setSchedule(java.util.ArrayList<java.time.LocalDateTime> schedule) {
+        result.setSchedule(schedule);
+    }
+
+    @Override
+    public void setSensor(Sensor sensor) {
+        result.setSensor(sensor);
     }
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="400.0" spacing="15.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.PaymentInfoController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <Label text="Add A Payment Method">
+        <font>
+            <Font size="20.0" />
+        </font>
+    </Label>
+   <ComboBox fx:id="paymentMethodType" minHeight="40.0" onAction="#changeType" prefHeight="40.0" prefWidth="219.0" promptText="Payment Type">
+      <VBox.margin>
+         <Insets left="5.0" />
+      </VBox.margin>
+   </ComboBox>
+   <VBox spacing="15.0">
+      <children>
+         <VBox spacing="5.0">
+            <padding>
+               <Insets left="5.0" right="5.0" />
+            </padding>
+            <children>
+               <Label fx:id="firstLabel" text="Card Holder Name">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <TextField fx:id="first" minHeight="40.0" />
+            </children>
+         </VBox>
+          <VBox spacing="5.0">
+              <VBox.margin>
+                  <Insets />
+              </VBox.margin>
+              <padding>
+                  <Insets left="5.0" right="5.0" />
+              </padding>
+              <Label fx:id="secondLabel" text="Credit Card Number">
+                  <font>
+                      <Font name="System Bold" size="14.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="second" minHeight="40.0" />
+          </VBox>
+          <VBox spacing="5.0">
+              <padding>
+                  <Insets left="5.0" right="5.0" />
+              </padding>
+              <Label fx:id="thirdLabel" text="Expiration Date">
+                  <font>
+                      <Font name="System Bold" size="14.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="third" minHeight="40.0" />
+          </VBox>
+          <VBox spacing="5.0">
+              <padding>
+                  <Insets left="5.0" right="5.0" />
+              </padding>
+              <children>
+                  <Label fx:id="forthLabel" text="CVV">
+                      <font>
+                          <Font name="System Bold" size="14.0" />
+                      </font>
+                  </Label>
+                  <TextField fx:id="forth" minHeight="40.0" />
+              </children>
+          </VBox>
+      </children>
+   </VBox>
+   <HBox>
+      <children>
+         <Label text="One hour’s fee ($" />
+         <Label fx:id="price" layoutX="10.0" layoutY="10.0" text="30" />
+         <Label layoutX="111.0" layoutY="10.0" text=") is charged upfront!" />
+      </children>
+   </HBox>
+    <Pane prefHeight="200.0" prefWidth="200.0" />
+    <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" spacing="10.0">
+        <Button maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="170.0" text="Cancel" />
+        <Button layoutX="115.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#handleAddPaymentMethod" prefWidth="170.0" text="Add" />
+    </HBox>
+</VBox>

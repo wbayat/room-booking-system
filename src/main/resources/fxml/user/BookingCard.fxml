@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="170.0" maxWidth="1.7976931348623157E308" prefWidth="630.0" style="-fx-background-color: #D2D2D2; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.BookingCardController">
+<AnchorPane maxHeight="170.0" maxWidth="1.7976931348623157E308" prefWidth="630.0" style="-fx-background-color: #D2D2D2; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group13.roombookingsystem.controller.user.BookingCardController">
     <VBox alignment="CENTER_LEFT" prefWidth="420.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
         <children>
             <Label text="Booking Details">
@@ -16,11 +16,25 @@
                     <Font name="System Bold" size="20.0" />
                 </font>
             </Label>
-            <Label fx:id="RoomID" layoutX="25.0" layoutY="25.0" text="Room A - BRG">
-                <font>
-                    <Font size="18.0" />
-                </font>
-            </Label>
+         <HBox spacing="6.0">
+            <children>
+                  <Label fx:id="RoomName" text="Room A">
+                      <font>
+                          <Font size="18.0" />
+                      </font>
+                  </Label>
+               <Label layoutX="10.0" layoutY="10.0" text="-">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+               <Label fx:id="RoomLocation" layoutX="10.0" layoutY="10.0" text="BRG">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+            </children>
+         </HBox>
             <Label fx:id="checkinDate" layoutX="25.0" layoutY="55.0" text="November 20, 2025">
                 <font>
                     <Font size="18.0" />
@@ -65,12 +79,12 @@
     </VBox>
     <VBox alignment="CENTER" layoutX="406.0" prefWidth="210.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
         <children>
-            <Button maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleExtend" styleClass="secondary-button" text="Extend">
+            <Button fx:id="modifyButton" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleModifyBooking" styleClass="secondary-button" text="Modify">
                 <font>
                     <Font size="18.0" />
                 </font>
             </Button>
-            <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleCancel" styleClass="primary-button" text="Cancel" textFill="WHITE">
+            <Button fx:id="cancelButton" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleCancelBooking" styleClass="primary-button" text="Cancel">
                 <font>
                     <Font size="18.0" />
                 </font>

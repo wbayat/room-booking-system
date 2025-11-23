@@ -1,9 +1,11 @@
 package com.group13.roombookingsystem.controller;
 
 import com.group13.roombookingsystem.exception.UserNotFoundException;
+import com.group13.roombookingsystem.exception.UserNotVerifiedExeption;
 import com.group13.roombookingsystem.manager.SessionManager;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.service.UserService;
+import com.group13.roombookingsystem.utilities.ValidationUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,11 +25,24 @@ public class LoginController {
 
     public void hangleLogin(ActionEvent mouseEvent) throws IOException {
 
+        String email = emailTextField.getText();
+        String password = passwordTextField.getText();
+
+        if (!ValidationUtils.isValidEmail(email)) {
+            errorLabel.setText("Please enter a valid email address.");
+            return;
+        }
+
+        if (password == null || password.isEmpty()) {
+            errorLabel.setText("Password cannot be empty.");
+            return;
+        }
+
         try{
-            User user = UserService.getInstance().login(emailTextField.getText(), passwordTextField.getText());
+            User user = UserService.getInstance().login(email.trim(), password);
             sessionManager.setCurrentUser(user);
             sessionManager.showUserView();
-        } catch (UserNotFoundException e){
+        } catch (UserNotFoundException | UserNotVerifiedExeption e){
             errorLabel.setText(e.getMessage());
         } finally {
             emailTextField.setText("");

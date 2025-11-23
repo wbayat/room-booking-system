@@ -18,11 +18,11 @@ import com.group13.roombookingsystem.model.user.Student;
 import com.group13.roombookingsystem.model.user.User;
 
 public class UserRepository {
-    private static final String INSERT_USER = "INSERT INTO users(username, password, role, is_verified) VALUES (?, ?, ?, ?);";
-    private static final String FIND_BY_USERNAME = "SELECT id, username, password, role, is_verified FROM users WHERE username = ?;";
-    private static final String FIND_BY_ID = "SELECT id, username, password, role, is_verified FROM users WHERE id = ?;";
-    private static final String FIND_ALL = "SELECT id, username, password, role, is_verified FROM users WHERE LOWER(role) <> 'admin' ORDER BY username;";
-    private static final String FIND_BY_VERIFICATION = "SELECT id, username, password, role, is_verified FROM users WHERE is_verified = ? AND LOWER(role) <> 'admin' ORDER BY username;";
+    private static final String INSERT_USER = "INSERT INTO users(username, password, identification, role, is_verified) VALUES (?, ?, ?, ?, ?);";
+    private static final String FIND_BY_USERNAME = "SELECT id, username, password, identification, role, is_verified FROM users WHERE username = ?;";
+    private static final String FIND_BY_ID = "SELECT id, username, password, identification, role, is_verified FROM users WHERE id = ?;";
+    private static final String FIND_ALL = "SELECT id, username, password, identification, role, is_verified FROM users ORDER BY username;";
+    private static final String FIND_BY_VERIFICATION = "SELECT id, username, password, identification, role, is_verified FROM users WHERE is_verified = ? AND LOWER(role) <> 'admin' ORDER BY username;";
     private static final String UPDATE_VERIFICATION = "UPDATE users SET is_verified = CASE WHEN LOWER(role) IN ('partner','admin','chiefeventcoordinator') THEN 1 ELSE ? END WHERE id = ?;";
 
     public User create(User user) {
@@ -32,8 +32,9 @@ public class UserRepository {
 
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
-            statement.setString(3, user.getRole());
-            statement.setInt(4, user.getVerifiedValue());
+            statement.setInt(3, user.getVerificationNumber());
+            statement.setString(4, user.getRole());
+            statement.setInt(5, user.getVerifiedValue());
             statement.executeUpdate();
 
             return user;
@@ -130,31 +131,31 @@ public class UserRepository {
 
         switch (role) {
             case "Student":
-                user = new Student(resultSet.getString("username"), resultSet.getString("password"), "Student", verified);
+                user = new Student(resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("identification"), role, verified);
                 break;
 
             case "Faculty":
-                user = new Faculty(resultSet.getString("username"), resultSet.getString("password"), "Faculty", verified);
+                user = new Faculty(resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("identification"), role, verified);
                 break;
 
             case "Staff":
-                user = new Staff(resultSet.getString("username"), resultSet.getString("password"), "Staff", verified);
+                user = new Staff(resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("identification"), role, verified);
                 break;
 
             case "Partner":
-                user = new Partner(resultSet.getString("username"), resultSet.getString("password"), "Partner", verified);
+                user = new Partner(resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("identification"), role, verified);
                 break;
 
             case "Admin":
-                user = new Admin(resultSet.getString("username"), resultSet.getString("password"), "Admin", verified);
+                user = new Admin(resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("identification"), role, verified);
                 break;
 
             case "ChiefEventCoordinator":
-                user = new ChiefEventCoordinator(resultSet.getString("username"), resultSet.getString("password"), "ChiefEventCoordinator", verified);
+                user = new ChiefEventCoordinator(resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("identification"), role, verified);
                 break;
 
             default:
-                user = new Student(resultSet.getString("username"), resultSet.getString("password"), "Student", verified);
+                user = new Student(resultSet.getString("username"), resultSet.getString("password"), resultSet.getInt("identification"), role, verified);
         }
 
         setUserIdFromDatabase(user, resultSet);

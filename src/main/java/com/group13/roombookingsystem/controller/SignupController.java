@@ -1,8 +1,8 @@
 package com.group13.roombookingsystem.controller;
 
 import com.group13.roombookingsystem.manager.SessionManager;
-import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.service.UserService;
+import com.group13.roombookingsystem.utilities.ValidationUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -14,34 +14,31 @@ import java.util.ResourceBundle;
 
 public class SignupController implements Initializable{
     private SessionManager sessionManager;
-    public TextField nameTextField;
     public Button SignUpButton;
     public Label signUpLabel;
     public Label errorLabel;
     public PasswordField confirmPasswordTextField;
     public TextField emailTextField;
     public PasswordField passwordTextField;
+    public TextField identificationField;
     public ComboBox<String> accountTypeComboBox;
     private final String[] accountTypes = {"Student", "Faculty", "Staff", "Partner"};
 
     public void hangleSignUp(ActionEvent actionEvent) {
         errorLabel.setStyle("-fx-text-fill: red;");
         String accountType = accountTypeComboBox.getValue();
-        String name = nameTextField.getText().trim();
-        String email = emailTextField.getText().trim();
+        String email = emailTextField.getText();
         String password = passwordTextField.getText();
         String confirmPassword = confirmPasswordTextField.getText();
+        String identificationText = identificationField.getText().trim();
+        int identification;
 
-        if (name.isEmpty()) {
-            errorLabel.setText("Please enter your name.");
+        if (!ValidationUtils.isValidEmail(email)) {
+            errorLabel.setText("Please enter a valid email address.");
             return;
         }
-        if (email.isEmpty()) {
-            errorLabel.setText("Please enter a valid email.");
-            return;
-        }
-        if (password.isEmpty()) {
-            errorLabel.setText("Password cannot be empty.");
+        if (!ValidationUtils.isValidPassword(password)) {
+            errorLabel.setText("Password must be at least 8 characters long and include uppercase, lowercase, digit, and special character.");
             return;
         }
         if (!password.equals(confirmPassword)) {
@@ -53,11 +50,22 @@ public class SignupController implements Initializable{
             return;
         }
 
+        if (identificationText.isEmpty()) {
+            errorLabel.setText("Please enter a valid identification.");
+            return;
+        }
+
         try {
-            UserService.getInstance().registerUser(new User(email, password, accountType, false));
+            identification = Integer.parseInt(identificationText);
+        } catch (NumberFormatException exception) {
+            errorLabel.setText("Identification must be a number.");
+            return;
+        }
+
+        try {
+            UserService.getInstance().registerUser(email.trim(), password, identification, accountType, accountType.equals("Partner"));
             errorLabel.setStyle("-fx-text-fill: green;");
             errorLabel.setText("Account created successfully. Redirecting to login...");
-            nameTextField.clear();
             emailTextField.clear();
             passwordTextField.clear();
             confirmPasswordTextField.clear();

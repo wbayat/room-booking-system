@@ -1,27 +1,38 @@
 package com.group13.roombookingsystem.model.user;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.group13.roombookingsystem.model.booking.Booking;
+
 public class User {
     private String email;
     private String password;
     private String role;
     private boolean verified;
     private int hourlyRate;
+    private int identification;
 
-    public User(String email, String password, String role, boolean verified) {
+    private ArrayList<Booking> bookings;
+
+    public User(String email, String password, int identification, String role, boolean verified) {
         this.email = email;
         this.password = password;
+        this.identification = identification;
         this.role = role;
         this.verified = verified;
+        this.bookings = new ArrayList<>();
     }
 
     // only for linking database and cardControllers
-    private int id;
+    private int DatabaseId;
 
     public int getId() {
-        return id;
+        return DatabaseId;
     }
     public void setId(int id) {
-        this.id = id;
+        this.DatabaseId = id;
     }
 
     // i wanna change this to getEmail but userService uses username soooo 
@@ -67,5 +78,25 @@ public class User {
 
     public void setHourlyRate(int hourlyRate) {
         this.hourlyRate = hourlyRate;
+    }
+
+    public int getVerificationNumber() {
+        return identification;
+    }
+
+    public void setVerificationNumber(int identification) {
+        this.identification = identification;
+    }
+
+    public void addBooking(Booking b) {
+        bookings.add(b);
+    }
+
+    public void removeBooking(Booking target) {
+        bookings.removeIf(booking -> booking.equals(target));
+    }
+
+    public List<Booking> getBookings(){
+        return this.bookings;
     }
 }
