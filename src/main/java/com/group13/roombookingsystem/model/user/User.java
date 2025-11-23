@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.model.user;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.group13.roombookingsystem.model.booking.Booking;
 
@@ -20,6 +21,7 @@ public class User {
         this.identification = identification;
         this.role = role;
         this.verified = verified;
+        this.bookings = new ArrayList<>();
     }
 
     // only for linking database and cardControllers
@@ -97,5 +99,9 @@ public class User {
             }
         }
 
+    }
+
+    public List<Booking> getBookings(){
+        return this.bookings;
     }
 }
