@@ -1,14 +1,19 @@
 package com.group13.roombookingsystem.controller.user;
 
+import com.group13.roombookingsystem.controller.user.admin.ModifyRoomController;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.service.BookingService;
 import com.group13.roombookingsystem.service.RoomService;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,6 +34,8 @@ public class RoomCardController implements Initializable {
     public HBox iconBox;
     public ImageView projectorIcon;
     public ImageView speakerIcon;
+
+    private Stage addPaymentMethodStage;
 
     public List<LocalTime> list = new ArrayList<>();
 
@@ -69,7 +76,15 @@ public class RoomCardController implements Initializable {
         }
     }
 
-    public void handleBookRoom(ActionEvent actionEvent) {
-//        BookingService.getInstance().
+    public void handleBookRoom(ActionEvent actionEvent) throws IOException {
+        if (addPaymentMethodStage == null || !addPaymentMethodStage.isShowing()){
+            addPaymentMethodStage = new Stage();
+            addPaymentMethodStage.setResizable(false);
+            addPaymentMethodStage.setTitle("Add A Payment Method!");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/PaymentInfo.fxml"));
+            addPaymentMethodStage.setScene(new Scene(loader.load()));
+            PaymentInfoController controller = loader.getController();
+            addPaymentMethodStage.show();
+        }
     }
 }
