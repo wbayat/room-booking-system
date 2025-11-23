@@ -22,11 +22,6 @@ public class RoomRepository {
             FROM rooms
             WHERE name = ?;
             """;
-    private static final String FIND_ALL = """
-            SELECT name, capacity, location
-            FROM rooms
-            ORDER BY name;
-            """;
 
     public void create(Room room) {
         try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_ROOM, Statement.RETURN_GENERATED_KEYS)) {
@@ -63,15 +58,19 @@ public class RoomRepository {
     }
 
     public List<Room> findAll() {
+        final String sql = "SELECT id, name, capacity, location, has_projector, has_speakers, is_enabled, sensorId FROM rooms ORDER BY name;";
         try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_ALL);
+             PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
+            
             List<Room> rooms = new ArrayList<>();
             while (resultSet.next()) {
                 rooms.add(mapRow(resultSet));
             }
             return rooms;
-        } catch (SQLException e) {
+        } 
+        
+        catch (SQLException e) {
             throw new IllegalStateException("Unable to fetch rooms", e);
         }
     }
