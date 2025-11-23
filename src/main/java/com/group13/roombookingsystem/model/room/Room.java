@@ -1,5 +1,7 @@
 package com.group13.roombookingsystem.model.room;
 
+import com.group13.roombookingsystem.model.sensor.Sensor;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -11,7 +13,7 @@ public class Room {
     private boolean hasSpeakers;
     private boolean isEnabled;
     private ArrayList<LocalDateTime> schedule;
-    private int sensorId; // sensor ID for IoT integration for sensor class
+    private Sensor sensor;
 
      // link database ID to room
     private int DatabaseId;
@@ -25,11 +27,11 @@ public class Room {
     }
 
     public int getSensorId() {
-        return sensorId;
+        return sensor.getSensorID();
     }
 
-    public void setSensorId(int sensorId) {
-        this.sensorId = sensorId;
+    public void setSensorId(int id) {
+        sensor.setSensorID(id);
     }
 
     public String getRoomName() {
@@ -89,7 +91,11 @@ public class Room {
         this.schedule = schedule;
     }
 
-    public int getSensorID() {
-        return this.sensorId;
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 }

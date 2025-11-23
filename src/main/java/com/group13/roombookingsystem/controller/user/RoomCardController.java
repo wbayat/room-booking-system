@@ -58,7 +58,7 @@ public class RoomCardController implements Initializable {
         roomID.setText(room.getRoomName());
         roomLocation.setText(room.getLocation());
         roomCapacity.setText(String.valueOf(room.getCapacity()));
-        sensorID.setText(String.valueOf(room.getSensorID()));
+        sensorID.setText(String.valueOf(room.getSensorId()));
         checkinTime.getItems().addAll(list);
         checkoutTime.getItems().addAll(list);
         if (!room.getHasProjector()){
