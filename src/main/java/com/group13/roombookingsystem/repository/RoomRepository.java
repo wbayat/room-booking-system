@@ -14,8 +14,8 @@ import com.group13.roombookingsystem.model.room.RoomBuilder;
 
 public class RoomRepository {
     private static final String INSERT_ROOM = """
-            INSERT INTO rooms(name, capacity, location)
-            VALUES (?, ?, ?);
+            INSERT INTO rooms(name, capacity, location, enabled, hasProjector, hasSpeakers, sensor_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?);
             """;
     private static final String FIND_BY_NAME = """
             SELECT name, capacity, location
@@ -29,12 +29,16 @@ public class RoomRepository {
             """;
 
     public void create(Room room) {
-        try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_ROOM, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_ROOM, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, room.getRoomName());
             statement.setInt(2, room.getCapacity());
             statement.setString(3, room.getLocation());
-        } 
+            statement.setBoolean(4, room.isEnabled());
+            statement.setBoolean(5, room.getHasProjector());
+            statement.setBoolean(6, room.getHasSpeakers());
+            statement.setInt(7, room.getSensorId());
+            statement.executeUpdate();
+        }
         
         catch (SQLException e) {
             throw new IllegalStateException("Unable to create room", e);
@@ -42,16 +46,18 @@ public class RoomRepository {
     }
 
     public Optional<Room> findById(int id) {
-        try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME)) {
+        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME)) {
             statement.setInt(1, id);
+            
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return Optional.of(mapRow(resultSet));
                 }
                 return Optional.empty();
             }
-        } catch (SQLException e) {
+        } 
+        
+        catch (SQLException e) {
             throw new IllegalStateException("Unable to fetch room by id", e);
         }
     }

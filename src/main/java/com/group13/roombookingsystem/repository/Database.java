@@ -27,6 +27,7 @@ public final class Database {
             " name TEXT NOT NULL," +
             " capacity INTEGER NOT NULL," +
             " location TEXT NOT NULL," +
+            " sensorId INT NOT NULL," +
             " has_projector INTEGER NOT NULL DEFAULT 0," +
             " has_speakers INTEGER NOT NULL DEFAULT 0," +
             " is_enabled INTEGER NOT NULL DEFAULT 1" +
