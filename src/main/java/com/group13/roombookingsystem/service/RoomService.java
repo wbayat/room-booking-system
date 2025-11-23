@@ -35,6 +35,7 @@ public class RoomService extends RoomPublisher {
         this.roomBuilder.setRoomName(roomName);
         this.roomBuilder.setCapacity(capacity);
         this.roomBuilder.setLocation(location);
+        this.roomBuilder.setEnabled(true);
         this.roomBuilder.setHasProjector(hasProjector);
         this.roomBuilder.setHasSpeakers(hasSpeakers);
         this.roomBuilder.setSchedule(schedule);
@@ -48,7 +49,7 @@ public class RoomService extends RoomPublisher {
     }
 
     public void disableRoom(Room room) {
-        room.setDisabled(true); // Assuming Room has a setDisabled method
+        room.setEnabled(!room.isEnabled()); // Assuming Room has a setDisabled method
 //        roomRepository.update(room); // Assuming RoomRepository has an update method
         this.notifyUpdate();
     }

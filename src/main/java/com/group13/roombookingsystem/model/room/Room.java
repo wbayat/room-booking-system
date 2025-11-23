@@ -72,10 +72,14 @@ public class Room {
         this.hasSpeakers = hasSpeakers;
     }
 
-    // add to support RoomService.disableRoom(Room)
-    public void setDisabled(boolean disabled) {
-        this.isEnabled = !disabled;
+    public boolean isEnabled() {
+        return isEnabled;
     }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
     // add for schedule parameter recently introduced
     public ArrayList<LocalDateTime> getSchedule() {
         return schedule;
@@ -87,9 +91,5 @@ public class Room {
 
     public int getSensorID() {
         return this.sensorId;
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
     }
 }
