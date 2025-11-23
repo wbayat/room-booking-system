@@ -1,5 +1,5 @@
 package com.group13.roombookingsystem.service.observer;
 
-public interface RoomObserver {
+public interface Observer {
     void onUpdate();
 }

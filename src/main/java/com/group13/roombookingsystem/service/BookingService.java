@@ -5,13 +5,14 @@ import com.group13.roombookingsystem.model.payment.PaymentStrategy;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.BookingRepository;
+import com.group13.roombookingsystem.service.observer.Publisher;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookingService {
+public class BookingService extends Publisher {
 
     private static BookingService instance;
     private BookingRepository bookingRepository;

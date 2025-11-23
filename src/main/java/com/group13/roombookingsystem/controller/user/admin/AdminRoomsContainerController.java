@@ -1,9 +1,8 @@
 package com.group13.roombookingsystem.controller.user.admin;
 
-import com.group13.roombookingsystem.controller.user.RoomCardController;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.service.RoomService;
-import com.group13.roombookingsystem.service.observer.RoomObserver;
+import com.group13.roombookingsystem.service.observer.Observer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +16,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AdminRoomsContainerController implements Initializable, RoomObserver {
+public class AdminRoomsContainerController implements Initializable, Observer {
     public FlowPane cardContainer;
     private Stage addRoomStage;
 
