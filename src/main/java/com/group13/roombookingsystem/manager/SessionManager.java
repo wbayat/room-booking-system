@@ -17,7 +17,7 @@ public class SessionManager {
     private AnchorPane loginView;
     private AnchorPane signupView;
     private UserView userView;
-    private User currentUser;
+    public static User currentUser;
 
     public SessionManager(Stage stage) {
         this.stage = stage;
