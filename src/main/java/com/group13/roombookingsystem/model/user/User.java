@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.model.user;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.group13.roombookingsystem.model.booking.Booking;
@@ -91,14 +92,8 @@ public class User {
         bookings.add(b);
     }
 
-    public void removeBooking(Booking b) {
-
-        for(Booking b1 : bookings) {
-            if(b.getBookingID() == b1.getBookingID()) {
-                bookings.remove(b);
-            }
-        }
-
+    public void removeBooking(Booking target) {
+        bookings.removeIf(booking -> booking.equals(target));
     }
 
     public List<Booking> getBookings(){
