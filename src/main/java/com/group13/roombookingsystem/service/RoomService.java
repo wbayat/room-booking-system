@@ -6,9 +6,9 @@ import java.util.List;
 import com.group13.roombookingsystem.model.room.*;
 import com.group13.roombookingsystem.model.sensor.Sensor;
 import com.group13.roombookingsystem.repository.RoomRepository;
-import com.group13.roombookingsystem.service.observer.RoomPublisher;
+import com.group13.roombookingsystem.service.observer.Publisher;
 
-public class RoomService extends RoomPublisher {
+public class RoomService extends Publisher {
 
     private static RoomService instance;
     private final RoomRepository roomRepository = new RoomRepository();

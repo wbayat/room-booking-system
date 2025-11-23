@@ -3,7 +3,7 @@ package com.group13.roombookingsystem.controller.user;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.service.RoomService;
-import com.group13.roombookingsystem.service.observer.RoomObserver;
+import com.group13.roombookingsystem.service.observer.Observer;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.FlowPane;
@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class RoomsContainerController implements Initializable, RoomObserver {
+public class RoomsContainerController implements Initializable, Observer {
     public FlowPane cardContainer;
     private List<Room> rooms;
 
