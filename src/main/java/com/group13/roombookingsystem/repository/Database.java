@@ -2,6 +2,7 @@ package com.group13.roombookingsystem.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -26,6 +27,7 @@ public final class Database {
             " name TEXT NOT NULL," +
             " capacity INTEGER NOT NULL," +
             " location TEXT NOT NULL," +
+            " sensorId INT NOT NULL," +
             " has_projector INTEGER NOT NULL DEFAULT 0," +
             " has_speakers INTEGER NOT NULL DEFAULT 0," +
             " is_enabled INTEGER NOT NULL DEFAULT 1" +
@@ -97,4 +99,18 @@ public final class Database {
             throw new RuntimeException("Error executing query: " + sqlCommand, e);
         }
     }
+
+    // uses select and returns a set from db :P
+    public ResultSet select(String sqlCommand) {
+        try {
+            Connection conn = getConnection();
+            Statement stmt = conn.createStatement();
+            return stmt.executeQuery(sqlCommand);
+        } 
+        
+        catch (SQLException e) {
+            throw new RuntimeException("Error executing select: " + sqlCommand, e);
+        }
+    }
+
 }

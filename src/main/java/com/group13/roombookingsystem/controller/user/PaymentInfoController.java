@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -12,12 +13,17 @@ import java.util.ResourceBundle;
 
 public class PaymentInfoController implements Initializable {
     public ComboBox<String> paymentMethodType;
-    public TextField cardHolderName;
-    public TextField cardNumber;
-    public TextField expirationDate;
-    public TextField ccv;
+    public Label firstLabel;
+    public TextField first;
+    public Label secondLabel;
+    public TextField second;
+    public Label thirdLabel;
+    public TextField third;
+    public Label forthLabel;
+    public TextField forth;
 
     private final String[] types = {"Credit Card", "Debit Card", "Institutional Billing"};
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -28,6 +34,34 @@ public class PaymentInfoController implements Initializable {
     public void handleCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    public void changeType() {
+        if (paymentMethodType.getValue().equals("Credit Card")){
+            thirdLabel.setVisible(true);
+            forthLabel.setVisible(true);
+            third.setVisible(true);
+            forth.setVisible(true);
+            firstLabel.setText("Card Holder Name");
+            secondLabel.setText("Credit Card Number");
+            thirdLabel.setText("Expiration Date");
+            forthLabel.setText("CVV");
+        }else if(paymentMethodType.getValue().equals("Debit Card")){
+            thirdLabel.setVisible(true);
+            forthLabel.setVisible(false);
+            third.setVisible(true);
+            forth.setVisible(false);
+            firstLabel.setText("Card Holder Name");
+            secondLabel.setText("Debit Card Number");
+            thirdLabel.setText("Pin");
+        }else {
+            thirdLabel.setVisible(false);
+            forthLabel.setVisible(false);
+            third.setVisible(false);
+            forth.setVisible(false);
+            firstLabel.setText("Department Name");
+            secondLabel.setText("Institution Account ID");
+        }
     }
 
     public void handleAddPaymentMethod(ActionEvent actionEvent) {
