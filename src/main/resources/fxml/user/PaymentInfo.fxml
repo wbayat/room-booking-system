@@ -19,7 +19,7 @@
             <Font size="20.0" />
         </font>
     </Label>
-   <ComboBox fx:id="paymentMethodType" minHeight="40.0" prefHeight="40.0" prefWidth="219.0" promptText="Payment Type">
+   <ComboBox fx:id="paymentMethodType" minHeight="40.0" onAction="#changeType" prefHeight="40.0" prefWidth="219.0" promptText="Payment Type">
       <VBox.margin>
          <Insets left="5.0" />
       </VBox.margin>
@@ -31,12 +31,12 @@
                <Insets left="5.0" right="5.0" />
             </padding>
             <children>
-               <Label text="Card Holder Name">
+               <Label fx:id="firstLabel" text="Card Holder Name">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font>
                </Label>
-               <TextField fx:id="cardHolderName" minHeight="40.0" />
+               <TextField fx:id="first" minHeight="40.0" />
             </children>
          </VBox>
           <VBox spacing="5.0">
@@ -46,35 +46,35 @@
               <padding>
                   <Insets left="5.0" right="5.0" />
               </padding>
-              <Label text="Credit Card Number">
+              <Label fx:id="secondLabel" text="Credit Card Number">
                   <font>
                       <Font name="System Bold" size="14.0" />
                   </font>
               </Label>
-              <TextField fx:id="cardNumber" minHeight="40.0" />
+              <TextField fx:id="second" minHeight="40.0" />
           </VBox>
           <VBox spacing="5.0">
               <padding>
                   <Insets left="5.0" right="5.0" />
               </padding>
-              <Label text="Expiration Date">
+              <Label fx:id="thirdLabel" text="Expiration Date">
                   <font>
                       <Font name="System Bold" size="14.0" />
                   </font>
               </Label>
-              <TextField fx:id="expirationDate" minHeight="40.0" />
+              <TextField fx:id="third" minHeight="40.0" />
           </VBox>
           <VBox spacing="5.0">
               <padding>
                   <Insets left="5.0" right="5.0" />
               </padding>
               <children>
-                  <Label text="CVV">
+                  <Label fx:id="forthLabel" text="CVV">
                       <font>
                           <Font name="System Bold" size="14.0" />
                       </font>
                   </Label>
-                  <TextField fx:id="ccv" minHeight="40.0" />
+                  <TextField fx:id="forth" minHeight="40.0" />
               </children>
           </VBox>
       </children>
