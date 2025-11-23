@@ -18,6 +18,7 @@ public class ModifyRoomController {
     public TextField roomCapacity;
     public CheckBox hasProjectors;
     public CheckBox hasSpeakers;
+    public TextField sensorID;
 
     private Room room;
 
@@ -36,6 +37,7 @@ public class ModifyRoomController {
         roomName.setText(room.getRoomName());
         roomLocation.setText(room.getLocation());
         roomCapacity.setText(String.valueOf(room.getCapacity()));
+        sensorID.setText(String.valueOf(room.getSensorID()));
         hasProjectors.setSelected(room.getHasProjector());
         hasSpeakers.setSelected(room.getHasSpeakers());
     }

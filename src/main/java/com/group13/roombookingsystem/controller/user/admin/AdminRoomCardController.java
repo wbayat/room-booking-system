@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,6 +17,10 @@ public class AdminRoomCardController {
     public Label roomLocation;
     public Label roomCapacity;
     public Label roomName;
+    public Label sensorID;
+    public Button toggleEnabled;
+    public ImageView projectorIcon;
+    public ImageView speakerIcon;
 
     private Room room;
 
@@ -26,6 +31,15 @@ public class AdminRoomCardController {
         roomName.setText(room.getRoomName());
         roomCapacity.setText(String.valueOf(room.getCapacity()));
         roomLocation.setText(room.getLocation());
+        sensorID.setText(String.valueOf(room.getSensorID()));
+        String toggleButtonText = (room.isEnabled()) ? "Disable" : "Enable";
+        toggleEnabled.setText(toggleButtonText);
+        if (!room.getHasProjector()){
+            projectorIcon.setVisible(false);
+        }
+        if (!room.getHasSpeakers()){
+            speakerIcon.setVisible(false);
+        }
     }
 
     public void handleModifyRoom(ActionEvent actionEvent) throws IOException {
