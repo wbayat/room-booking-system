@@ -3,14 +3,10 @@ package com.group13.roombookingsystem.controller.user.admin;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.service.RoomService;
 import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class ModifyRoomController {
     public TextField roomName;

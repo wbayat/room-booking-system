@@ -3,15 +3,12 @@ package com.group13.roombookingsystem.controller.user;
 import com.group13.roombookingsystem.manager.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class UserController{
 
@@ -33,15 +30,23 @@ public class UserController{
 
     public void showBookARoomView(ActionEvent actionEvent) throws IOException {
         if (roomsLayout == null){
-            roomsLayout = new FXMLLoader(getClass().getResource("/fxml/user/RoomsContainer.fxml")).load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/RoomsContainer.fxml"));
+            roomsLayout = loader.load();
+            RoomsContainerController controller = loader.getController();
+            controller.user = sessionManager.getCurrentUser();
+            controller.refreshRooms();
         }
-        clientBookings = null;
+//        clientBookings = null;
         mainContainer.setCenter(roomsLayout);
     }
 
     public void showMyBookingsView(ActionEvent actionEvent) throws IOException {
         if (clientBookings == null){
-            clientBookings = new FXMLLoader(getClass().getResource("/fxml/user/BookingsContainer.fxml")).load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/BookingsContainer.fxml"));
+            clientBookings = loader.load();
+            BookingsContainerController controller = loader.getController();
+            controller.user = sessionManager.getCurrentUser();
+            controller.postInit();
         }
         mainContainer.setCenter(clientBookings);
     }

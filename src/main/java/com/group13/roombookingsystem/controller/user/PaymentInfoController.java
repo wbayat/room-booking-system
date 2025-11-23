@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PaymentInfoController implements Initializable {
+public class PaymentInfoController{
     public ComboBox<String> paymentMethodType;
     public Label firstLabel;
     public TextField first;
@@ -28,14 +28,14 @@ public class PaymentInfoController implements Initializable {
     public TextField third;
     public Label forthLabel;
     public TextField forth;
+    public Label price;
 
     private RoomCardController parentController;
 
     private final String[] types = {"Credit Card", "Debit Card", "Institutional Billing"};
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void postInit(){
+        price.setText(String.valueOf(parentController.user.getHourlyRate()));
         paymentMethodType.getItems().addAll(types);
         paymentMethodType.setValue("Credit Card");
     }
@@ -84,7 +84,7 @@ public class PaymentInfoController implements Initializable {
     }
     public void handleAddPaymentMethod(ActionEvent actionEvent) {
         PaymentStrategy paymentStrategy = getPaymentStrategy();
-        BookingService.getInstance().createBooking(SessionManager.currentUser, parentController.room, parentController.checkInDate.getValue(), parentController.checkinTime.getValue(), parentController.checkoutTime.getValue(), paymentStrategy);
+        BookingService.getInstance().createBooking(parentController.user, parentController.room, parentController.checkInDate.getValue(), parentController.checkinTime.getValue(), parentController.checkoutTime.getValue(), paymentStrategy);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }

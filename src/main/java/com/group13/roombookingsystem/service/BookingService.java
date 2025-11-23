@@ -5,13 +5,14 @@ import com.group13.roombookingsystem.model.payment.PaymentStrategy;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.BookingRepository;
+import com.group13.roombookingsystem.service.observer.Publisher;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookingService {
+public class BookingService extends Publisher {
 
     private static BookingService instance;
     private BookingRepository bookingRepository;
@@ -40,7 +41,7 @@ public class BookingService {
 
         //also add to database
         bookingRepository.create(booking);
-
+        notifyUpdate();
         return booking;
     }
 
@@ -53,7 +54,7 @@ public class BookingService {
         if (booking.getId() != null) {
             bookingRepository.updateTimes(booking.getBookingID(), date, startTime, endTime);
         }
-
+        notifyUpdate();
         return booking;
     }
 
@@ -69,8 +70,28 @@ public class BookingService {
                     endTime
             );
         }
-
+        notifyUpdate();
         return booking;
+    }
+
+    public List<Booking> getBookingsFor(User user){
+        List<Booking> userBookings = new ArrayList<>();
+        for (Booking b : bookings){
+            if (b.getBooker().getUsername().equals(user.getUsername())){
+                userBookings.add(b);
+            }
+        }
+        return userBookings;
+    }
+
+    public void cancelBooking(Booking b){
+        if (b.getBooker() != null){
+            b.getBooker().removeBooking(b);
+        }
+        bookings.remove(b);
+        notifyUpdate();
+        //Also update database
+
     }
 
 
