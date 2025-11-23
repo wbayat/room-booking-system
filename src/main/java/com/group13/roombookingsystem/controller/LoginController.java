@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.controller;
 
 import com.group13.roombookingsystem.exception.UserNotFoundException;
+import com.group13.roombookingsystem.exception.UserNotVerifiedExeption;
 import com.group13.roombookingsystem.manager.SessionManager;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.service.UserService;
@@ -41,7 +42,7 @@ public class LoginController {
             User user = UserService.getInstance().login(email.trim(), password);
             sessionManager.setCurrentUser(user);
             sessionManager.showUserView();
-        } catch (UserNotFoundException e){
+        } catch (UserNotFoundException | UserNotVerifiedExeption e){
             errorLabel.setText(e.getMessage());
         } finally {
             emailTextField.setText("");

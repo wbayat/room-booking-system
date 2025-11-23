@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.service;
 
 import com.group13.roombookingsystem.exception.UserNotFoundException;
+import com.group13.roombookingsystem.exception.UserNotVerifiedExeption;
 import com.group13.roombookingsystem.model.booking.Booking;
 import com.group13.roombookingsystem.model.user.Admin;
 import com.group13.roombookingsystem.model.user.User;
@@ -47,6 +48,9 @@ public class UserService {
     public User login(String email, String password) throws UserNotFoundException {
         String normalizedEmail = email == null ? "" : email.trim();
         User user = userRepository.findByUsername(normalizedEmail).orElseThrow(UserNotFoundException::new);
+        if (!user.isVerified()){
+            throw new UserNotVerifiedExeption("You are not verified!");
+        }
         if (!user.getPassword().equals(password)) {
             throw new UserNotFoundException();
         }
