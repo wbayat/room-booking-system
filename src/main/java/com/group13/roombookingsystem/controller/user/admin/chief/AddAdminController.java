@@ -25,7 +25,6 @@ public class AddAdminController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tempPassword.setText("A1b2@3$45678");
-        tempPassword.setEditable(false);
     }
 
     public void handleCancel(ActionEvent actionEvent) {

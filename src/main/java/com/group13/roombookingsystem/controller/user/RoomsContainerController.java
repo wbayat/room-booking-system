@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.model.room.Room;
+import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.service.RoomService;
 import com.group13.roombookingsystem.service.observer.RoomObserver;
 import javafx.fxml.FXMLLoader;
@@ -17,13 +18,14 @@ public class RoomsContainerController implements Initializable, RoomObserver {
     public FlowPane cardContainer;
     private List<Room> rooms;
 
+    public User user;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         RoomService.getInstance().subscribe(this);
-        refreshRooms();
     }
 
-    private void refreshRooms() {
+    public void refreshRooms() {
         rooms = RoomService.getInstance().getRooms();
         cardContainer.getChildren().clear();
 
@@ -40,6 +42,7 @@ public class RoomsContainerController implements Initializable, RoomObserver {
             VBox card = fxmlLoader.load();
             RoomCardController roomCardController = fxmlLoader.getController();
             roomCardController.setData(room);
+            roomCardController.user = user;
             cardContainer.getChildren().add(card);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load RoomCard.fxml", e);
