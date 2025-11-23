@@ -83,6 +83,16 @@ public class BookingService {
         return userBookings;
     }
 
+    public void cancelBooking(Booking b){
+        if (b.getBooker() != null){
+            b.getBooker().removeBooking(b);
+        }
+        bookings.remove(b);
+
+        //Also update database
+
+    }
+
 
 //    private final BookingRepository bookingRepository;
 //    private final RoomRepository roomRepository;
