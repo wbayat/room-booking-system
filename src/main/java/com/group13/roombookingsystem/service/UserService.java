@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.service;
 
 import com.group13.roombookingsystem.exception.UserNotFoundException;
+import com.group13.roombookingsystem.model.booking.Booking;
 import com.group13.roombookingsystem.model.user.Admin;
 import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.UserRepository;
@@ -30,6 +31,9 @@ public class UserService {
     private void init(){
         users = userRepository.findAll();
         for (User user : users){
+            for (Booking b : BookingService.getInstance().getBookingsFor(user)){
+                user.addBooking(b);
+            }
             if (user.getRole().equals("Admin")){
                 admins.add((Admin) user);
             }

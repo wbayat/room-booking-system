@@ -73,6 +73,16 @@ public class BookingService {
         return booking;
     }
 
+    public List<Booking> getBookingsFor(User user){
+        List<Booking> userBookings = new ArrayList<>();
+        for (Booking b : bookings){
+            if (b.getBooker().getUsername().equals(user.getUsername())){
+                userBookings.add(b);
+            }
+        }
+        return userBookings;
+    }
+
 
 //    private final BookingRepository bookingRepository;
 //    private final RoomRepository roomRepository;
