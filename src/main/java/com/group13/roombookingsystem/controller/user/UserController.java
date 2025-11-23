@@ -42,7 +42,11 @@ public class UserController{
 
     public void showMyBookingsView(ActionEvent actionEvent) throws IOException {
         if (clientBookings == null){
-            clientBookings = new FXMLLoader(getClass().getResource("/fxml/user/BookingsContainer.fxml")).load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/BookingsContainer.fxml"));
+            clientBookings = loader.load();
+            BookingsContainerController controller = loader.getController();
+            controller.user = sessionManager.getCurrentUser();
+            controller.postInit();
         }
         mainContainer.setCenter(clientBookings);
     }

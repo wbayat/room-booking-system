@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class BookingCardController {
-    private Booking booking;
+    public Booking booking;
     public Label checkinDate;
     public Label checkinTime;
     public Label checkoutTime;
@@ -24,11 +24,12 @@ public class BookingCardController {
 
     private Stage modifyBookingStage;
 
-    public void setData(){
-        RoomName.setText("Room A - BRG");
-        checkinDate.setText("November 20, 2025");
-        checkinTime.setText("3:00 PM");
-        checkoutTime.setText("8:00 PM");
+    public void setData(Booking booking){
+        this.booking = booking;
+        RoomName.setText(booking.getRoomBooked().getRoomName() + " - " + booking.getRoomBooked().getLocation());
+        checkinDate.setText(String.valueOf(booking.getBookingDate()));
+        checkinTime.setText(String.valueOf(booking.getStartTime()));
+        checkoutTime.setText(String.valueOf(booking.getEndTime()));
     }
     
 
