@@ -25,6 +25,7 @@ public class BookingsContainerController implements Observer {
     }
 
     public void refreshBookings() {
+//        myBookings = BookingService.getInstance().getBookingsFor(user);
         myBookings = user.getBookings();
         BookingsContainer.getChildren().clear();
 

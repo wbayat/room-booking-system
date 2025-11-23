@@ -1,6 +1,5 @@
 package com.group13.roombookingsystem.controller.user;
 
-import com.group13.roombookingsystem.controller.user.admin.ModifyRoomController;
 import com.group13.roombookingsystem.model.booking.Booking;
 import com.group13.roombookingsystem.service.BookingService;
 import javafx.event.ActionEvent;
