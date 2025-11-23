@@ -2,6 +2,8 @@ package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.model.booking.Booking;
 import com.group13.roombookingsystem.model.user.User;
+import com.group13.roombookingsystem.service.BookingService;
+import com.group13.roombookingsystem.service.RoomService;
 import com.group13.roombookingsystem.service.observer.Observer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +20,7 @@ public class BookingsContainerController implements Observer {
     List<Booking> myBookings;
 
     public void postInit(){
+        BookingService.getInstance().subscribe(this);
         refreshBookings();
     }
 

@@ -41,7 +41,7 @@ public class BookingService extends Publisher {
 
         //also add to database
         bookingRepository.create(booking);
-
+        notifyUpdate();
         return booking;
     }
 
@@ -54,7 +54,7 @@ public class BookingService extends Publisher {
         if (booking.getId() != null) {
             bookingRepository.updateTimes(booking.getBookingID(), date, startTime, endTime);
         }
-
+        notifyUpdate();
         return booking;
     }
 
@@ -70,7 +70,7 @@ public class BookingService extends Publisher {
                     endTime
             );
         }
-
+        notifyUpdate();
         return booking;
     }
 
@@ -89,7 +89,7 @@ public class BookingService extends Publisher {
             b.getBooker().removeBooking(b);
         }
         bookings.remove(b);
-
+        notifyUpdate();
         //Also update database
 
     }

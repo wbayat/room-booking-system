@@ -36,7 +36,7 @@ public class UserController{
             controller.user = sessionManager.getCurrentUser();
             controller.refreshRooms();
         }
-        clientBookings = null;
+//        clientBookings = null;
         mainContainer.setCenter(roomsLayout);
     }
 
