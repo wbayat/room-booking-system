@@ -35,6 +35,7 @@ public class UserController{
         if (roomsLayout == null){
             roomsLayout = new FXMLLoader(getClass().getResource("/fxml/user/RoomsContainer.fxml")).load();
         }
+        clientBookings = null;
         mainContainer.setCenter(roomsLayout);
     }
 

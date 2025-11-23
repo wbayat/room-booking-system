@@ -13,6 +13,17 @@ import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.room.RoomBuilder;
 
 public class RoomRepository {
+
+
+    public static void main(String[] args){
+        RoomRepository r = new RoomRepository();
+        List<Room> rooms = r.findAll();
+
+        System.out.println(rooms);
+    }
+
+
+
     private static final String INSERT_ROOM = """
             INSERT INTO rooms(name, capacity, location, sensorId, has_projector, has_speakers, is_enabled)
             VALUES (?, ?, ?, ?, ?, ?, ?);
@@ -21,11 +32,6 @@ public class RoomRepository {
             SELECT name, capacity, location
             FROM rooms
             WHERE name = ?;
-            """;
-    private static final String FIND_ALL = """
-            SELECT name, capacity, location
-            FROM rooms
-            ORDER BY name;
             """;
 
     public void create(Room room) {
@@ -63,15 +69,19 @@ public class RoomRepository {
     }
 
     public List<Room> findAll() {
+        final String sql = "SELECT id, name, capacity, location, has_projector, has_speakers, is_enabled, sensorId FROM rooms ORDER BY name;";
         try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_ALL);
+             PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
+            
             List<Room> rooms = new ArrayList<>();
             while (resultSet.next()) {
                 rooms.add(mapRow(resultSet));
             }
             return rooms;
-        } catch (SQLException e) {
+        } 
+        
+        catch (SQLException e) {
             throw new IllegalStateException("Unable to fetch rooms", e);
         }
     }
