@@ -1,5 +1,7 @@
 package com.group13.roombookingsystem.model.room;
 
+import com.group13.roombookingsystem.model.sensor.Sensor;
+
 interface RoomBuilderContract {
     void reset();
     void setRoomID(int roomId);
@@ -10,7 +12,7 @@ interface RoomBuilderContract {
     void setHasProjector(boolean hasProjector);
     void setHasSpeakers(boolean hasSpeakers);
     void setSchedule(java.util.ArrayList<java.time.LocalDateTime> schedule);
-    void setSensorId(int sensorId); // added for sensor ID
+    void setSensor(Sensor sensor);
 }
 
 public class RoomBuilder implements RoomBuilderContract {
@@ -68,7 +70,7 @@ public class RoomBuilder implements RoomBuilderContract {
     }
 
     @Override
-    public void setSensorId(int sensorId) {
-        result.setSensorId(sensorId);
+    public void setSensor(Sensor sensor) {
+        result.setSensor(sensor);
     }
 }

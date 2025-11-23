@@ -28,7 +28,7 @@ public class ModifyRoomController {
     }
 
     public void handleConfirm(ActionEvent actionEvent) {
-        RoomService.getInstance().modifyRoom(room, roomName.getText(), Integer.parseInt(roomCapacity.getText()), roomLocation.getText(), hasProjectors.isSelected(), hasSpeakers.isSelected());
+        RoomService.getInstance().modifyRoom(room, roomName.getText(), Integer.parseInt(roomCapacity.getText()), roomLocation.getText(), hasProjectors.isSelected(), hasSpeakers.isSelected(), Integer.parseInt(sensorID.getText()));
         handleCancel(actionEvent);
     }
 
@@ -37,7 +37,7 @@ public class ModifyRoomController {
         roomName.setText(room.getRoomName());
         roomLocation.setText(room.getLocation());
         roomCapacity.setText(String.valueOf(room.getCapacity()));
-        sensorID.setText(String.valueOf(room.getSensorID()));
+        sensorID.setText(String.valueOf(room.getSensorId()));
         hasProjectors.setSelected(room.getHasProjector());
         hasSpeakers.setSelected(room.getHasSpeakers());
     }

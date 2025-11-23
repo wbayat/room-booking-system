@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.group13.roombookingsystem.model.room.*;
+import com.group13.roombookingsystem.model.sensor.Sensor;
 import com.group13.roombookingsystem.repository.RoomRepository;
 import com.group13.roombookingsystem.service.observer.RoomPublisher;
 
@@ -39,7 +40,7 @@ public class RoomService extends RoomPublisher {
         this.roomBuilder.setHasProjector(hasProjector);
         this.roomBuilder.setHasSpeakers(hasSpeakers);
         this.roomBuilder.setSchedule(schedule);
-        this.roomBuilder.setSensorId(sensorId);
+        this.roomBuilder.setSensor(new Sensor(sensorId));
 
         
         Room room = this.roomBuilder.getProduct();
@@ -58,12 +59,13 @@ public class RoomService extends RoomPublisher {
         return rooms;
     }
 
-    public void modifyRoom(Room room, String newRoomName, int newCapacity, String newLocation, boolean newHasProjector, boolean newHasSpeakers) {
+    public void modifyRoom(Room room, String newRoomName, int newCapacity, String newLocation, boolean newHasProjector, boolean newHasSpeakers, int sensorId) {
         room.setRoomName(newRoomName);
         room.setCapacity(newCapacity);
         room.setLocation(newLocation);
         room.setHasProjector(newHasProjector);
         room.setHasSpeakers(newHasSpeakers);
+        room.setSensorId(sensorId);
 //        roomRepository.update(room); // Assuming RoomRepository has an update method
         this.notifyUpdate();
     }
