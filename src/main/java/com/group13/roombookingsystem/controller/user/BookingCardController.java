@@ -1,6 +1,7 @@
 package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.model.booking.Booking;
+import com.group13.roombookingsystem.service.BookingService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -31,17 +32,15 @@ public class BookingCardController {
         checkinTime.setText(String.valueOf(booking.getStartTime()));
         checkoutTime.setText(String.valueOf(booking.getEndTime()));
     }
-    
 
     public void handleCancelBooking(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Cancel Booking");
         alert.setHeaderText("Canceling Your Booking!");
         alert.setContentText("Are you sure you want to cancel this booking?");
-        alert.show();
-//        if (alert.showAndWait().get() == ButtonType.OK){
-//            System.out.println("Clicked");
-//        }
+        if (alert.showAndWait().get() == ButtonType.OK){
+            BookingService.getInstance().cancelBooking(booking);
+        }
     }
 
     public void handleModifyBooking(ActionEvent actionEvent) throws IOException {
