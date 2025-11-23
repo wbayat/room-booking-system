@@ -17,25 +17,23 @@ public class RoomRepository {
             INSERT INTO rooms(name, capacity, location)
             VALUES (?, ?, ?);
             """;
-    private static final String FIND_BY_ID = """
-            SELECT id, name, capacity, location
+    private static final String FIND_BY_NAME = """
+            SELECT name, capacity, location
             FROM rooms
-            WHERE id = ?;
+            WHERE name = ?;
             """;
     private static final String FIND_ALL = """
-            SELECT id, name, capacity, location
+            SELECT name, capacity, location
             FROM rooms
             ORDER BY name;
             """;
 
-    public Room create(Room room) {
+    public void create(Room room) {
         try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_ROOM, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, room.getRoomName());
             statement.setInt(2, room.getCapacity());
             statement.setString(3, room.getLocation());
-
-            return room;
         } 
         
         catch (SQLException e) {
@@ -45,7 +43,7 @@ public class RoomRepository {
 
     public Optional<Room> findById(int id) {
         try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
