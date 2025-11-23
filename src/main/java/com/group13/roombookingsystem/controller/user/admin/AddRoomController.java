@@ -14,6 +14,7 @@ public class AddRoomController {
     public TextField roomCapacity;
     public CheckBox hasProjectors;
     public CheckBox hasSpeakers;
+    public TextField sensorID;
 
     public void handleCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -21,7 +22,7 @@ public class AddRoomController {
     }
 
     public void handleAddRoom(ActionEvent actionEvent) {
-        RoomService.getInstance().addRoom(roomName.getText(), Integer.parseInt(roomCapacity.getText()), roomLocation.getText(), hasProjectors.isSelected(), hasSpeakers.isSelected(), null, 123);
+        RoomService.getInstance().addRoom(roomName.getText(), Integer.parseInt(roomCapacity.getText()), roomLocation.getText(), hasProjectors.isSelected(), hasSpeakers.isSelected(), null, Integer.parseInt(sensorID.getText()));
         handleCancel(actionEvent);
     }
 }

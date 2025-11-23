@@ -6,6 +6,8 @@ import com.group13.roombookingsystem.service.RoomService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -19,10 +21,14 @@ public class RoomCardController implements Initializable {
     public Label roomID;
     public Label roomLocation;
     public Label roomCapacity;
+    public Label sensorID;
     public DatePicker checkInDate;
     public ComboBox<LocalTime> checkinTime;
     public ComboBox<LocalTime> checkoutTime;
     public Button bookButton;
+    public HBox iconBox;
+    public ImageView projectorIcon;
+    public ImageView speakerIcon;
 
     public List<LocalTime> list = new ArrayList<>();
 
@@ -52,8 +58,15 @@ public class RoomCardController implements Initializable {
         roomID.setText(room.getRoomName());
         roomLocation.setText(room.getLocation());
         roomCapacity.setText(String.valueOf(room.getCapacity()));
+        sensorID.setText(String.valueOf(room.getSensorID()));
         checkinTime.getItems().addAll(list);
         checkoutTime.getItems().addAll(list);
+        if (!room.getHasProjector()){
+            projectorIcon.setVisible(false);
+        }
+        if (!room.getHasSpeakers()){
+            speakerIcon.setVisible(false);
+        }
     }
 
     public void handleBookRoom(ActionEvent actionEvent) {
