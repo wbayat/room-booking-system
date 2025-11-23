@@ -6,6 +6,7 @@ interface RoomBuilderContract {
     void setRoomName(String roomName);
     void setCapacity(int capacity);
     void setLocation(String location);
+    void setEnabled(boolean enabled);
     void setHasProjector(boolean hasProjector);
     void setHasSpeakers(boolean hasSpeakers);
     void setSchedule(java.util.ArrayList<java.time.LocalDateTime> schedule);
@@ -33,6 +34,11 @@ public class RoomBuilder implements RoomBuilderContract {
     @Override
     public void setLocation(String location) {
         result.setLocation(location);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        result.setEnabled(enabled);
     }
 
     @Override
