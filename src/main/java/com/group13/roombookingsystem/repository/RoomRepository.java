@@ -11,28 +11,21 @@ import java.util.Optional;
 
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.room.RoomBuilder;
+import com.group13.roombookingsystem.model.sensor.Sensor;
 
 public class RoomRepository {
 
-    private static final String INSERT_ROOM = """
-            INSERT INTO rooms(name, capacity, location, sensorId, has_projector, has_speakers, is_enabled)
-            VALUES (?, ?, ?, ?, ?, ?, ?);
-            """;
-    private static final String FIND_BY_NAME = """
-            SELECT name, capacity, location
-            FROM rooms
-            WHERE name = ?;
-            """;
-
     public void create(Room room) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_ROOM, Statement.RETURN_GENERATED_KEYS)) {
+        final String sql = "INSERT INTO rooms(name, capacity, location, sensorId, has_projector, has_speakers, is_enabled) VALUES (?, ?, ?, ?, ?, ?, ?); ";
+            
+        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, room.getRoomName());
             statement.setInt(2, room.getCapacity());
             statement.setString(3, room.getLocation());
-            statement.setBoolean(4, room.isEnabled());
+            statement.setInt(4, room.getSensorId());
             statement.setBoolean(5, room.getHasProjector());
             statement.setBoolean(6, room.getHasSpeakers());
-            statement.setInt(7, room.getSensorId());
+            statement.setBoolean(7, room.isEnabled());
             statement.executeUpdate();
         }
         
@@ -42,7 +35,9 @@ public class RoomRepository {
     }
 
     public Optional<Room> findById(int id) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME)) {
+        final String sql = "SELECT id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled FROM rooms WHERE id = ?;";
+
+        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -59,15 +54,15 @@ public class RoomRepository {
     }
 
     public List<Room> findAll() {
-        final String sql = "SELECT id, name, capacity, location, has_projector, has_speakers, is_enabled, sensorId FROM rooms ORDER BY name;";
-        try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        final String sql = "SELECT id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled FROM rooms ORDER BY name;";
+        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
             
             List<Room> rooms = new ArrayList<>();
+
             while (resultSet.next()) {
                 rooms.add(mapRow(resultSet));
             }
+
             return rooms;
         } 
         
@@ -78,39 +73,36 @@ public class RoomRepository {
 
     private Room mapRow(ResultSet resultSet) throws SQLException {
         RoomBuilder builder = new RoomBuilder();
+        
         builder.reset();
         builder.setRoomID(resultSet.getInt("id"));
         builder.setRoomName(resultSet.getString("name"));
         builder.setCapacity(resultSet.getInt("capacity"));
         builder.setLocation(resultSet.getString("location"));
+        int sensorId = resultSet.getInt("sensorId");
+        builder.setSensor(new Sensor(sensorId));
         builder.setHasProjector(resultSet.getBoolean("has_projector"));
         builder.setHasSpeakers(resultSet.getBoolean("has_speakers"));
-        setUserIdFromDatabase(builder.getProduct(), resultSet);
+        builder.setEnabled(resultSet.getBoolean("is_enabled"));
 
         return builder.getProduct();
     }
 
-    private void setUserIdFromDatabase(Room r, ResultSet resultSet) throws SQLException {
-        r.setRoomId(resultSet.getInt("id"));
-    }
-
     public Room update(Room room) {
-        final String UPDATE_ROOM = """
-                UPDATE rooms
-                SET name = ?, capacity = ?, location = ?, has_projector = ?, has_speakers = ?
-                WHERE id = ?;
-                """;
-        try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_ROOM)) {
-
-            statement.setString(1, room.getRoomName());
-            statement.setInt(2, room.getCapacity());
-            statement.setString(3, room.getLocation());
-            statement.setBoolean(4, room.getHasProjector());
-            statement.setBoolean(5, room.getHasSpeakers());
-            statement.setInt(6, room.getRoomID());
+        final String UPDATE_ROOM = "UPDATE rooms SET name = ?, capacity = ?, location = ?, sensorId = ?, has_projector = ?, has_speakers = ?, is_enabled = ? WHERE id = ?;";
+        
+            try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_ROOM)) {
+                statement.setString(1, room.getRoomName());
+                statement.setInt(2, room.getCapacity());
+                statement.setString(3, room.getLocation());
+                statement.setInt(4, room.getSensorId());
+                statement.setBoolean(5, room.getHasProjector());
+                statement.setBoolean(6, room.getHasSpeakers());
+                statement.setBoolean(7, room.isEnabled());
+                statement.setInt(8, room.getRoomID());
 
             int affected = statement.executeUpdate();
+
             if (affected == 0) {
                 throw new IllegalStateException("No room found with id: " + room.getRoomID());
             }
