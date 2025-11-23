@@ -14,16 +14,6 @@ import com.group13.roombookingsystem.model.room.RoomBuilder;
 
 public class RoomRepository {
 
-
-    public static void main(String[] args){
-        RoomRepository r = new RoomRepository();
-        List<Room> rooms = r.findAll();
-
-        System.out.println(rooms);
-    }
-
-
-
     private static final String INSERT_ROOM = """
             INSERT INTO rooms(name, capacity, location, sensorId, has_projector, has_speakers, is_enabled)
             VALUES (?, ?, ?, ?, ?, ?, ?);
