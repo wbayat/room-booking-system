@@ -11,6 +11,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 import java.time.temporal.ChronoUnit;
 
 public class PaymentInfoController{
@@ -81,7 +83,7 @@ public class PaymentInfoController{
             default -> new InstitutionalBillingPaymentStrategy(first.getText());
         };
     }
-    public void handleAddPaymentMethod(ActionEvent actionEvent) {
+    public void handleAddPaymentMethod(ActionEvent actionEvent) throws SQLException {
         PaymentStrategy paymentStrategy = getPaymentStrategy();
         BookingService.getInstance().createBooking(parentController.user, parentController.room, parentController.checkInDate.getValue(), parentController.checkinTime.getValue(), parentController.checkoutTime.getValue(), paymentStrategy);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

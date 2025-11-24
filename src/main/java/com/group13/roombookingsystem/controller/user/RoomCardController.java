@@ -88,12 +88,17 @@ public class RoomCardController implements Initializable {
             return;
         }
 
-        boolean canCreateBooking = BookingService.getInstance()
-                .canCreateBooking(room, selectedDate, selectedCheckin, selectedCheckout);
-        if (!canCreateBooking) {
-            showBookingFailure("Booking failed: The selected time slot is no longer available.");
-            return;
+
+        boolean canCreateBooking = true;
+        
+        try {
+            BookingService.getInstance().createBooking(user, room, selectedDate, selectedCheckin, selectedCheckout, null);
+        } 
+        catch (Exception e) {
+            canCreateBooking = false;
         }
+
+        
 
         if (addPaymentMethodStage == null || !addPaymentMethodStage.isShowing()){
             addPaymentMethodStage = new Stage();
