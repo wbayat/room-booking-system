@@ -45,6 +45,22 @@ public class BookingService extends Publisher {
         return booking;
     }
 
+    public boolean canCreateBooking(Room room, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        if (room == null || date == null || startTime == null || endTime == null) {
+            return false;
+        }
+        if (!startTime.isBefore(endTime)) {
+            return false;
+        }
+        if (date.isBefore(LocalDate.now())) {
+            return false;
+        }
+
+        return bookingRepository.findByRoomAndDate(room.getRoomID(), date)
+                .stream()
+                .noneMatch(existing -> existing.overlaps(date, startTime, endTime));
+    }
+
     public Booking modifyBooking(Booking booking, LocalDate date, LocalTime startTime, LocalTime endTime){
         if (date != null){
             booking.setBookingDate(date);
