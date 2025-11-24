@@ -22,7 +22,13 @@ public class BookingRepository {
     private static final String UPDATE_TIMES = "UPDATE bookings SET start_time = ?, end_time = ?, date = ? WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM bookings WHERE id = ?;";
 
+    public BookingRepository() {
+        Database.getInstance();
+    }
+
     public Booking create(Booking booking) {
+        ensureNoOverlap(booking, null);
+
         try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_BOOKING, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -118,9 +124,13 @@ public class BookingRepository {
     public Booking updateTimes(int bookingId, LocalDate date, LocalTime startTime, LocalTime endTime) {
         Booking existing = findById(bookingId).orElseThrow(() -> new IllegalStateException("Booking not found"));
 
-        LocalDate updatedDate = existing.getBookingDate();
-        LocalTime updatedStart = existing.getStartTime();
-        LocalTime updatedEnd = existing.getEndTime();
+        LocalDate updatedDate = date != null ? date : existing.getBookingDate();
+        LocalTime updatedStart = startTime != null ? startTime : existing.getStartTime();
+        LocalTime updatedEnd = endTime != null ? endTime : existing.getEndTime();
+
+        Booking candidate = new Booking(existing.getUserId(), existing.getRoomId(), updatedDate, updatedStart, updatedEnd);
+        candidate.setBookingId(existing.getBookingID());
+        ensureNoOverlap(candidate, bookingId);
 
         try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_TIMES)) {
             statement.setString(1, updatedStart.toString());
@@ -150,5 +160,18 @@ public class BookingRepository {
         );
         booking.setBookingId(resultSet.getInt("id"));
         return booking;
+    }
+
+    private void ensureNoOverlap(Booking booking, Integer bookingIdToIgnore) {
+        List<Booking> sameDayBookings = findByRoomAndDate(booking.getRoomId(), booking.getBookingDate());
+
+        for (Booking existing : sameDayBookings) {
+            if (bookingIdToIgnore != null && bookingIdToIgnore.equals(existing.getBookingID())) {
+                continue;
+            }
+            if (existing.overlaps(booking.getBookingDate(), booking.getStartTime(), booking.getEndTime())) {
+                throw new IllegalStateException("The room is already booked for the selected time.");
+            }
+        }
     }
 }
