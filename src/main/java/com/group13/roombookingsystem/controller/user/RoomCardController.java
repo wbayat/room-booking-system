@@ -2,10 +2,12 @@ package com.group13.roombookingsystem.controller.user;
 
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.user.User;
+import com.group13.roombookingsystem.service.BookingService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -76,6 +78,23 @@ public class RoomCardController implements Initializable {
     }
 
     public void handleBookRoom(ActionEvent actionEvent) throws IOException {
+        LocalDate selectedDate = checkInDate.getValue();
+        LocalTime selectedCheckin = checkinTime.getValue();
+        LocalTime selectedCheckout = checkoutTime.getValue();
+
+        String validationError = validateBookingInput(selectedDate, selectedCheckin, selectedCheckout);
+        if (validationError != null) {
+            showBookingFailure(validationError);
+            return;
+        }
+
+        boolean canCreateBooking = BookingService.getInstance()
+                .canCreateBooking(room, selectedDate, selectedCheckin, selectedCheckout);
+        if (!canCreateBooking) {
+            showBookingFailure("Booking failed: The selected time slot is no longer available.");
+            return;
+        }
+
         if (addPaymentMethodStage == null || !addPaymentMethodStage.isShowing()){
             addPaymentMethodStage = new Stage();
             addPaymentMethodStage.setResizable(false);
@@ -87,5 +106,29 @@ public class RoomCardController implements Initializable {
             controller.postInit();
             addPaymentMethodStage.show();
         }
+    }
+
+    private String validateBookingInput(LocalDate date, LocalTime start, LocalTime end) {
+        if (room == null || user == null) {
+            return "Booking failed: Missing room or user information.";
+        }
+        if (date == null || start == null || end == null) {
+            return "Booking failed: Please select a date, start time, and end time.";
+        }
+        if (!start.isBefore(end)) {
+            return "Booking failed: Start time must be before end time.";
+        }
+        if (date.isBefore(LocalDate.now())) {
+            return "Booking failed: Cannot book a room in the past.";
+        }
+        return null;
+    }
+
+    private void showBookingFailure(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Booking Failed");
+        alert.setHeaderText("Booking Failed");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

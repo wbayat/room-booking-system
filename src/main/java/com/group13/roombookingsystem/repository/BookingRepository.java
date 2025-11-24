@@ -27,30 +27,40 @@ public class BookingRepository {
         Database.getInstance();
     }
 
-    public Booking create(Booking booking) {
+    public Booking create(Booking booking) throws SQLException {
         validateBookingTimes(booking, false);
         ensureNoOverlap(booking, null);
 
-        try (Connection connection = Database.getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_BOOKING, Statement.RETURN_GENERATED_KEYS)) {
+        Connection connection = null;
 
-            statement.setInt(1, booking.getUserId());
-            statement.setInt(2, booking.getRoomId());
-            statement.setString(3, booking.getStartTime().toString());
-            statement.setString(4, booking.getEndTime().toString());
-            statement.setString(5, booking.getBookingDate().toString());
-            statement.executeUpdate();
+        try {
+            connection = Database.getConnection();
+            connection.setAutoCommit(false);
 
-            try (ResultSet keys = statement.getGeneratedKeys()) {
-                if (keys.next()) {
-                    booking.setBookingId(keys.getInt(1));
+            try (PreparedStatement statement = connection.prepareStatement(INSERT_BOOKING, Statement.RETURN_GENERATED_KEYS)) {
+
+                statement.setInt(1, booking.getUserId());
+                statement.setInt(2, booking.getRoomId());
+                statement.setString(3, booking.getStartTime().toString());
+                statement.setString(4, booking.getEndTime().toString());
+                statement.setString(5, booking.getBookingDate().toString());
+                statement.executeUpdate();
+
+                try (ResultSet keys = statement.getGeneratedKeys()) {
+                    if (keys.next()) {
+                        booking.setBookingId(keys.getInt(1));
+                    } else {
+                        throw new IllegalStateException("Booking created but no ID returned.");
+                    }
                 }
             }
-            
+
+            connection.commit();
             return booking;
         } 
         
         catch (SQLException e) {
+            connection.rollback();
             throw new IllegalStateException("Unable to create booking", e);
         }
     }
