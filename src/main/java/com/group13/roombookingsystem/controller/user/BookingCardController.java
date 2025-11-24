@@ -27,7 +27,8 @@ public class BookingCardController {
 
     public void setData(Booking booking){
         this.booking = booking;
-        RoomName.setText(booking.getRoomBooked().getRoomName() + " - " + booking.getRoomBooked().getLocation());
+        RoomName.setText(booking.getRoomBooked().getRoomName());
+        RoomLocation.setText(booking.getRoomBooked().getLocation());
         checkinDate.setText(String.valueOf(booking.getBookingDate()));
         checkinTime.setText(String.valueOf(booking.getStartTime()));
         checkoutTime.setText(String.valueOf(booking.getEndTime()));
