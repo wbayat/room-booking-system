@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -77,7 +78,7 @@ public class RoomCardController implements Initializable {
         }
     }
 
-    public void handleBookRoom(ActionEvent actionEvent) throws IOException {
+    public void handleBookRoom(ActionEvent actionEvent) {
         LocalDate selectedDate = checkInDate.getValue();
         LocalTime selectedCheckin = checkinTime.getValue();
         LocalTime selectedCheckout = checkoutTime.getValue();
@@ -88,28 +89,38 @@ public class RoomCardController implements Initializable {
             return;
         }
 
-
-        boolean canCreateBooking = true;
-        
         try {
             BookingService.getInstance().createBooking(user, room, selectedDate, selectedCheckin, selectedCheckout, null);
-        } 
-        catch (Exception e) {
-            canCreateBooking = false;
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            showBookingFailure(messageOrDefault("Booking failed due to invalid request.", e));
+            return;
+        } catch (SQLException e) {
+            showBookingFailure(messageWithDetails("Booking failed due to a database error.", e));
+            return;
+        } catch (Exception e) {
+            showBookingFailure(messageWithDetails("Booking failed due to an unexpected error.", e));
+            return;
         }
 
-        
-
         if (addPaymentMethodStage == null || !addPaymentMethodStage.isShowing()){
-            addPaymentMethodStage = new Stage();
-            addPaymentMethodStage.setResizable(false);
-            addPaymentMethodStage.setTitle("Add A Payment Method!");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/PaymentInfo.fxml"));
-            addPaymentMethodStage.setScene(new Scene(loader.load()));
-            PaymentInfoController controller = loader.getController();
-            controller.setParentController(this);
-            controller.postInit();
-            addPaymentMethodStage.show();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/PaymentInfo.fxml"));
+                Scene paymentScene = new Scene(loader.load());
+
+                Stage paymentStage = new Stage();
+                paymentStage.setResizable(false);
+                paymentStage.setTitle("Add A Payment Method!");
+                paymentStage.setScene(paymentScene);
+
+                PaymentInfoController controller = loader.getController();
+                controller.setParentController(this);
+                controller.postInit();
+
+                addPaymentMethodStage = paymentStage;
+                addPaymentMethodStage.show();
+            } catch (IOException e) {
+                showBookingFailure(messageWithDetails("Booking created but the payment screen could not be opened.", e));
+            }
         }
     }
 
@@ -135,5 +146,21 @@ public class RoomCardController implements Initializable {
         alert.setHeaderText("Booking Failed");
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private String messageOrDefault(String fallback, Exception e) {
+        String details = e.getMessage();
+        if (details == null || details.isBlank()) {
+            return fallback;
+        }
+        return details;
+    }
+
+    private String messageWithDetails(String fallback, Exception e) {
+        String details = e.getMessage();
+        if (details == null || details.isBlank()) {
+            return fallback;
+        }
+        return fallback + "\n\nDetails: " + details;
     }
 }
