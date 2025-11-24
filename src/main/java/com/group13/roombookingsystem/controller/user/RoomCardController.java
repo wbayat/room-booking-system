@@ -1,13 +1,12 @@
 package com.group13.roombookingsystem.controller.user;
 
+import com.group13.roombookingsystem.model.booking.Booking;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.user.User;
-import com.group13.roombookingsystem.service.BookingService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -15,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -88,39 +86,30 @@ public class RoomCardController implements Initializable {
             showBookingFailure(validationError);
             return;
         }
-
-        try {
-            BookingService.getInstance().createBooking(user, room, selectedDate, selectedCheckin, selectedCheckout, null);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            showBookingFailure(messageOrDefault("Booking failed due to invalid request.", e));
-            return;
-        } catch (SQLException e) {
-            showBookingFailure(messageWithDetails("Booking failed due to a database error.", e));
-            return;
-        } catch (Exception e) {
-            showBookingFailure(messageWithDetails("Booking failed due to an unexpected error.", e));
+        if (addPaymentMethodStage != null && addPaymentMethodStage.isShowing()) {
+            addPaymentMethodStage.requestFocus();
             return;
         }
 
-        if (addPaymentMethodStage == null || !addPaymentMethodStage.isShowing()){
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/PaymentInfo.fxml"));
-                Scene paymentScene = new Scene(loader.load());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/user/PaymentInfo.fxml"));
+            Scene paymentScene = new Scene(loader.load());
 
-                Stage paymentStage = new Stage();
-                paymentStage.setResizable(false);
-                paymentStage.setTitle("Add A Payment Method!");
-                paymentStage.setScene(paymentScene);
+            Stage paymentStage = new Stage();
+            paymentStage.setResizable(false);
+            paymentStage.setTitle("Add A Payment Method!");
+            paymentStage.setScene(paymentScene);
 
-                PaymentInfoController controller = loader.getController();
-                controller.setParentController(this);
-                controller.postInit();
+            PaymentInfoController controller = loader.getController();
+            controller.setParentController(this);
+            controller.setBookingDetails(selectedDate, selectedCheckin, selectedCheckout);
+            controller.postInit();
 
-                addPaymentMethodStage = paymentStage;
-                addPaymentMethodStage.show();
-            } catch (IOException e) {
-                showBookingFailure(messageWithDetails("Booking created but the payment screen could not be opened.", e));
-            }
+            paymentStage.setOnHidden(event -> addPaymentMethodStage = null);
+            addPaymentMethodStage = paymentStage;
+            addPaymentMethodStage.show();
+        } catch (IOException e) {
+            showBookingFailure(messageWithDetails("Unable to open the payment screen.", e));
         }
     }
 
@@ -140,20 +129,12 @@ public class RoomCardController implements Initializable {
         return null;
     }
 
-    private void showBookingFailure(String message) {
+    void showBookingFailure(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Booking Failed");
         alert.setHeaderText("Booking Failed");
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private String messageOrDefault(String fallback, Exception e) {
-        String details = e.getMessage();
-        if (details == null || details.isBlank()) {
-            return fallback;
-        }
-        return details;
     }
 
     private String messageWithDetails(String fallback, Exception e) {
@@ -162,5 +143,24 @@ public class RoomCardController implements Initializable {
             return fallback;
         }
         return fallback + "\n\nDetails: " + details;
+    }
+
+    void handleBookingSuccess(Booking booking) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Booking Confirmed");
+        alert.setHeaderText("Booking Confirmed");
+        String start = booking.getStartTime().format(formatter);
+        String end = booking.getEndTime().format(formatter);
+        String message = String.format("Your booking for %s from %s to %s is confirmed.",
+                booking.getBookingDate(), start, end);
+        alert.setContentText(message);
+        alert.showAndWait();
+        resetSelection();
+    }
+
+    void resetSelection() {
+        checkInDate.setValue(null);
+        checkinTime.getSelectionModel().clearSelection();
+        checkoutTime.getSelectionModel().clearSelection();
     }
 }

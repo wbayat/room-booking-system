@@ -1,10 +1,12 @@
 package com.group13.roombookingsystem.model.payment;
 
 public class InstitutionalBillingPaymentStrategy implements PaymentStrategy {
-    private String departmentName;
+    private final String departmentName;
+    private final String accountId;
 
-    public InstitutionalBillingPaymentStrategy(String departmentName) {
+    public InstitutionalBillingPaymentStrategy(String departmentName, String accountId) {
         this.departmentName = departmentName;
+        this.accountId = accountId;
     }
 
     @Override
@@ -26,5 +28,9 @@ public class InstitutionalBillingPaymentStrategy implements PaymentStrategy {
 
     public String getDepartmentName() {
         return departmentName;
+    }
+
+    public String getAccountId() {
+        return accountId;
     }
 }

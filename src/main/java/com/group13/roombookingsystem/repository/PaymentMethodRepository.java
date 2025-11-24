@@ -40,6 +40,11 @@ public class PaymentMethodRepository {
             statement.setString(8, details.cardHolder);
             statement.setString(9, details.expiryDate);
             statement.executeUpdate();
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    strategy.setID(keys.getInt(1));
+                }
+            }
             return strategy;
         } 
         
@@ -64,7 +69,9 @@ public class PaymentMethodRepository {
                         resultSet.getString("cardHolder"),
                         resultSet.getString("passCode"));
             case "institutionalbilling":
-                return new InstitutionalBillingPaymentStrategy(resultSet.getString("cardHolder"));
+                return new InstitutionalBillingPaymentStrategy(
+                        resultSet.getString("cardHolder"),
+                        resultSet.getString("cardNumber"));
             default:
                 return new CreditCardPaymentStrategy("", "", "", "");
         }
@@ -91,7 +98,7 @@ public class PaymentMethodRepository {
             
             case InstitutionalBillingPaymentStrategy institutional -> {
                 details.type = "institutionalbilling";
-                details.cardNumber = null;
+                details.cardNumber = institutional.getAccountId();
                 details.passCode = null;
                 details.cardHolder = institutional.getDepartmentName();
                 details.expiryDate = null;
