@@ -28,7 +28,7 @@
                      <Font size="18.0" />
                   </font>
                </Label>
-               <Label fx:id="RoomLocation" layoutX="10.0" layoutY="10.0" text="BRG">
+               <Label fx:id="RoomLocation" layoutX="10.0" layoutY="10.0">
                   <font>
                      <Font size="18.0" />
                   </font>
@@ -89,6 +89,20 @@
                     <Font size="18.0" />
                 </font>
             </Button>
+
+            <!-- Checkin button: initially hidden. Controller should set visibility when local time >= booking start. -->
+            <Button fx:id="checkinButton" visible="false" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#handleCheckin" styleClass="primary-button" text="Checkin">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Button>
+
+            <!-- Placeholder label for checkin result messages. Controller will update text and visibility. -->
+            <Label fx:id="checkinMessage" visible="false" text=""> 
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
         </children>
         <padding>
             <Insets left="10.0" right="10.0" />

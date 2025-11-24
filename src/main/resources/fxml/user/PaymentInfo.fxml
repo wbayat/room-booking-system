@@ -81,9 +81,8 @@
    </VBox>
    <HBox>
       <children>
-         <Label text="One hour’s fee ($" />
+         <Label text="Total Price: $" />
          <Label fx:id="price" layoutX="10.0" layoutY="10.0" text="30" />
-         <Label layoutX="111.0" layoutY="10.0" text=") is charged upfront!" />
       </children>
    </HBox>
     <Pane prefHeight="200.0" prefWidth="200.0" />

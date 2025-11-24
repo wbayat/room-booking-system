@@ -21,6 +21,7 @@ public class AdminRoomCardController {
     public Button toggleEnabled;
     public ImageView projectorIcon;
     public ImageView speakerIcon;
+    public Label occupancy;
 
     private Room room;
 
@@ -32,6 +33,7 @@ public class AdminRoomCardController {
         roomCapacity.setText(String.valueOf(room.getCapacity()));
         roomLocation.setText(room.getLocation());
         sensorID.setText(String.valueOf(room.getSensorId()));
+        occupancy.setText(String.valueOf(room.getSensor().detectOccupancy()));
         String toggleButtonText = (room.isEnabled()) ? "Disable" : "Enable";
         toggleEnabled.setText(toggleButtonText);
         if (!room.getHasProjector()){

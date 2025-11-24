@@ -7,6 +7,7 @@ import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.BookingRepository;
 import com.group13.roombookingsystem.service.observer.Publisher;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class BookingService extends Publisher {
         return instance;
     }
 
-    public Booking createBooking(User user, Room room, LocalDate date, LocalTime checkinTime, LocalTime checkoutTime, PaymentStrategy paymentStrategy){
+    public Booking createBooking(User user, Room room, LocalDate date, LocalTime checkinTime, LocalTime checkoutTime, PaymentStrategy paymentStrategy) throws SQLException{
         Booking booking = new Booking(user.getId(), room.getRoomID(), date, checkinTime, checkoutTime);
         booking.setBooker(user);
         booking.setRoomBooked(room);

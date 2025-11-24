@@ -1,22 +1,19 @@
 package com.group13.roombookingsystem.controller.user;
 
-import com.group13.roombookingsystem.manager.SessionManager;
 import com.group13.roombookingsystem.model.payment.CreditCardPaymentStrategy;
 import com.group13.roombookingsystem.model.payment.DebitCardPaymentStrategy;
 import com.group13.roombookingsystem.model.payment.InstitutionalBillingPaymentStrategy;
 import com.group13.roombookingsystem.model.payment.PaymentStrategy;
-import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.service.BookingService;
 import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
+import java.time.temporal.ChronoUnit;
 
 public class PaymentInfoController{
     public ComboBox<String> paymentMethodType;
@@ -35,7 +32,11 @@ public class PaymentInfoController{
     private final String[] types = {"Credit Card", "Debit Card", "Institutional Billing"};
 
     public void postInit(){
-        price.setText(String.valueOf(parentController.user.getHourlyRate()));
+        long minutes = ChronoUnit.MINUTES.between(parentController.checkinTime.getValue(), parentController.checkoutTime.getValue());
+        if (minutes < 0) minutes += 1440;
+        int hours = (int) ((minutes + 59) / 60);
+        int totalPrice = parentController.user.getHourlyRate() * hours;
+        price.setText(String.valueOf(totalPrice));
         paymentMethodType.getItems().addAll(types);
         paymentMethodType.setValue("Credit Card");
     }
@@ -82,7 +83,7 @@ public class PaymentInfoController{
             default -> new InstitutionalBillingPaymentStrategy(first.getText());
         };
     }
-    public void handleAddPaymentMethod(ActionEvent actionEvent) {
+    public void handleAddPaymentMethod(ActionEvent actionEvent) throws SQLException {
         PaymentStrategy paymentStrategy = getPaymentStrategy();
         BookingService.getInstance().createBooking(parentController.user, parentController.room, parentController.checkInDate.getValue(), parentController.checkinTime.getValue(), parentController.checkoutTime.getValue(), paymentStrategy);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
