@@ -7,6 +7,7 @@ import com.group13.roombookingsystem.model.user.User;
 import com.group13.roombookingsystem.repository.BookingRepository;
 import com.group13.roombookingsystem.service.observer.Publisher;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class BookingService extends Publisher {
         return instance;
     }
 
-    public Booking createBooking(User user, Room room, LocalDate date, LocalTime checkinTime, LocalTime checkoutTime, PaymentStrategy paymentStrategy){
+    public Booking createBooking(User user, Room room, LocalDate date, LocalTime checkinTime, LocalTime checkoutTime, PaymentStrategy paymentStrategy) throws SQLException{
         Booking booking = new Booking(user.getId(), room.getRoomID(), date, checkinTime, checkoutTime);
         booking.setBooker(user);
         booking.setRoomBooked(room);
@@ -43,22 +44,6 @@ public class BookingService extends Publisher {
         bookingRepository.create(booking);
         notifyUpdate();
         return booking;
-    }
-
-    public boolean canCreateBooking(Room room, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        if (room == null || date == null || startTime == null || endTime == null) {
-            return false;
-        }
-        if (!startTime.isBefore(endTime)) {
-            return false;
-        }
-        if (date.isBefore(LocalDate.now())) {
-            return false;
-        }
-
-        return bookingRepository.findByRoomAndDate(room.getRoomID(), date)
-                .stream()
-                .noneMatch(existing -> existing.overlaps(date, startTime, endTime));
     }
 
     public Booking modifyBooking(Booking booking, LocalDate date, LocalTime startTime, LocalTime endTime){
