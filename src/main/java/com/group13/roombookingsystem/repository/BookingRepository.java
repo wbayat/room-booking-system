@@ -16,25 +16,23 @@ import com.group13.roombookingsystem.model.booking.Booking;
 
 public class BookingRepository {
 
+
     private static final String INSERT_BOOKING = "INSERT INTO bookings(user_id, room_id, start_time, end_time, date) VALUES (?, ?, ?, ?, ?);";
     private static final String FIND_BY_ID = "SELECT id, user_id, room_id, start_time, end_time, date FROM bookings WHERE id = ?;";
     private static final String FIND_BY_ROOM_AND_DATE = "SELECT id, user_id, room_id, start_time, end_time, date FROM bookings WHERE room_id = ? AND date = ? ORDER BY start_time;";
     private static final String FIND_BY_USER = "SELECT id, user_id, room_id, start_time, end_time, date FROM bookings WHERE user_id = ? ORDER BY date, start_time;";
     private static final String UPDATE_TIMES = "UPDATE bookings SET start_time = ?, end_time = ?, date = ? WHERE id = ?;";
     private static final String DELETE_BY_ID = "DELETE FROM bookings WHERE id = ?;";
+    private static final Database database = Database.getInstance();
 
-    public BookingRepository() {
-        Database.getInstance();
-    }
-
-    public Booking create(Booking booking) throws SQLException {
+    public static Booking create(Booking booking) throws SQLException {
         validateBookingTimes(booking, false);
         ensureNoOverlap(booking, null);
 
         Connection connection = null;
 
         try {
-            connection = Database.getConnection();
+            connection = database.getConnection();
             connection.setAutoCommit(false);
 
             try (PreparedStatement statement = connection.prepareStatement(INSERT_BOOKING, Statement.RETURN_GENERATED_KEYS)) {
@@ -65,8 +63,8 @@ public class BookingRepository {
         }
     }
 
-    public void delete(int bookingId) {
-        try (Connection connection = Database.getConnection();
+    public static void delete(int bookingId) {
+        try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setInt(1, bookingId);
             statement.executeUpdate();
@@ -77,8 +75,8 @@ public class BookingRepository {
         }
     }
 
-    public Optional<Booking> findById(int bookingId) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
+    public static Optional<Booking> findById(int bookingId) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
             statement.setInt(1, bookingId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -95,8 +93,8 @@ public class BookingRepository {
         }
     }
 
-    public List<Booking> findByRoomAndDate(int roomId, LocalDate date) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_ROOM_AND_DATE)) {
+    public static List<Booking> findByRoomAndDate(int roomId, LocalDate date) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_ROOM_AND_DATE)) {
             statement.setInt(1, roomId);
             statement.setString(2, date.toString());
 
@@ -114,8 +112,8 @@ public class BookingRepository {
         }
     }
 
-    public List<Booking> findByUser(int userId) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_USER)) {
+    public static List<Booking> findByUser(int userId) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_USER)) {
             statement.setInt(1, userId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -133,7 +131,7 @@ public class BookingRepository {
         }
     }
 
-    public Booking updateTimes(int bookingId, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public static Booking updateTimes(int bookingId, LocalDate date, LocalTime startTime, LocalTime endTime) {
         Booking existing = findById(bookingId).orElseThrow(() -> new IllegalStateException("Booking not found"));
 
         boolean hasStarted = hasBookingStarted(existing);
@@ -167,7 +165,7 @@ public class BookingRepository {
         validateBookingTimes(candidate, hasStarted);
         ensureNoOverlap(candidate, bookingId);
 
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_TIMES)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_TIMES)) {
             statement.setString(1, updatedStart.toString());
             statement.setString(2, updatedEnd.toString());
             statement.setString(3, updatedDate.toString());
@@ -185,7 +183,7 @@ public class BookingRepository {
         }
     }
 
-    private Booking mapRow(ResultSet resultSet) throws SQLException {
+    private static Booking mapRow(ResultSet resultSet) throws SQLException {
         Booking booking = new Booking(
                 resultSet.getInt("user_id"),
                 resultSet.getInt("room_id"),
@@ -197,7 +195,7 @@ public class BookingRepository {
         return booking;
     }
 
-    private void validateBookingTimes(Booking booking, boolean allowStarted) {
+    private static void validateBookingTimes(Booking booking, boolean allowStarted) {
         LocalDate today = LocalDate.now();
         LocalTime now = LocalTime.now();
 
@@ -227,7 +225,7 @@ public class BookingRepository {
         }
     }
 
-    private void ensureNoOverlap(Booking booking, Integer bookingIdToIgnore) {
+    private static void ensureNoOverlap(Booking booking, Integer bookingIdToIgnore) {
         List<Booking> sameDayBookings = findByRoomAndDate(booking.getRoomId(), booking.getBookingDate());
 
         for (Booking existing : sameDayBookings) {
@@ -240,7 +238,7 @@ public class BookingRepository {
         }
     }
 
-    private boolean isOverlap(Booking existing, Booking incoming) {
+    private static boolean isOverlap(Booking existing, Booking incoming) {
         if (!existing.getBookingDate().equals(incoming.getBookingDate())) {
             return false;
         }
@@ -252,7 +250,7 @@ public class BookingRepository {
         return existingStart.isBefore(incomingEnd) && incomingStart.isBefore(existingEnd);
     }
 
-    private boolean hasBookingStarted(Booking booking) {
+    private static boolean hasBookingStarted(Booking booking) {
         LocalDate today = LocalDate.now();
         LocalTime now = LocalTime.now();
         return booking.getBookingDate().isBefore(today) || (booking.getBookingDate().isEqual(today) && !booking.getStartTime().isAfter(now));

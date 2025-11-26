@@ -24,9 +24,10 @@ public class UserRepository {
     private static final String FIND_ALL = "SELECT id, username, password, identification, role, is_verified FROM users ORDER BY username;";
     private static final String FIND_BY_VERIFICATION = "SELECT id, username, password, identification, role, is_verified FROM users WHERE is_verified = ? AND LOWER(role) <> 'admin' ORDER BY username;";
     private static final String UPDATE_VERIFICATION = "UPDATE users SET is_verified = CASE WHEN LOWER(role) IN ('partner','admin','chiefeventcoordinator') THEN 1 ELSE ? END WHERE id = ?;";
+    private static final Database database = Database.getInstance();
 
     public User create(User user) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             boolean verified = user.isVerified() || isAutoVerifiedRole(user.getRole());
             user.setVerified(verified);
 
@@ -46,7 +47,7 @@ public class UserRepository {
     }
 
     public void updateVerification(int userId, boolean verified) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_VERIFICATION)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_VERIFICATION)) {
             statement.setInt(1, verified ? 1 : 0);
             statement.setInt(2, userId);
             statement.executeUpdate();
@@ -58,7 +59,7 @@ public class UserRepository {
     }
 
     public Optional<User> findByUsername(String username) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -74,7 +75,7 @@ public class UserRepository {
     }
 
     public Optional<User> findById(int id) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
             statement.setInt(1, id);
             
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -92,7 +93,7 @@ public class UserRepository {
     }
 
     public List<User> findAll() {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_ALL);
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_ALL);
              ResultSet resultSet = statement.executeQuery()) {
             List<User> users = new ArrayList<>();
             while (resultSet.next()) {
@@ -107,7 +108,7 @@ public class UserRepository {
     }
 
     public List<User> findByVerification(boolean verified) {
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_VERIFICATION)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_VERIFICATION)) {
             statement.setInt(1, verified ? 1 : 0);
            
             try (ResultSet resultSet = statement.executeQuery()) {

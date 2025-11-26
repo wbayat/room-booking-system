@@ -24,12 +24,13 @@ public class PaymentMethodRepository {
             INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
             """;
+    private static final Database database = Database.getInstance();
 
 
     public PaymentStrategy create(int userId, int bookingId, double amount, String date, PaymentStrategy strategy) {
         PaymentDetails details = extractDetails(strategy);
 
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_PAYMENT, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_PAYMENT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, userId);
             statement.setInt(2, bookingId);
             statement.setDouble(3, amount);

@@ -14,11 +14,12 @@ import com.group13.roombookingsystem.model.room.RoomBuilder;
 import com.group13.roombookingsystem.model.sensor.Sensor;
 
 public class RoomRepository {
+    private static final Database database = Database.getInstance();
 
     public void create(Room room) {
         final String sql = "INSERT INTO rooms(name, capacity, location, sensorId, has_projector, has_speakers, is_enabled) VALUES (?, ?, ?, ?, ?, ?, ?); ";
             
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, room.getRoomName());
             statement.setInt(2, room.getCapacity());
             statement.setString(3, room.getLocation());
@@ -37,7 +38,7 @@ public class RoomRepository {
     public Optional<Room> findById(int id) {
         final String sql = "SELECT id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled FROM rooms WHERE id = ?;";
 
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -55,7 +56,7 @@ public class RoomRepository {
 
     public List<Room> findAll() {
         final String sql = "SELECT id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled FROM rooms ORDER BY name;";
-        try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
+        try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
             
             List<Room> rooms = new ArrayList<>();
 
@@ -91,7 +92,7 @@ public class RoomRepository {
     public Room update(Room room) {
         final String UPDATE_ROOM = "UPDATE rooms SET name = ?, capacity = ?, location = ?, sensorId = ?, has_projector = ?, has_speakers = ?, is_enabled = ? WHERE id = ?;";
         
-            try (Connection connection = Database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_ROOM)) {
+            try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_ROOM)) {
                 statement.setString(1, room.getRoomName());
                 statement.setInt(2, room.getCapacity());
                 statement.setString(3, room.getLocation());
