@@ -12,4 +12,7 @@ public class App extends Application{
         Database.getInstance();
         new SessionManager(new Stage()).initStage();
     }
+    public static void main(String[] args){
+        launch(args);
+    }
 }
