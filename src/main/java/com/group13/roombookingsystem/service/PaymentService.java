@@ -59,6 +59,8 @@ public class PaymentService {
                                                          LocalTime checkoutTime,
                                                          PaymentStrategy paymentStrategy,
                                                          double amount) throws SQLException {
+
+
         validateBookingRequest(user, room, date, checkinTime, checkoutTime, paymentStrategy, amount);
 
         if (!processPayment(paymentStrategy, amount)) {

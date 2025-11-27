@@ -37,11 +37,11 @@ public class BookingService extends Publisher {
         booking.setBooker(user);
         booking.setRoomBooked(room);
         booking.setPaymentStrategy(paymentStrategy);
-        user.addBooking(booking);
-        bookings.add(booking);
 
         //also add to database
         bookingRepository.create(booking);
+        bookings.add(booking);
+        user.addBooking(booking);
         notifyUpdate();
         return booking;
     }
