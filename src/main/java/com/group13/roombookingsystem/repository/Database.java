@@ -10,7 +10,9 @@ import java.sql.Statement;
 public final class Database {
     private static final String DB_URL = "jdbc:sqlite:main.db";
     private static Database instance;
+    private static Connection connection;
 
+    /*
     private static final String CREATE_USERS =
             "CREATE TABLE IF NOT EXISTS users (" +
             " id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -61,26 +63,17 @@ public final class Database {
             " FOREIGN KEY(user_id) REFERENCES users(id)," +
             " FOREIGN KEY(booking_id) REFERENCES bookings(id)" +
             ");";
-            
+    */
     // the getter for the link to the db (i still need this)
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL);
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager.getConnection(DB_URL);
+        }
+        return connection;
     }
 
     // singleton constructor for the database
-    private Database() {
-        try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
-            statement.execute("PRAGMA foreign_keys = ON;");
-            statement.execute(CREATE_USERS);
-            statement.execute(CREATE_ROOMS);
-            statement.execute(CREATE_BOOKINGS);
-            statement.execute(CREATE_PAYMENTS);
-        } 
-        
-        catch (SQLException e) {
-            throw new IllegalStateException("Cannot initialize SQLite schema", e);
-        }
-    }
+    private Database() {}
 
     public static Database getInstance() {
         if (instance == null) {
@@ -88,13 +81,13 @@ public final class Database {
         }
         return instance;
     }
-
+    /*
     // can talk directly to the db now using this not thru connection
     public void query(String sqlCommand) {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             stmt.execute(sqlCommand);
-        } 
-        
+        }
+
         catch (SQLException e) {
             throw new RuntimeException("Error executing query: " + sqlCommand, e);
         }
@@ -106,11 +99,11 @@ public final class Database {
             Connection conn = getConnection();
             Statement stmt = conn.createStatement();
             return stmt.executeQuery(sqlCommand);
-        } 
-        
+        }
+
         catch (SQLException e) {
             throw new RuntimeException("Error executing select: " + sqlCommand, e);
         }
     }
-
+    */
 }
