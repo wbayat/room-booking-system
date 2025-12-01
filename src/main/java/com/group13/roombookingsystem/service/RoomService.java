@@ -60,7 +60,7 @@ public class RoomService extends Publisher {
 
     public void disableRoom(Room room) {
         room.setEnabled(!room.isEnabled()); // Assuming Room has a setDisabled method
-        roomRepository.update(room); // Assuming RoomRepository has an update method
+//        roomRepository.update(room); // Assuming RoomRepository has an update method
         this.notifyUpdate();
     }
 
@@ -75,7 +75,7 @@ public class RoomService extends Publisher {
         room.setHasProjector(newHasProjector);
         room.setHasSpeakers(newHasSpeakers);
         room.setSensorId(sensorId);
-        roomRepository.update(room); // Assuming RoomRepository has an update method
+//        roomRepository.update(room); // Assuming RoomRepository has an update method
         this.notifyUpdate();
     }
 
