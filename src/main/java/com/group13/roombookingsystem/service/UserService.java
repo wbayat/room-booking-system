@@ -41,6 +41,10 @@ public class UserService {
         }
     }
 
+    public static void resetSingleton(){
+        instance = null;
+    }
+
     public List<Admin> getAdmins(){
         return admins;
     }
@@ -79,7 +83,7 @@ public class UserService {
         
         user.setVerified("admin".equalsIgnoreCase(user.getRole()));
         this.users.add(user);
-        return userRepository.create(user);
+        return create(user);
     }
 
     public User getUserByEmail(String email) throws UserNotFoundException {
@@ -140,7 +144,7 @@ public class UserService {
     }
 
     public void setUserVerified(int userId, boolean verified) {
-        userRepository.updateVerification(userId, verified);
+        updateVerification(userId, verified);
     }
 
     

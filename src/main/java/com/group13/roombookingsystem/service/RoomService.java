@@ -36,6 +36,10 @@ public class RoomService extends Publisher {
         }
     }
 
+    public static void resetSingleton(){
+        instance = null;
+    }
+
     public void addRoom(String roomName, int capacity, String location, boolean hasProjector, boolean hasSpeakers, ArrayList<LocalDateTime> schedule, int sensorId) {
         this.roomBuilder.reset();
         this.roomBuilder.setRoomName(roomName);
