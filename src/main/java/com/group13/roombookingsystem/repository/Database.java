@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 // singleton database class
 public final class Database {
-    private static final String DB_URL = "jdbc:sqlite:main.db";
+    private static String DB_URL = "jdbc:sqlite:main.db";
     private static Database instance;
     private static Connection connection;
 
@@ -70,6 +70,10 @@ public final class Database {
             connection = DriverManager.getConnection(DB_URL);
         }
         return connection;
+    }
+
+    public static void setTestPath(){
+        DB_URL = "jdbc:sqlite:test.db";
     }
 
     // singleton constructor for the database
