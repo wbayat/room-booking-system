@@ -36,6 +36,10 @@ public class RoomService extends Publisher {
         }
     }
 
+    public static void resetSingleton(){
+        instance = null;
+    }
+
     public void addRoom(String roomName, int capacity, String location, boolean hasProjector, boolean hasSpeakers, ArrayList<LocalDateTime> schedule, int sensorId) {
         this.roomBuilder.reset();
         this.roomBuilder.setRoomName(roomName);
@@ -56,7 +60,7 @@ public class RoomService extends Publisher {
 
     public void disableRoom(Room room) {
         room.setEnabled(!room.isEnabled()); // Assuming Room has a setDisabled method
-//        roomRepository.update(room); // Assuming RoomRepository has an update method
+        roomRepository.update(room); // Assuming RoomRepository has an update method
         this.notifyUpdate();
     }
 
@@ -71,7 +75,7 @@ public class RoomService extends Publisher {
         room.setHasProjector(newHasProjector);
         room.setHasSpeakers(newHasSpeakers);
         room.setSensorId(sensorId);
-//        roomRepository.update(room); // Assuming RoomRepository has an update method
+        roomRepository.update(room); // Assuming RoomRepository has an update method
         this.notifyUpdate();
     }
 
