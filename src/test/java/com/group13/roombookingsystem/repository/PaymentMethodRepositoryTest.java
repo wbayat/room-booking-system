@@ -1,21 +1,55 @@
 package com.group13.roombookingsystem.repository;
 
-import com.group13.roombookingsystem.model.payment.CreditCardPaymentStrategy;
-import com.group13.roombookingsystem.model.payment.DebitCardPaymentStrategy;
-import com.group13.roombookingsystem.model.payment.InstitutionalBillingPaymentStrategy;
-import com.group13.roombookingsystem.model.payment.PaymentStrategy;
-import org.junit.jupiter.api.Test;
+import com.group13.roombookingsystem.model.payment.*;
+import org.junit.jupiter.api.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PaymentMethodRepositoryTest {
 
     private final PaymentMethodRepository repository = new PaymentMethodRepository();
+
+    @BeforeEach
+    void setupDB() {
+        Database.setTestPath();
+        initTestDB();
+    }
+
+    @AfterAll
+    static void cleanup() throws Exception {
+        Files.deleteIfExists(Path.of("test.db"));
+        System.clearProperty("test.db.url");
+    }
+
+    private void initTestDB() {
+        try (Connection conn = Database.getConnection();
+             Statement st = conn.createStatement()) {
+
+            st.execute("DROP TABLE IF EXISTS payments;");
+
+            st.execute("""
+                CREATE TABLE payments (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    booking_id INTEGER NOT NULL,
+                    amount REAL NOT NULL,
+                    date TEXT NOT NULL,
+                    type TEXT NOT NULL,
+                    cardNumber TEXT,
+                    passCode TEXT,
+                    cardHolder TEXT NOT NULL,
+                    expiryDate TEXT
+                );
+            """);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to initialize test DB", e);
+        }
+    }
 
     @Test
     void createCreditCardTest() {
@@ -34,7 +68,11 @@ class PaymentMethodRepositoryTest {
         PaymentStrategy created = repository.create(userId, bookingId, amount, date, strategy);
         assertNotNull(created);
 
-        String sql = "SELECT * FROM payments WHERE user_id = ? AND booking_id = ? AND amount = ? AND date = ? ORDER BY id DESC LIMIT 1";
+        String sql = """
+            SELECT * FROM payments 
+            WHERE user_id = ? AND booking_id = ? AND amount = ? AND date = ? 
+            ORDER BY id DESC LIMIT 1
+        """;
 
         try (Connection connection = Database.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -71,7 +109,11 @@ class PaymentMethodRepositoryTest {
 
         repository.create(userId, bookingId, amount, date, strategy);
 
-        String sql = "SELECT * FROM payments WHERE user_id = ? AND booking_id = ? AND amount = ? AND date = ? ORDER BY id DESC LIMIT 1";
+        String sql = """
+            SELECT * FROM payments 
+            WHERE user_id = ? AND booking_id = ? AND amount = ? AND date = ? 
+            ORDER BY id DESC LIMIT 1
+        """;
 
         try (Connection connection = Database.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -108,7 +150,11 @@ class PaymentMethodRepositoryTest {
 
         repository.create(userId, bookingId, amount, date, strategy);
 
-        String sql = "SELECT * FROM payments WHERE user_id = ? AND booking_id = ? AND amount = ? AND date = ? ORDER BY id DESC LIMIT 1";
+        String sql = """
+            SELECT * FROM payments 
+            WHERE user_id = ? AND booking_id = ? AND amount = ? AND date = ? 
+            ORDER BY id DESC LIMIT 1
+        """;
 
         try (Connection connection = Database.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -148,14 +194,17 @@ class PaymentMethodRepositoryTest {
 
     @Test
     void parseCreditStrategyTest() {
-        String sql = "INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate) " +
-                "VALUES (101, 201, 10.0, '2025-05-01', 'creditcard', '4111222233334444', '321', 'Card User', '11/29');";
+        String sql = """
+            INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate)
+            VALUES (101, 201, 10.0, '2025-05-01', 'creditcard', '4111222233334444', '321', 'Card User', '11/29');
+        """;
 
         try (Connection connection = Database.getConnection()) {
             connection.prepareStatement(sql).execute();
 
-            sql = "SELECT * FROM payments WHERE user_id = 101 AND booking_id = 201 ORDER BY id DESC LIMIT 1";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement("""
+                SELECT * FROM payments WHERE user_id = 101 AND booking_id = 201 ORDER BY id DESC LIMIT 1
+            """);
             ResultSet rs = statement.executeQuery();
 
             assertTrue(rs.next());
@@ -174,14 +223,17 @@ class PaymentMethodRepositoryTest {
 
     @Test
     void parseDebitStrategyTest() {
-        String sql = "INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate) " +
-                "VALUES (102, 202, 15.0, '2025-05-02', 'debitcard', '9999888877776666', '5555', 'Debit User', NULL);";
+        String sql = """
+            INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate)
+            VALUES (102, 202, 15.0, '2025-05-02', 'debitcard', '9999888877776666', '5555', 'Debit User', NULL);
+        """;
 
         try (Connection connection = Database.getConnection()) {
             connection.prepareStatement(sql).execute();
 
-            sql = "SELECT * FROM payments WHERE user_id = 102 AND booking_id = 202 ORDER BY id DESC LIMIT 1";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement("""
+                SELECT * FROM payments WHERE user_id = 102 AND booking_id = 202 ORDER BY id DESC LIMIT 1
+            """);
             ResultSet rs = statement.executeQuery();
 
             assertTrue(rs.next());
@@ -199,14 +251,17 @@ class PaymentMethodRepositoryTest {
 
     @Test
     void parseInstitutionalBillingStrategyTest() {
-        String sql = "INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate) " +
-                "VALUES (103, 203, 25.0, '2025-05-03', 'institutionalbilling', 'ACC-777', NULL, 'JUnit Dept', NULL);";
+        String sql = """
+            INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate)
+            VALUES (103, 203, 25.0, '2025-05-03', 'institutionalbilling', 'ACC-777', NULL, 'JUnit Dept', NULL);
+        """;
 
         try (Connection connection = Database.getConnection()) {
             connection.prepareStatement(sql).execute();
 
-            sql = "SELECT * FROM payments WHERE user_id = 103 AND booking_id = 203 ORDER BY id DESC LIMIT 1";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement("""
+                SELECT * FROM payments WHERE user_id = 103 AND booking_id = 203 ORDER BY id DESC LIMIT 1
+            """);
             ResultSet rs = statement.executeQuery();
 
             assertTrue(rs.next());
@@ -223,19 +278,25 @@ class PaymentMethodRepositoryTest {
 
     @Test
     void parseUndefinedStrategyTest() {
-        String sql = "INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate) " +
-                "VALUES (104, 204, 30.0, '2025-05-04', 'weirdtype', NULL, NULL, 'Unknown User', NULL);";
+        String sql = """
+            INSERT INTO payments(user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate)
+            VALUES (104, 204, 30.0, '2025-05-04', 'weirdtype', NULL, NULL, 'Unknown User', NULL);
+        """;
 
         try (Connection connection = Database.getConnection()) {
             connection.prepareStatement(sql).execute();
 
-            sql = "SELECT * FROM payments WHERE user_id = 104 AND booking_id = 204 ORDER BY id DESC LIMIT 1";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement("""
+                SELECT * FROM payments WHERE user_id = 104 AND booking_id = 204 ORDER BY id DESC LIMIT 1
+            """);
             ResultSet rs = statement.executeQuery();
 
             assertTrue(rs.next());
             PaymentStrategy strategy = repository.mapRow(rs);
+
+            // fallback is always CreditCardPaymentStrategy in your repo logic
             assertTrue(strategy instanceof CreditCardPaymentStrategy);
+
         } catch (SQLException e) {
             fail(e);
         }
@@ -243,15 +304,16 @@ class PaymentMethodRepositoryTest {
 
     @Test
     void idAssignmentOnParseTest() {
-        String sql = "INSERT INTO payments(id, user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate) " +
-                "VALUES (9999, 105, 205, 40.0, '2025-05-05', 'creditcard', '1234', '111', 'IdUser', '10/30') " +
-                "ON CONFLICT(id) DO NOTHING;";
+        String sql = """
+            INSERT INTO payments(id, user_id, booking_id, amount, date, type, cardNumber, passCode, cardHolder, expiryDate)
+            VALUES (9999, 105, 205, 40.0, '2025-05-05', 'creditcard', '1234', '111', 'IdUser', '10/30')
+            ON CONFLICT(id) DO NOTHING;
+        """;
 
         try (Connection connection = Database.getConnection()) {
             connection.prepareStatement(sql).execute();
 
-            sql = "SELECT * FROM payments WHERE id = 9999";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM payments WHERE id = 9999");
             ResultSet rs = statement.executeQuery();
 
             assertTrue(rs.next());
@@ -290,5 +352,4 @@ class PaymentMethodRepositoryTest {
         assertEquals("09/28", cc.getExpiryDate());
         assertTrue(cc.getID() > 0);
     }
-
 }

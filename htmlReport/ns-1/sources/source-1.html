@@ -1,0 +1,330 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > BookingService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.group13.roombookingsystem.service</a>
+</div>
+
+<h1>Coverage Summary for Class: BookingService (com.group13.roombookingsystem.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BookingService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    28.6%
+  </span>
+  <span class="absValue">
+    (2/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30.8%
+  </span>
+  <span class="absValue">
+    (12/39)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.group13.roombookingsystem.service;
+&nbsp;
+&nbsp;import com.group13.roombookingsystem.model.booking.Booking;
+&nbsp;import com.group13.roombookingsystem.model.payment.PaymentStrategy;
+&nbsp;import com.group13.roombookingsystem.model.room.Room;
+&nbsp;import com.group13.roombookingsystem.model.user.User;
+&nbsp;import com.group13.roombookingsystem.repository.BookingRepository;
+&nbsp;import com.group13.roombookingsystem.service.observer.Publisher;
+&nbsp;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalTime;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class BookingService extends Publisher {
+&nbsp;
+&nbsp;    private static BookingService instance;
+&nbsp;    private BookingRepository bookingRepository;
+&nbsp;    private List&lt;Booking&gt; bookings;
+&nbsp;
+<b class="fc">&nbsp;    private BookingService(){</b>
+<b class="fc">&nbsp;        bookings = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        bookingRepository = new BookingRepository();</b>
+&nbsp;//        bookings = bookingRepository.findAll();
+&nbsp;    }
+&nbsp;
+&nbsp;    public static BookingService getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new BookingService();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Booking createBooking(User user, Room room, LocalDate date, LocalTime checkinTime, LocalTime checkoutTime, PaymentStrategy paymentStrategy) throws SQLException{
+<b class="fc">&nbsp;        Booking booking = new Booking(user.getId(), room.getRoomID(), date, checkinTime, checkoutTime);</b>
+<b class="fc">&nbsp;        booking.setBooker(user);</b>
+<b class="fc">&nbsp;        booking.setRoomBooked(room);</b>
+<b class="fc">&nbsp;        booking.setPaymentStrategy(paymentStrategy);</b>
+&nbsp;
+&nbsp;        //also add to database
+<b class="fc">&nbsp;        bookingRepository.create(booking);</b>
+<b class="fc">&nbsp;        bookings.add(booking);</b>
+<b class="fc">&nbsp;        user.addBooking(booking);</b>
+<b class="fc">&nbsp;        notifyUpdate();</b>
+<b class="fc">&nbsp;        return booking;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Booking modifyBooking(Booking booking, LocalDate date, LocalTime startTime, LocalTime endTime){
+<b class="nc">&nbsp;        if (date != null){</b>
+<b class="nc">&nbsp;            booking.setBookingDate(date);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (startTime != null){</b>
+<b class="nc">&nbsp;            booking.setStartTime(startTime);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (endTime != null){</b>
+<b class="nc">&nbsp;            booking.setEndTime(endTime);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //also update database
+<b class="nc">&nbsp;        if (booking.getId() != null) {</b>
+<b class="nc">&nbsp;            bookingRepository.updateTimes(booking.getBookingID(), date, startTime, endTime);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        notifyUpdate();</b>
+<b class="nc">&nbsp;        return booking;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Booking extendBooking(Booking booking, LocalTime endTime){
+<b class="nc">&nbsp;        booking.setEndTime(endTime);</b>
+&nbsp;
+&nbsp;        //also update database
+<b class="nc">&nbsp;        if (booking.getId() != null) {</b>
+<b class="nc">&nbsp;            bookingRepository.updateTimes(</b>
+<b class="nc">&nbsp;                    booking.getBookingID(),</b>
+<b class="nc">&nbsp;                    booking.getBookingDate(),</b>
+<b class="nc">&nbsp;                    booking.getStartTime(),</b>
+&nbsp;                    endTime
+&nbsp;            );
+&nbsp;        }
+<b class="nc">&nbsp;        notifyUpdate();</b>
+<b class="nc">&nbsp;        return booking;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Booking&gt; getBookingsFor(User user){
+<b class="nc">&nbsp;        List&lt;Booking&gt; b = bookingRepository.findByUser(user.getId());</b>
+<b class="nc">&nbsp;        return b;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void cancelBooking(Booking b){
+<b class="nc">&nbsp;        if (b.getBooker() != null){</b>
+<b class="nc">&nbsp;            b.getBooker().removeBooking(b);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        bookings.remove(b);</b>
+<b class="nc">&nbsp;        notifyUpdate();</b>
+&nbsp;        //Also update database
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;//    private final BookingRepository bookingRepository;
+&nbsp;//    private final RoomRepository roomRepository;
+&nbsp;//    private final UserRepository userRepository;
+&nbsp;//    private final PaymentService paymentService;
+&nbsp;//
+&nbsp;//    public BookingService() {
+&nbsp;//        this(new PaymentService());
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    public BookingService(PaymentService paymentService) {
+&nbsp;//        this(paymentService, new BookingRepository(), new RoomRepository(), new UserRepository());
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    BookingService(PaymentService paymentService,
+&nbsp;//                   BookingRepository bookingRepository,
+&nbsp;//                   RoomRepository roomRepository,
+&nbsp;//                   UserRepository userRepository) {
+&nbsp;//        this.paymentService = Objects.requireNonNull(paymentService, &quot;paymentService&quot;);
+&nbsp;//        this.bookingRepository = Objects.requireNonNull(bookingRepository, &quot;bookingRepository&quot;);
+&nbsp;//        this.roomRepository = Objects.requireNonNull(roomRepository, &quot;roomRepository&quot;);
+&nbsp;//        this.userRepository = Objects.requireNonNull(userRepository, &quot;userRepository&quot;);
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    public Booking createBooking(int userId,
+&nbsp;//                                 int roomId,
+&nbsp;//                                 LocalDate date,
+&nbsp;//                                 LocalTime startTime,
+&nbsp;//                                 LocalTime endTime,
+&nbsp;//                                 double amount,
+&nbsp;//                                 PaymentStrategy paymentStrategy) {
+&nbsp;//        ensureUserExists(userId);
+&nbsp;//        ensureRoomExists(roomId);
+&nbsp;//        validateTimeRange(date, startTime, endTime);
+&nbsp;//        ensureAvailability(roomId, date, startTime, endTime, null);
+&nbsp;//        ensureNonNegative(amount);
+&nbsp;//
+&nbsp;//        if (!paymentService.processPayment(paymentStrategy, amount)) {
+&nbsp;//            throw new IllegalStateException(&quot;Payment could not be processed.&quot;);
+&nbsp;//        }
+&nbsp;//
+&nbsp;//        Booking booking = new Booking(userId, roomId, date, startTime, endTime);
+&nbsp;//        return bookingRepository.create(booking);
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    public Booking extendBooking(int bookingId,
+&nbsp;//                                 LocalDate newDate,
+&nbsp;//                                 LocalTime newStartTime,
+&nbsp;//                                 LocalTime newEndTime,
+&nbsp;//                                 double additionalCharge,
+&nbsp;//                                 PaymentStrategy paymentStrategy) {
+&nbsp;//        Booking currentBooking = bookingRepository.findById(bookingId)
+&nbsp;//                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Booking not found.&quot;));
+&nbsp;//
+&nbsp;//        validateTimeRange(newDate, newStartTime, newEndTime);
+&nbsp;//        ensureAvailability(currentBooking.getRoomId(), newDate, newStartTime, newEndTime, bookingId);
+&nbsp;//        ensureNonNegative(additionalCharge);
+&nbsp;//
+&nbsp;//        if (additionalCharge &gt; 0 &amp;&amp; !paymentService.processPayment(paymentStrategy, additionalCharge)) {
+&nbsp;//            throw new IllegalStateException(&quot;Payment could not be processed for booking extension.&quot;);
+&nbsp;//        }
+&nbsp;//
+&nbsp;//        return bookingRepository.updateTimes(bookingId, newDate, newStartTime, newEndTime);
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    public void cancelBooking(int bookingId, int requestingUserId) {
+&nbsp;//        Booking booking = bookingRepository.findById(bookingId)
+&nbsp;//                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Booking not found.&quot;));
+&nbsp;//        if (booking.getUserId() != requestingUserId) {
+&nbsp;//            throw new IllegalStateException(&quot;Only the booking owner can cancel the booking.&quot;);
+&nbsp;//        }
+&nbsp;//        bookingRepository.delete(bookingId);
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    public List&lt;Booking&gt; getBookingsForUser(int userId) {
+&nbsp;//        ensureUserExists(userId);
+&nbsp;//        return bookingRepository.findByUser(userId);
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    public List&lt;Booking&gt; getBookingsForRoomOnDate(int roomId, LocalDate date) {
+&nbsp;//        ensureRoomExists(roomId);
+&nbsp;//        return bookingRepository.findByRoomAndDate(roomId, date);
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    private void ensureUserExists(int userId) {
+&nbsp;//        userRepository.findById(userId)
+&nbsp;//                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;User not found.&quot;));
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    private void ensureRoomExists(int roomId) {
+&nbsp;//        roomRepository.findById(roomId)
+&nbsp;//                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Room not found.&quot;));
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    private void validateTimeRange(LocalDate date, LocalTime startTime, LocalTime endTime) {
+&nbsp;//        Objects.requireNonNull(date, &quot;date&quot;);
+&nbsp;//        Objects.requireNonNull(startTime, &quot;startTime&quot;);
+&nbsp;//        Objects.requireNonNull(endTime, &quot;endTime&quot;);
+&nbsp;//
+&nbsp;//        if (!startTime.isBefore(endTime)) {
+&nbsp;//            throw new IllegalArgumentException(&quot;Start time must be before end time.&quot;);
+&nbsp;//        }
+&nbsp;//
+&nbsp;//        if (date.isBefore(LocalDate.now())) {
+&nbsp;//            throw new IllegalArgumentException(&quot;Cannot create bookings in the past.&quot;);
+&nbsp;//        }
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    private void ensureAvailability(int roomId,
+&nbsp;//                                    LocalDate date,
+&nbsp;//                                    LocalTime startTime,
+&nbsp;//                                    LocalTime endTime,
+&nbsp;//                                    Integer bookingIdToIgnore) {
+&nbsp;//        bookingRepository.findByRoomAndDate(roomId, date).stream()
+&nbsp;//                .filter(existing -&gt; bookingIdToIgnore == null || !bookingIdToIgnore.equals(existing.getId()))
+&nbsp;//                .filter(existing -&gt; existing.overlaps(date, startTime, endTime))
+&nbsp;//                .findFirst()
+&nbsp;//                .ifPresent(existing -&gt; {
+&nbsp;//                    throw new IllegalStateException(&quot;The room is already booked for the selected time.&quot;);
+&nbsp;//                });
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    private void ensureNonNegative(double amount) {
+&nbsp;//        if (amount &lt; 0) {
+&nbsp;//            throw new IllegalArgumentException(&quot;Amount cannot be negative.&quot;);
+&nbsp;//        }
+&nbsp;//    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-02 16:56</div>
+</div>
+</body>
+</html>

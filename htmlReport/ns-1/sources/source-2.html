@@ -1,0 +1,227 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PaymentService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.group13.roombookingsystem.service</a>
+</div>
+
+<h1>Coverage Summary for Class: PaymentService (com.group13.roombookingsystem.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PaymentService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (6/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    63.4%
+  </span>
+  <span class="absValue">
+    (26/41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.group13.roombookingsystem.service;
+&nbsp;
+&nbsp;import com.group13.roombookingsystem.model.booking.Booking;
+&nbsp;import com.group13.roombookingsystem.model.payment.PaymentContext;
+&nbsp;import com.group13.roombookingsystem.model.payment.PaymentStrategy;
+&nbsp;import com.group13.roombookingsystem.model.room.Room;
+&nbsp;import com.group13.roombookingsystem.model.user.User;
+&nbsp;import com.group13.roombookingsystem.repository.PaymentMethodRepository;
+&nbsp;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalTime;
+&nbsp;
+&nbsp;/**
+&nbsp; * Facade for executing payments using the strategy pattern. All mutations are
+&nbsp; * synchronized to avoid side effects when the same context is shared across
+&nbsp; * multiple booking workflows.
+&nbsp; */
+&nbsp;public class PaymentService {
+&nbsp;
+&nbsp;    private static PaymentService instance;
+&nbsp;
+&nbsp;    private final PaymentContext paymentContext;
+&nbsp;    private final PaymentMethodRepository paymentMethodRepository;
+&nbsp;    private final BookingService bookingService;
+&nbsp;
+&nbsp;    private PaymentService() {
+<b class="nc">&nbsp;        this(new PaymentContext(), new PaymentMethodRepository(), BookingService.getInstance());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    PaymentService(PaymentContext paymentContext,
+&nbsp;                   PaymentMethodRepository paymentMethodRepository,
+<b class="fc">&nbsp;                   BookingService bookingService) {</b>
+<b class="fc">&nbsp;        if (paymentContext == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Payment context cannot be null.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (paymentMethodRepository == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Payment repository cannot be null.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (bookingService == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Booking service cannot be null.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        this.paymentContext = paymentContext;</b>
+<b class="fc">&nbsp;        this.paymentMethodRepository = paymentMethodRepository;</b>
+<b class="fc">&nbsp;        this.bookingService = bookingService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static PaymentService getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new PaymentService();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public synchronized Booking createBookingWithPayment(User user,
+&nbsp;                                                         Room room,
+&nbsp;                                                         LocalDate date,
+&nbsp;                                                         LocalTime checkinTime,
+&nbsp;                                                         LocalTime checkoutTime,
+&nbsp;                                                         PaymentStrategy paymentStrategy,
+&nbsp;                                                         double amount) throws SQLException {
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        validateBookingRequest(user, room, date, checkinTime, checkoutTime, paymentStrategy, amount);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (!processPayment(paymentStrategy, amount)) {</b>
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Payment could not be processed.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Booking booking = bookingService.createBooking(user, room, date, checkinTime, checkoutTime, paymentStrategy);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            paymentMethodRepository.create(user.getId(), booking.getBookingID(), amount, date.toString(), paymentStrategy);</b>
+<b class="nc">&nbsp;        } catch (RuntimeException repositoryError) {</b>
+<b class="nc">&nbsp;            bookingService.cancelBooking(booking);</b>
+<b class="nc">&nbsp;            throw repositoryError;</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return booking;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public synchronized boolean processPayment(PaymentStrategy paymentStrategy, double amount) {
+<b class="fc">&nbsp;        if (paymentStrategy == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Payment strategy must be provided.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        ensureNonNegative(amount);</b>
+<b class="fc">&nbsp;        paymentContext.setPaymentStrategy(paymentStrategy);</b>
+<b class="fc">&nbsp;        return paymentContext.pay(amount);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PaymentContext getPaymentContext() {
+<b class="fc">&nbsp;        return paymentContext;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void validateBookingRequest(User user,
+&nbsp;                                        Room room,
+&nbsp;                                        LocalDate date,
+&nbsp;                                        LocalTime checkinTime,
+&nbsp;                                        LocalTime checkoutTime,
+&nbsp;                                        PaymentStrategy paymentStrategy,
+&nbsp;                                        double amount) {
+<b class="fc">&nbsp;        if (user == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;User must be provided.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (room == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Room must be provided.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (date == null || checkinTime == null || checkoutTime == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Booking date and time must be provided.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (paymentStrategy == null) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Payment strategy must be provided.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        ensureNonNegative(amount);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void ensureNonNegative(double amount) {
+<b class="fc">&nbsp;        if (amount &lt; 0) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Payment amount cannot be negative.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-02 16:56</div>
+</div>
+</body>
+</html>

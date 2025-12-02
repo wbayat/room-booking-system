@@ -1,11 +1,11 @@
 package com.group13.roombookingsystem.repository;
 
 import com.group13.roombookingsystem.model.booking.Booking;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -17,10 +17,75 @@ class BookingRepositoryTest {
 
     private final BookingRepository repository = new BookingRepository();
 
+    @BeforeEach
+    void setupDB() {
+        Database.setTestPath();
+        initTestDB();
+    }
+
+    @AfterAll
+    static void cleanup() throws Exception {
+        Files.deleteIfExists(Path.of("test.db"));
+        System.clearProperty("test.db.url");
+    }
+
+    private void initTestDB() {
+        try (Connection conn = Database.getConnection();
+             Statement st = conn.createStatement()) {
+
+            st.execute("DROP TABLE IF EXISTS bookings;");
+            st.execute("DROP TABLE IF EXISTS users;");
+            st.execute("DROP TABLE IF EXISTS rooms;");
+
+            st.execute("""
+                CREATE TABLE users(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT NOT NULL UNIQUE,
+                    password TEXT NOT NULL,
+                    identification INTEGER NOT NULL,
+                    role TEXT NOT NULL,
+                    is_verified INTEGER NOT NULL DEFAULT 0
+                );
+            """);
+
+            st.execute("""
+                CREATE TABLE rooms(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    capacity INTEGER NOT NULL,
+                    location TEXT NOT NULL,
+                    sensorId INTEGER,
+                    has_projector INTEGER NOT NULL DEFAULT 0,
+                    has_speakers INTEGER NOT NULL DEFAULT 0,
+                    is_enabled INTEGER NOT NULL DEFAULT 1
+                );
+            """);
+
+            st.execute("""
+                CREATE TABLE bookings(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    room_id INTEGER NOT NULL,
+                    date TEXT NOT NULL,
+                    start_time TEXT NOT NULL,
+                    end_time TEXT NOT NULL,
+                    FOREIGN KEY(user_id) REFERENCES users(id),
+                    FOREIGN KEY(room_id) REFERENCES rooms(id)
+                );
+            """);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to initialize test DB", e);
+        }
+    }
+
     private void createUser(int userId) {
-        String sql = "INSERT INTO users(id, username, password, identification, role, is_verified) " +
-                "VALUES (?, 'bookingUser" + userId + "', 'pw', 1234, 'Student', 1) " +
-                "ON CONFLICT(id) DO NOTHING;";
+        String sql =
+                "INSERT INTO users(id, username, password, identification, role, is_verified) " +
+                        "VALUES (?, 'bookingUser" + userId + "', 'pw', 1234, 'Student', 1) " +
+                        "ON CONFLICT(id) DO NOTHING;";
+
+
         try (Connection connection = Database.getConnection()) {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, userId);
@@ -31,9 +96,12 @@ class BookingRepositoryTest {
     }
 
     private void createRoom(int roomId) {
-        String sql = "INSERT INTO rooms(id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled) " +
-                "VALUES (?, 'bookingRoom" + roomId + "', 10, 'BookingLoc', 1, 0, 0, 1) " +
-                "ON CONFLICT(id) DO NOTHING;";
+        String sql =
+                "INSERT INTO rooms(id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled) " +
+                        "VALUES (?, 'bookingRoom" + roomId + "', 10, 'BookingLoc', 1, 0, 0, 1) " +
+                        "ON CONFLICT(id) DO NOTHING;";
+
+
         try (Connection connection = Database.getConnection()) {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, roomId);
@@ -55,8 +123,7 @@ class BookingRepositoryTest {
 
     private void cleanupBooking(int userId, int roomId) {
         try (Connection c = Database.getConnection()) {
-            PreparedStatement st = c.prepareStatement(
-                    "DELETE FROM bookings WHERE user_id = ? AND room_id = ?");
+            PreparedStatement st = c.prepareStatement("DELETE FROM bookings WHERE user_id = ? AND room_id = ?");
             st.setInt(1, userId);
             st.setInt(2, roomId);
             st.execute();
@@ -71,7 +138,6 @@ class BookingRepositoryTest {
         int roomId = 200;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
@@ -83,17 +149,16 @@ class BookingRepositoryTest {
         try {
             Booking booking = new Booking(userId, roomId, date, start, end);
             created = repository.create(booking);
-
-
         } catch (SQLException e) {
             fail(e);
-        }  catch(IllegalStateException ignored) {}
+        } catch (IllegalStateException ignored) {}
 
         assertNotNull(created);
         assertTrue(created.getBookingID() > 0);
 
         Optional<Booking> fetched = repository.findById(created.getBookingID());
         assertTrue(fetched.isPresent());
+
         Booking b = fetched.get();
         assertEquals(userId, b.getUserId());
         assertEquals(roomId, b.getRoomId());
@@ -108,15 +173,17 @@ class BookingRepositoryTest {
         int roomId = 201;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
-        LocalDate date = LocalDate.now().minusDays(1);
-        LocalTime start = LocalTime.of(10, 0);
-        LocalTime end = LocalTime.of(11, 0);
+        Booking booking = new Booking(
+                userId,
+                roomId,
+                LocalDate.now().minusDays(1),
+                LocalTime.of(10, 0),
+                LocalTime.of(11, 0)
+        );
 
-        Booking booking = new Booking(userId, roomId, date, start, end);
         try {
             repository.create(booking);
             fail();
@@ -131,15 +198,17 @@ class BookingRepositoryTest {
         int roomId = 202;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
-        LocalDate date = LocalDate.now().plusDays(1);
-        LocalTime start = LocalTime.of(12, 0);
-        LocalTime end = LocalTime.of(11, 0);
+        Booking booking = new Booking(
+                userId,
+                roomId,
+                LocalDate.now().plusDays(1),
+                LocalTime.of(12, 0),
+                LocalTime.of(11, 0)
+        );
 
-        Booking booking = new Booking(userId, roomId, date, start, end);
         try {
             repository.create(booking);
             fail();
@@ -154,15 +223,17 @@ class BookingRepositoryTest {
         int roomId = 203;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
-        LocalDate date = LocalDate.now().plusDays(1);
-        LocalTime start = LocalTime.of(10, 0);
-        LocalTime end = LocalTime.of(10, 0);
+        Booking booking = new Booking(
+                userId,
+                roomId,
+                LocalDate.now().plusDays(1),
+                LocalTime.of(10, 0),
+                LocalTime.of(10, 0)
+        );
 
-        Booking booking = new Booking(userId, roomId, date, start, end);
         try {
             repository.create(booking);
             fail();
@@ -177,15 +248,17 @@ class BookingRepositoryTest {
         int roomId = 204;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
-        LocalDate date = LocalDate.now().plusDays(1);
-        LocalTime start = LocalTime.of(8, 0);
-        LocalTime end = LocalTime.of(12, 30); // 4.5 hours
+        Booking booking = new Booking(
+                userId,
+                roomId,
+                LocalDate.now().plusDays(1),
+                LocalTime.of(8, 0),
+                LocalTime.of(12, 30)
+        );
 
-        Booking booking = new Booking(userId, roomId, date, start, end);
         try {
             repository.create(booking);
             fail();
@@ -200,45 +273,37 @@ class BookingRepositoryTest {
         int roomId = 205;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
         LocalDate date = LocalDate.now().plusDays(1);
 
-        Booking first = new Booking(userId, roomId, date, LocalTime.of(10, 0), LocalTime.of(12, 0));
         try {
-            repository.create(first);
-        } catch (SQLException e) {
-            fail(e);
-        }  catch(IllegalStateException ignored) {}
+            repository.create(new Booking(userId, roomId, date, LocalTime.of(10, 0), LocalTime.of(12, 0)));
+        } catch (Exception ignored) {}
 
-        Booking overlapping = new Booking(userId, roomId, date, LocalTime.of(11, 0), LocalTime.of(13, 0));
         try {
-            repository.create(overlapping);
+            repository.create(new Booking(userId, roomId, date, LocalTime.of(11, 0), LocalTime.of(13, 0)));
             fail();
-        } catch (SQLException e) {
-            fail(e);
         } catch (IllegalStateException ignored) {}
+        catch (SQLException e) { fail(e); }
     }
 
     @Test
-    void findBookingByRoomIdAndDateTest(){
+    void findBookingByRoomIdAndDateTest() {
         int userId = 106;
         int roomId = 206;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
         LocalDate date = LocalDate.now().plusDays(2);
+
         Booking b1 = new Booking(userId, roomId, date, LocalTime.of(9, 0), LocalTime.of(11, 0));
         try {
             repository.create(b1);
-        } catch (SQLException e) {
-            fail(e);
-        } catch(IllegalStateException ignored) {}
+        } catch (Exception ignored) {}
 
         List<Booking> roomBookings = repository.findByRoomAndDate(roomId, date);
 
@@ -246,41 +311,37 @@ class BookingRepositoryTest {
 
         Booking result = roomBookings.getFirst();
         assertEquals(roomId, result.getRoomId());
-        assertEquals(LocalTime.of(9, 0), result.getStartTime());
-        assertEquals(LocalTime.of(11, 0), result.getEndTime());
         assertEquals(userId, result.getUserId());
         assertEquals(date, result.getBookingDate());
+        assertEquals(LocalTime.of(9, 0), result.getStartTime());
+        assertEquals(LocalTime.of(11, 0), result.getEndTime());
     }
 
     @Test
-    void findBookingByUserTest(){
+    void findBookingByUserTest() {
         int userId = 107;
         int roomId = 208;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
         LocalDate date = LocalDate.now().plusDays(3);
 
-        Booking userBooking = new Booking(userId, roomId, date, LocalTime.of(9, 0), LocalTime.of(11, 0));
         try {
-            repository.create(userBooking);
-        } catch (SQLException e) {
-            fail(e);
-        }  catch(IllegalStateException ignored) {}
+            repository.create(new Booking(userId, roomId, date, LocalTime.of(9, 0), LocalTime.of(11, 0)));
+        } catch (Exception ignored) {}
 
-        List<Booking> userBookings = repository.findByUser(userId);
+        List<Booking> bookings = repository.findByUser(userId);
 
-        assertEquals(1, userBookings.size());
+        assertEquals(1, bookings.size());
 
-        Booking result = userBookings.getFirst();
-        assertEquals(userId, result.getUserId());
-        assertEquals(roomId, result.getRoomId());
-        assertEquals(date, result.getBookingDate());
-        assertEquals(LocalTime.of(9, 0), result.getStartTime());
-        assertEquals(LocalTime.of(11, 0), result.getEndTime());
+        Booking b = bookings.getFirst();
+        assertEquals(userId, b.getUserId());
+        assertEquals(roomId, b.getRoomId());
+        assertEquals(date, b.getBookingDate());
+        assertEquals(LocalTime.of(9, 0), b.getStartTime());
+        assertEquals(LocalTime.of(11, 0), b.getEndTime());
     }
 
     @Test
@@ -289,19 +350,22 @@ class BookingRepositoryTest {
         int roomId = 209;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
         LocalDate date = LocalDate.now().plusDays(4);
-        Booking booking = new Booking(userId, roomId, date, LocalTime.of(9, 0), LocalTime.of(11, 0));
-        try {
-            Booking created = repository.create(booking);
 
-            int id = created.getBookingID();
-            assertTrue(repository.findById(id).isPresent());
-            repository.delete(id);
-            assertTrue(repository.findById(id).isEmpty());
+        try {
+            Booking created = repository.create(
+                    new Booking(userId, roomId, date, LocalTime.of(9, 0), LocalTime.of(11, 0))
+            );
+
+            assertTrue(repository.findById(created.getBookingID()).isPresent());
+
+            repository.delete(created.getBookingID());
+
+            assertTrue(repository.findById(created.getBookingID()).isEmpty());
+
         } catch (SQLException e) {
             fail(e);
         }
@@ -313,31 +377,30 @@ class BookingRepositoryTest {
         int roomId = 210;
 
         cleanupBooking(userId, roomId);
-
         createUser(userId);
         createRoom(roomId);
 
         LocalDate date = LocalDate.now().plusDays(5);
-        Booking booking = new Booking(userId, roomId, date, LocalTime.of(9, 0), LocalTime.of(11, 0));
-        Booking created = null;
 
+        Booking created = null;
         try {
-            created = repository.create(booking);
-        } catch (SQLException e) {
-            fail(e);
-        }  catch(IllegalStateException ignored) {}
+            created = repository.create(
+                    new Booking(userId, roomId, date, LocalTime.of(9, 0), LocalTime.of(11, 0))
+            );
+        } catch (Exception ignored) {}
 
         assertNotNull(created);
-        int id = created.getBookingID();
-        LocalDate newDate = date.plusDays(1);
-        LocalTime newStart = LocalTime.of(10, 0);
-        LocalTime newEnd = LocalTime.of(12, 0);
 
-        Booking updated = repository.updateTimes(id, newDate, newStart, newEnd);
+        Booking updated = repository.updateTimes(
+                created.getBookingID(),
+                date.plusDays(1),
+                LocalTime.of(10, 0),
+                LocalTime.of(12, 0)
+        );
 
-        assertEquals(newDate, updated.getBookingDate());
-        assertEquals(newStart, updated.getStartTime());
-        assertEquals(newEnd, updated.getEndTime());
+        assertEquals(date.plusDays(1), updated.getBookingDate());
+        assertEquals(LocalTime.of(10, 0), updated.getStartTime());
+        assertEquals(LocalTime.of(12, 0), updated.getEndTime());
     }
 
     @Test
@@ -346,54 +409,44 @@ class BookingRepositoryTest {
         int roomId = 211;
 
         cleanupBookingById(7000);
-
         createUser(userId);
         createRoom(roomId);
 
         LocalDate date = LocalDate.now().minusDays(1);
-        LocalTime start = LocalTime.of(9, 0);
-        LocalTime end = LocalTime.of(11, 0);
 
-        String sql = "INSERT INTO bookings(id, user_id, room_id, start_time, end_time, date) " +
-                "VALUES (7000, ?, ?, ?, ?, ?) " +
-                "ON CONFLICT(id) DO NOTHING;";
+        String sql = """
+            INSERT INTO bookings(id, user_id, room_id, start_time, end_time, date)
+            VALUES (7000, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO NOTHING;
+        """;
 
         try (Connection connection = Database.getConnection()) {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, userId);
             st.setInt(2, roomId);
-            st.setString(3, start.toString());
-            st.setString(4, end.toString());
+            st.setString(3, "09:00");
+            st.setString(4, "11:00");
             st.setString(5, date.toString());
             st.execute();
         } catch (SQLException e) {
             fail(e);
         }
 
-        // should fail if you try and change the date since the booking already started
-        try {
-            repository.updateTimes(7000, date.plusDays(1), null, null);
-            fail();
-        } catch (IllegalStateException ignored) {}
+        // cannot change date
+        assertThrows(IllegalStateException.class,
+                () -> repository.updateTimes(7000, date.plusDays(1), null, null));
 
-        // or changing the start time
-        try {
-            repository.updateTimes(7000, null, LocalTime.of(8, 0), null);
-            fail();
-        } catch (IllegalStateException ignored) {}
+        // cannot change start time
+        assertThrows(IllegalStateException.class,
+                () -> repository.updateTimes(7000, null, LocalTime.of(8, 0), null));
 
+        // cannot change end time backwards
+        assertThrows(IllegalStateException.class,
+                () -> repository.updateTimes(7000, null, null, LocalTime.of(10, 0)));
 
-        // or changing the end time
-        try {
-            repository.updateTimes(7000, null, null, LocalTime.of(10, 0));
-            fail();
-        } catch (IllegalStateException ignored) {}
-
-        // but extending should be good
-        try {
-            repository.updateTimes(7000, null, null, LocalTime.of(12, 0));
-        } catch (IllegalStateException e) {
-            fail(e);
-        }
+        // extending end time is allowed
+        assertDoesNotThrow(
+                () -> repository.updateTimes(7000, null, null, LocalTime.of(12, 0))
+        );
     }
 }

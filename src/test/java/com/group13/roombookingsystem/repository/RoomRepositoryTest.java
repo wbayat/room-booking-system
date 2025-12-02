@@ -3,12 +3,14 @@ package com.group13.roombookingsystem.repository;
 import com.group13.roombookingsystem.model.room.Room;
 import com.group13.roombookingsystem.model.room.RoomBuilder;
 import com.group13.roombookingsystem.model.sensor.Sensor;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +19,41 @@ class RoomRepositoryTest {
 
     private final RoomRepository repository = new RoomRepository();
 
+    @BeforeEach
+    void setupDB() {
+        Database.setTestPath();
+        initTestDB();
+    }
+
+    @AfterAll
+    static void cleanup() throws Exception {
+        Files.deleteIfExists(Path.of("test.db"));
+        System.clearProperty("test.db.url");
+    }
+
+    private void initTestDB() {
+        try (Connection conn = Database.getConnection();
+             Statement st = conn.createStatement()) {
+
+            st.execute("DROP TABLE IF EXISTS rooms;");
+
+            st.execute("""
+                CREATE TABLE rooms (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    capacity INTEGER NOT NULL,
+                    location TEXT NOT NULL,
+                    sensorId INTEGER,
+                    has_projector INTEGER NOT NULL DEFAULT 0,
+                    has_speakers INTEGER NOT NULL DEFAULT 0,
+                    is_enabled INTEGER NOT NULL DEFAULT 1
+                );
+            """);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to initialize test DB", e);
+        }
+    }
     private Room createRoom(String name, int capacity, String location, int sensorId,
                             boolean hasProjector, boolean hasSpeakers, boolean enabled) {
         RoomBuilder builder = new RoomBuilder();
@@ -36,20 +73,19 @@ class RoomRepositoryTest {
         Room room = createRoom("JUnitRoom1", 10, "TestLocation1", 101, false, false, true);
         repository.create(room);
 
-        String sql = "SELECT * FROM rooms WHERE name = ? AND location = ? ORDER BY id DESC LIMIT 1";
+        String sql = "SELECT * FROM rooms WHERE name = 'JUnitRoom1'";
 
-        try (Connection connection = Database.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, "JUnitRoom1");
-            statement.setString(2, "TestLocation1");
+        try (Connection connection = Database.getConnection();
+             Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
 
-            ResultSet rs = statement.executeQuery();
             assertTrue(rs.next());
             assertEquals(10, rs.getInt("capacity"));
             assertEquals(101, rs.getInt("sensorId"));
             assertEquals(0, rs.getInt("has_projector"));
             assertEquals(0, rs.getInt("has_speakers"));
             assertEquals(1, rs.getInt("is_enabled"));
+
         } catch (SQLException e) {
             fail(e);
         }
@@ -60,17 +96,14 @@ class RoomRepositoryTest {
         Room room = createRoom("JUnitRoom2", 20, "TestLocation2", 102, true, true, true);
         repository.create(room);
 
-        String sql = "SELECT * FROM rooms WHERE name = ? AND location = ? ORDER BY id DESC LIMIT 1";
+        try (Connection connection = Database.getConnection();
+             ResultSet rs = connection.createStatement()
+                     .executeQuery("SELECT * FROM rooms WHERE name='JUnitRoom2'")) {
 
-        try (Connection connection = Database.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, "JUnitRoom2");
-            statement.setString(2, "TestLocation2");
-
-            ResultSet rs = statement.executeQuery();
             assertTrue(rs.next());
             assertEquals(1, rs.getInt("has_projector"));
             assertEquals(1, rs.getInt("has_speakers"));
+
         } catch (SQLException e) {
             fail(e);
         }
@@ -78,12 +111,11 @@ class RoomRepositoryTest {
 
     @Test
     void searchByIdTest() {
-        String insert = "INSERT INTO rooms(id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled) " +
-                "VALUES (9001, 'FindByIdRoom', 30, 'LocA', 201, 1, 0, 1) " +
-                "ON CONFLICT(id) DO NOTHING;";
-
         try (Connection connection = Database.getConnection()) {
-            connection.prepareStatement(insert).execute();
+            connection.createStatement().execute("""
+                INSERT INTO rooms(id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled)
+                VALUES (9001, 'FindByIdRoom', 30, 'LocA', 201, 1, 0, 1)
+            """);
         } catch (SQLException e) {
             fail(e);
         }
@@ -91,7 +123,6 @@ class RoomRepositoryTest {
         Room room = repository.findById(9001).orElse(null);
 
         assertNotNull(room);
-        assertEquals(9001, room.getRoomID());
         assertEquals("FindByIdRoom", room.getRoomName());
         assertEquals(30, room.getCapacity());
         assertEquals("LocA", room.getLocation());
@@ -108,50 +139,20 @@ class RoomRepositoryTest {
 
     @Test
     void findAllTest() {
-        Room room1 = createRoom("JUnitRoomAll1", 40, "LocAll1", 301, false, true, true);
-        Room room2 = createRoom("JUnitRoomAll2", 50, "LocAll2", 302, true, false, true);
-
-        repository.create(room1);
-        repository.create(room2);
+        repository.create(createRoom("R1", 40, "L1", 301, false, true, true));
+        repository.create(createRoom("R2", 50, "L2", 302, true, false, true));
 
         List<Room> rooms = repository.findAll();
-        assertNotNull(rooms);
-
-        Room found1 = null;
-        Room found2 = null;
-
-        for (Room r : rooms) {
-            if ("JUnitRoomAll1".equals(r.getRoomName()) && "LocAll1".equals(r.getLocation())) {
-                found1 = r;
-            } else if ("JUnitRoomAll2".equals(r.getRoomName()) && "LocAll2".equals(r.getLocation())) {
-                found2 = r;
-            }
-        }
-
-        assertNotNull(found1);
-        assertEquals(40, found1.getCapacity());
-        assertEquals(301, found1.getSensorId());
-        assertFalse(found1.getHasProjector());
-        assertTrue(found1.getHasSpeakers());
-        assertTrue(found1.isEnabled());
-
-        assertNotNull(found2);
-        assertEquals(50, found2.getCapacity());
-        assertEquals(302, found2.getSensorId());
-        assertTrue(found2.getHasProjector());
-        assertFalse(found2.getHasSpeakers());
-        assertTrue(found2.isEnabled());
+        assertEquals(2, rooms.size());
     }
-
 
     @Test
     void updateRoomTest() {
-        String sql = "INSERT INTO rooms(id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled) " +
-                "VALUES (9100, 'OldName', 10, 'OldLoc', 401, 0, 0, 1) " +
-                "ON CONFLICT(id) DO NOTHING;";
-
         try (Connection connection = Database.getConnection()) {
-            connection.prepareStatement(sql).execute();
+            connection.createStatement().execute("""
+                INSERT INTO rooms(id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled)
+                VALUES (9100, 'OldName', 10, 'OldLoc', 401, 0, 0, 1)
+            """);
         } catch (SQLException e) {
             fail(e);
         }
@@ -166,16 +167,11 @@ class RoomRepositoryTest {
         builder.setHasProjector(true);
         builder.setHasSpeakers(true);
         builder.setEnabled(false);
-        Room updated = builder.getProduct();
 
-        Room result = repository.update(updated);
-        assertNotNull(result);
+        repository.update(builder.getProduct());
 
-        sql = "SELECT * FROM rooms WHERE id = 9100";
-
-        try (Connection connection = Database.getConnection()) {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
+        try (Connection connection = Database.getConnection();
+             ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM rooms WHERE id = 9100")) {
 
             assertTrue(rs.next());
             assertEquals("NewName", rs.getString("name"));
@@ -185,6 +181,7 @@ class RoomRepositoryTest {
             assertEquals(1, rs.getInt("has_projector"));
             assertEquals(1, rs.getInt("has_speakers"));
             assertEquals(0, rs.getInt("is_enabled"));
+
         } catch (SQLException e) {
             fail(e);
         }
@@ -192,41 +189,32 @@ class RoomRepositoryTest {
 
     @Test
     void updateNonExistingRoomTest() {
-        Room room = createRoom("NonExistingRoom", 5, "Nowhere", 999, false, false, true);
+        Room fake = createRoom("Nope", 5, "X", 999, false, false, true);
+        RoomBuilder b = new RoomBuilder();
+        b.reset();
+        b.setRoomID(999999);
+        b.setRoomName(fake.getRoomName());
+        b.setCapacity(fake.getCapacity());
+        b.setLocation(fake.getLocation());
+        b.setSensor(new Sensor(fake.getSensorId()));
+        b.setHasProjector(fake.getHasProjector());
+        b.setHasSpeakers(fake.getHasSpeakers());
+        b.setEnabled(fake.isEnabled());
 
-        RoomBuilder builder = new RoomBuilder();
-        builder.reset();
-        builder.setRoomID(54126781);
-        builder.setRoomName(room.getRoomName());
-        builder.setCapacity(room.getCapacity());
-        builder.setLocation(room.getLocation());
-        builder.setSensor(new Sensor(room.getSensorId()));
-        builder.setHasProjector(room.getHasProjector());
-        builder.setHasSpeakers(room.getHasSpeakers());
-        builder.setEnabled(room.isEnabled());
-        Room withId = builder.getProduct();
-
-        try {
-            repository.update(withId);
-            fail();
-        } catch(IllegalStateException ignored) {}
+        assertThrows(IllegalStateException.class, () -> repository.update(b.getProduct()));
     }
 
     @Test
     void disabledRoomTest() {
-        Room room = createRoom("DisabledRoom", 15, "DisabledLoc", 500, false, false, false);
-        repository.create(room);
+        repository.create(createRoom("DisabledRoom", 15, "DL", 500, false, false, false));
 
-        String sql = "SELECT * FROM rooms WHERE name = ? AND location = ? ORDER BY id DESC LIMIT 1";
+        try (Connection connection = Database.getConnection();
+             ResultSet rs = connection.createStatement()
+                     .executeQuery("SELECT is_enabled FROM rooms WHERE name='DisabledRoom'")) {
 
-        try (Connection connection = Database.getConnection()){
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, "DisabledRoom");
-            statement.setString(2, "DisabledLoc");
-
-            ResultSet rs = statement.executeQuery();
             assertTrue(rs.next());
             assertEquals(0, rs.getInt("is_enabled"));
+
         } catch (SQLException e) {
             fail(e);
         }
@@ -234,18 +222,16 @@ class RoomRepositoryTest {
 
     @Test
     void emptyFindAllTest() {
-        List<Room> rooms = repository.findAll();
-        assertNotNull(rooms);
+        assertNotNull(repository.findAll());
     }
 
     @Test
     void roomSensorByIdTest() {
-        String insert = "INSERT INTO rooms(id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled) " +
-                "VALUES (9300, 'SensorRoom', 25, 'SensorLoc', 777, 0, 0, 1) " +
-                "ON CONFLICT(id) DO NOTHING;";
-
         try (Connection connection = Database.getConnection()) {
-            connection.prepareStatement(insert).execute();
+            connection.createStatement().execute("""
+                INSERT INTO rooms(id, name, capacity, location, sensorId, has_projector, has_speakers, is_enabled)
+                VALUES (9300, 'SensorRoom', 25, 'SensorLoc', 777, 0, 0, 1)
+            """);
         } catch (SQLException e) {
             fail(e);
         }

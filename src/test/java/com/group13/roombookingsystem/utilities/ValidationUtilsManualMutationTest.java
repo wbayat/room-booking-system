@@ -19,7 +19,8 @@ class ValidationUtilsManualMutationTest {
         String candidate = "Valid12A";
 
         assertFalse(ValidationUtils.isValidPassword(candidate),
-                "Control implementation rejects passwords without special characters.");
+                "Contro" +
+                        "l implementation rejects passwords without special characters.");
         assertTrue(new PasswordWithoutSpecialCharMutant().isValidPassword(candidate),
                 "Mutant incorrectly accepts passwords missing a special character.");
     }
