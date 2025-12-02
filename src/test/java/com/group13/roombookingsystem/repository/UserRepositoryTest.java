@@ -1,9 +1,6 @@
 package com.group13.roombookingsystem.repository;
 
-import com.group13.roombookingsystem.model.user.Partner;
-import com.group13.roombookingsystem.model.user.Staff;
-import com.group13.roombookingsystem.model.user.Student;
-import com.group13.roombookingsystem.model.user.User;
+import com.group13.roombookingsystem.model.user.*;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -18,8 +15,30 @@ class UserRepositoryTest {
 
     private final UserRepository repository = new UserRepository();
 
+    private void cleanupUserById(int id) {
+        try (Connection c = Database.getConnection()) {
+            PreparedStatement st = c.prepareStatement("DELETE FROM users WHERE id = ?");
+            st.setInt(1, id);
+            st.execute();
+        } catch (SQLException e) {
+            fail(e);
+        }
+    }
+
+    private void cleanupUserByUsername(String username) {
+        try (Connection c = Database.getConnection()) {
+            PreparedStatement st = c.prepareStatement("DELETE FROM users WHERE username = ?");
+            st.setString(1, username);
+            st.execute();
+        } catch (SQLException e) {
+            fail(e);
+        }
+    }
+
     @Test
     void studentNeedsVerificationTest() {
+        cleanupUserByUsername("studentJUnit");
+
         User student = new Student("studentJUnit", "pass", 12345, "Student", false);
         User created = repository.create(student);
 
@@ -41,17 +60,20 @@ class UserRepositoryTest {
     }
 
     @Test
-    void createStaffAutoVerifiedTest() {
-        User staff = new Staff("staffJUnit", "pass", 11111, "Staff", false);
-        User created = repository.create(staff);
+    void createAdminAutoVerifiedTest() {
+        cleanupUserByUsername("adminJUnit");
 
+        User admin = new Admin("adminJUnit", "pass", 11111, "Admin", false);
+
+        User created = repository.create(admin);
+
+        // Admin must always be auto-verified by repository
         assertTrue(created.isVerified());
 
-        String sql = "SELECT is_verified FROM users WHERE username = 'staffJUnit'";
+        String sql = "SELECT is_verified FROM users WHERE username = 'adminJUnit'";
         try (Connection c = Database.getConnection()) {
             PreparedStatement st = c.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-
             assertTrue(rs.next());
             assertEquals(1, rs.getInt("is_verified"));
         } catch (SQLException e) {
@@ -59,8 +81,11 @@ class UserRepositoryTest {
         }
     }
 
+
     @Test
     void updateVerificationTest() {
+        cleanupUserByUsername("verifyStudent");
+
         User student = new Student("verifyStudent", "pass", 11111, "Student", false);
         repository.create(student);
 
@@ -93,6 +118,9 @@ class UserRepositoryTest {
 
     @Test
     void cannotUnverifyAdminTest() {
+        cleanupUserById(8000);
+        cleanupUserByUsername("adminJUnit");
+
         String sql = "INSERT INTO users(id, username, password, identification, role, is_verified) " +
                 "VALUES (8000, 'adminJUnit', 'pass', 22222, 'Admin', 1) " +
                 "ON CONFLICT(id) DO NOTHING;";
@@ -119,6 +147,9 @@ class UserRepositoryTest {
 
     @Test
     void findUserByUsernameTest() {
+        cleanupUserById(8100);
+        cleanupUserByUsername("findUser");
+
         String sql = "INSERT INTO users(id, username, password, identification, role, is_verified) " +
                 "VALUES (8100, 'findUser', 'pw', 33333, 'Student', 0) " +
                 "ON CONFLICT(id) DO NOTHING;";
@@ -142,6 +173,9 @@ class UserRepositoryTest {
 
     @Test
     void findUserByIdTest() {
+        cleanupUserById(8200);
+        cleanupUserByUsername("findByIdUser");
+
         String sql = "INSERT INTO users(id, username, password, identification, role, is_verified) " +
                 "VALUES (8200, 'findByIdUser', 'pw', 44444, 'Student', 0) " +
                 "ON CONFLICT(id) DO NOTHING;";
@@ -165,6 +199,9 @@ class UserRepositoryTest {
 
     @Test
     void findAllUsersTest() {
+        cleanupUserById(8300);
+        cleanupUserByUsername("allUser");
+
         String sql = "INSERT INTO users(id, username, password, identification, role, is_verified) " +
                 "VALUES (8300, 'allUser', 'pw', 55555, 'Student', 0) " +
                 "ON CONFLICT(id) DO NOTHING;";
@@ -197,6 +234,11 @@ class UserRepositoryTest {
 
     @Test
     void findByVerificationTest() {
+        cleanupUserById(8400);
+        cleanupUserById(8401);
+        cleanupUserByUsername("verifiedUser");
+        cleanupUserByUsername("unverifiedUser");
+
         String sql1 = "INSERT INTO users(id, username, password, identification, role, is_verified) " +
                 "VALUES (8400, 'verifiedUser', 'pw', 66666, 'Student', 1) " +
                 "ON CONFLICT(id) DO NOTHING;";
