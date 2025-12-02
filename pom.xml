@@ -97,7 +97,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.5</version>
         <configuration>
-          <argLine>${argLine} -Dnet.bytebuddy.experimental=true</argLine>
           <useModulePath>false</useModulePath>
         </configuration>
       </plugin>
@@ -141,7 +140,7 @@
         </executions>
       </plugin>
 
-      <!-- ✅ PIT MUTATION TESTING -->
+      <!-- PIT MUTATION TESTING -->
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
