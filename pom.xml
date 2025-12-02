@@ -50,6 +50,21 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- JUnit 4 for generated tests that reference org.junit.* -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- JUnit Vintage to allow JUnit 4 tests to run on the JUnit Platform provider -->
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
       <dependency>
           <groupId>org.xerial</groupId>
           <artifactId>sqlite-jdbc</artifactId>
@@ -73,7 +88,10 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.5</version>
         <configuration>
-          <argLine>-Dnet.bytebuddy.experimental=true</argLine>
+            <!-- include the JaCoCo agent argLine so coverage data is captured for forked test JVMs -->
+            <argLine>${argLine} -Dnet.bytebuddy.experimental=true</argLine>
+            <!-- Run tests on the classpath to avoid module-system visibility issues with test-only libraries -->
+            <useModulePath>false</useModulePath>
         </configuration>
       </plugin>
       <plugin>
@@ -93,6 +111,28 @@
               <stripDebug>true</stripDebug>
               <noHeaderFiles>true</noHeaderFiles>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.10</version>
+        <executions>
+          <!-- prepare the agent to collect coverage data when tests run -->
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <!-- generate report at the verify phase -->
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
